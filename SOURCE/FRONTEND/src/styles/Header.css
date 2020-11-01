@@ -3,11 +3,11 @@ div.header-wrapper {
 	background-color: rgb(66, 87, 178);
 }
 
-div.header-wrapper .row .logo {
+.logo a {
 	font-size: 25px;
 	font-weight: bolder;
 	font-family: Signika;
-	color: #fff;
+	color: #fff !important;
 }
 
 .login-link {
@@ -39,16 +39,44 @@ div.header-wrapper .row .logo {
 	border: none;
 }
 
-.or-option{
+.or-option {
 	font-size: 16px;
 	color: rgba(51, 51, 51, 0.808);
 }
 
-.login-option .ant-form-item-control .ant-form-item-control-input-content{
+.login-option .ant-form-item-control .ant-form-item-control-input-content {
 	display: flex;
 	justify-content: space-between;
 }
 
-.form-splitter{
+.form-splitter {
 	border-width: 2px;
+}
+
+.util-bar a {
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.search-box {
+	background-color: rgb(66, 87, 178) !important;
+	border: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+.ant-input-lg :focus {
+	outline: 0 !important;
+	box-shadow: none !important;
+}
+
+.search-box .ant-input-prefix {
+	color: #fff !important;
+}
+
+.search-box .ant-input-lg {
+	background: rgb(66, 87, 178) !important;
+	color: #fff;
 }

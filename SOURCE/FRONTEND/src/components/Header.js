@@ -2,15 +2,26 @@ import React, { Component } from 'react'
 import "@styles/Header.css"
 import { Col, Row, Button } from 'react-bootstrap'
 import { Modal, Form, Input, Checkbox } from 'antd'
-import { UserOutlined, LockOutlined, FacebookOutlined, GoogleOutlined, MailOutlined } from '@ant-design/icons'
+import {
+    UserOutlined,
+    LockOutlined,
+    FacebookOutlined,
+    GoogleOutlined,
+    MailOutlined,
+    SearchOutlined,
+    FolderAddOutlined,
+    CloseCircleOutlined,
+} from '@ant-design/icons'
+import { Link, withRouter } from "react-router-dom"
+import "animate.css"
 
-
-export default class Header extends Component {
+class Header extends Component {
     constructor(props) {
         super(props)
         this.state = {
             loginModal: false,
             registerModal: false,
+            showSearchBox: false
         }
     }
 
@@ -23,37 +34,107 @@ export default class Header extends Component {
     render() {
         return (
             <>
-                <Row>
-                    <Col xs={12} className="header-wrapper d-flex align-items-center justify-content-between">
-                        <Row className="w-100">
-                            <Col md={6} className="logo pt-1 text-md-left text-center">
-                                LET'S LEARN
-                            </Col>
-                            <Col md={6} className="button">
-                                <Row className="align-items-center justify-content-center justify-content-md-end">
-                                    <a
-                                        className="login-link"
-                                        onClick={() => this.handleShow("loginModal", true)}
-                                    >
-                                        Đăng nhập
-                                    </a>
-                                    <Button
-                                        variant="info register-btn"
-                                        onClick={() => this.handleShow("registerModal", true)}
-                                    >
-                                        Đăng ký
-                                    </Button>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
+                {/* hiển thị header */}
+                {this.renderHeader()}
 
                 {/* hiện thị Modal đăng ký */}
                 {this.renderRegisterModal()}
 
                 {/* hiển thị Modal đăng nhập */}
                 {this.renderLoginModal()}
+            </>
+        )
+    }
+
+    renderHeader() {
+        return (
+            <>
+                <Row>
+                    <Col xs={12} className="header-wrapper d-flex align-items-center justify-content-between">
+                        <Row className="w-100 align-items-center">
+                            <Col md={2} className="logo pt-1 text-md-left text-center">
+                                <Link to="">
+                                    LET'S LEARN
+                                </Link>
+                            </Col>
+
+                            {this.state.showSearchBox ? this.renderSearchBox() : this.renderUtilBar()}
+                        </Row>
+                    </Col>
+                </Row>
+            </>
+        )
+    }
+
+    renderUtilBar() {
+        return (
+            <>
+                <Col md={3} xs={6}>
+                    <Row>
+                        <Col className="util-bar">
+                            <Link
+                                onClick={() => this.setState({ showSearchBox: true })}
+                            >
+                                <SearchOutlined className="mr-1" />
+                                <span className="font-weight-bold">Tìm kiếm</span>
+                            </Link>
+                        </Col>
+                        <span className="text-black-50">|</span>
+                        <Col className="util-bar">
+                            <Link>
+                                <FolderAddOutlined className="mr-1" />
+                                <span className="font-weight-bold">Tạo mới</span>
+                            </Link>
+                        </Col>
+                    </Row>
+                </Col>
+
+                <Col md={7} className="button">
+                    <Row className="align-items-center justify-content-center justify-content-md-end">
+                        <a
+                            className="login-link font-weight-bold"
+                            onClick={() => this.handleShow("loginModal", true)}
+                        >
+                            Đăng nhập
+                                    </a>
+                        <Button
+                            variant="info register-btn font-weight-bold"
+                            onClick={() => this.handleShow("registerModal", true)}
+                        >
+                            Đăng ký
+                                    </Button>
+                    </Row>
+                </Col>
+            </>
+        )
+    }
+
+    renderSearchBox() {
+        return (
+            <>
+                <Col
+                    md={10}
+                    className={`animate__animated animate__fadeInDown ${this.state.searchBoxGo ? "animate__fadeOutUp" : null}`}
+                >
+                    <Row>
+                        <Col md={11}>
+                            <Input
+                                size="large"
+                                placeholder="Tìm kiếm"
+                                prefix={<SearchOutlined />}
+                                className="search-box"
+                            />
+                        </Col>
+                        <CloseCircleOutlined
+                            style={{
+                                fontSize: "35px",
+                                color: "#fff"
+                            }}
+                            onClick={() => this.hideSearchBox()}
+                        />
+                    </Row>
+                </Col>
+
             </>
         )
     }
@@ -285,4 +366,15 @@ export default class Header extends Component {
             </>
         )
     }
+
+    hideSearchBox() {
+        this.setState({ searchBoxGo: true })
+        setTimeout(
+            () => this.setState({ showSearchBox: false, searchBoxGo: false }),
+            500
+        )
+    }
 }
+
+
+export default withRouter(Header)
