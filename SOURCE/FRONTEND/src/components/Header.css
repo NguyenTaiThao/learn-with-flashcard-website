@@ -1,0 +1,42 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+html,body{
+	width: 100%;
+}
+.top-bar{
+	height: 50px;
+	width: 100%;
+	margin:0px;
+	display: flex;
+	justify-content: space-between;
+}
+.top-bar-item{
+	color:#fff;
+	display: inline-block;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.logo{
+	width: 200px;
+}
+.right-size{
+	height: 100%;
+	width: 200px;
+	display: flex;
+	justify-content:space-between;
+	align-items: center;
+	margin-right: 15px;
+}
+
+button{
+	color: #fff !important;
+}
+.user-button{
+	text-decoration: none !important;
+}
+
+

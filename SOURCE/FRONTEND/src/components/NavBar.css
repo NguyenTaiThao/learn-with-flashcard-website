@@ -1,0 +1,43 @@
+.wrapper{
+    height: 100%;
+    width: auto;
+    display: inline-block;
+    background-color: #6FA8DC;
+}
+.btn-group-vertical{
+    border-radius: 0px !important;
+    background-color: #6FA8DC;
+}
+.btn-group-vertical .btn-primary{
+    text-align: left;
+    border-radius: 0px !important;
+    background-color: #6FA8DC;
+    border: none;
+    display: block;
+}
+
+.btn-primary:active{
+    background-color: #6FA8DC !important;
+    color:red !important;   
+}
+.btn-primary:focus{
+    outline:none; 
+    border-style: none;
+}
+.active{
+    background-color: #6FA8DC !important;
+    color:red !important;   
+}
+.collapse{
+    background-color: #A2C4C9 !important;
+    width: 100%;
+}
+.secondaryNav{
+    width: 100% !important;
+    background-color: #A2C4C9 !important;
+}
+.secondaryNav .btn-primary{
+    padding-left: 20px;
+    background-color: #A2C4C9 !important;
+    width: 100% !important;
+}
