@@ -38,7 +38,7 @@ export default class PrivateRoute extends React.Component {
                 render={(props) => (
                     hasToken == true ?
                         <Component {...props} /> :
-                        <Redirect to='/Login' />
+                        <Redirect to='/' />
                 )} />
         )
     }

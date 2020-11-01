@@ -18,8 +18,9 @@ export class AppNavigator extends Component {
     render() {
         return (
             <Router>
-                <Route path='/Login' exact component={LoginScreen} />
-                <PrivateRoute path='/' exact Component={MainNavigator} />
+                <Header />
+                <Route path='/' exact Component={HomeScreen} />
+                <PrivateRoute Component={MainNavigator} />
             </Router>
         )
     }
@@ -34,7 +35,7 @@ class MainNavigator extends Component {
         return (
             <>
                 <Header />
-                <PrivateRoute path='/' exact Component={HomeScreen} />
+                <Route path='/' exact Component={HomeScreen} />
             </>
         )
     }

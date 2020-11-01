@@ -1,6 +1,8 @@
 const ROUTER = {
-    HOME: "/home",
-    USER: "/user",
+    HOME: "/",
+    USER_HOME: "/home",
+    PROGRESS: "/progress",
+    FOLDER: "/folder",
   };
 
 export { 

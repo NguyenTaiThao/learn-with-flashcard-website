@@ -123,6 +123,7 @@ class Header extends Component {
                                 placeholder="Tìm kiếm"
                                 prefix={<SearchOutlined />}
                                 className="search-box"
+                                autoFocus={true}
                             />
                         </Col>
                         <CloseCircleOutlined
