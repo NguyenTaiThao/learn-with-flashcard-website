@@ -1,21 +1,50 @@
-div.header-wrapper{
+div.header-wrapper {
 	height: 80px;
 	background-color: rgb(66, 87, 178);
 }
 
-div.header-wrapper .row .logo{
-	font-size: 30px;
+div.header-wrapper .row .logo {
+	font-size: 25px;
+	font-weight: bolder;
+	font-family: Signika;
 	color: #fff;
 }
 
-.login-link{
+.login-link {
 	color: #fff;
 	text-decoration: none;
 	margin-right: 20px;
 }
 
-.register-btn{
+.login-link:hover {
+	color: #b3b3b3;
+	text-decoration: none;
+}
+
+.register-btn {
 	width: 100px;
 	height: 41px;
 	background-color: #3CCFCF !important;
+}
+
+.register-btn:hover {
+	background-color: #3ccfcfc2 !important;
+}
+
+.login-form {
+	width: 100%;
+}
+
+.login-input {
+	border: none;
+}
+
+.or-option{
+	font-size: 16px;
+	color: rgba(51, 51, 51, 0.808);
+}
+
+.login-option .ant-form-item-control .ant-form-item-control-input-content{
+	display: flex;
+	justify-content: space-between;
 }
