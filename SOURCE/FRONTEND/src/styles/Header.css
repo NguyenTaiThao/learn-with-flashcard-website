@@ -48,3 +48,7 @@ div.header-wrapper .row .logo {
 	display: flex;
 	justify-content: space-between;
 }
+
+.form-splitter{
+	border-width: 2px;
+}
