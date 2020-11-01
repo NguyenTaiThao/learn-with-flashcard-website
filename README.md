@@ -1,6 +1,10 @@
 # Learn new definition with flast card website
 ## Function
 - None
+## Technology
+- Frontend: Javascript / React JS
+- Backend: PHP / Laravel
+- Database: MySQL
 ## Detail discription
 - None
 ## Collaborator
