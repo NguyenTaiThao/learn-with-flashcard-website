@@ -1,0 +1,21 @@
+div.header-wrapper{
+	height: 80px;
+	background-color: rgb(66, 87, 178);
+}
+
+div.header-wrapper .row .logo{
+	font-size: 30px;
+	color: #fff;
+}
+
+.login-link{
+	color: #fff;
+	text-decoration: none;
+	margin-right: 20px;
+}
+
+.register-btn{
+	width: 100px;
+	height: 41px;
+	background-color: #3CCFCF !important;
+}
