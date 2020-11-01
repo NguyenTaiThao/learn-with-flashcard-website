@@ -3,9 +3,13 @@
 }
 
 .nav-bar .MuiBackdrop-root{
-    opacity: 0 !important;
+    display: none !important;
 }
 
 .nav-bar .MuiDrawer-paper{
     top:80px;
+}
+
+.nav-bar{
+    width: 250px !important;
 }
