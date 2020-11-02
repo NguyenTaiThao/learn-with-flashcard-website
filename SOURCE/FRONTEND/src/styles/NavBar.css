@@ -4,6 +4,7 @@
 
 .nav-bar .MuiBackdrop-root{
     display: none !important;
+    width: 0px !important;
 }
 
 .nav-bar .MuiDrawer-paper{

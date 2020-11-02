@@ -26,8 +26,9 @@ export default class NavBar extends Component {
         return (
             <>
                 <Drawer
-                    open={true}
+                    open={false}
                     className="nav-bar"
+                    variant="permanent"
                 >
                     {this.listMenu()}
                 </Drawer>
