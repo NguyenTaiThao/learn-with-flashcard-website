@@ -19,7 +19,6 @@ export class AppNavigator extends Component {
         return (
             <Router>
                 <Header />
-                <NavBar />
                 <Route path='/' exact Component={HomeScreen} />
                 <PrivateRoute Component={MainNavigator} />
             </Router>
@@ -35,7 +34,7 @@ class MainNavigator extends Component {
     render() {
         return (
             <>
-                <Header />
+                <NavBar />
                 <Route path='/' exact Component={HomeScreen} />
             </>
         )
