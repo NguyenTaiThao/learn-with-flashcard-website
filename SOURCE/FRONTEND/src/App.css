@@ -41,6 +41,17 @@ html,body{
   color: #61dafb;
 }
 
+.content-wrapper{
+  padding-top: 80px;
+  /* padding-left: 256px; */
+  width: 100%;
+}
+
+.wrapper{
+  position: fixed;
+  top: 80px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

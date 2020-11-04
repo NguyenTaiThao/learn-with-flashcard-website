@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     BrowserRouter as Router,
-    Route
+    Route,
+    Switch
 } from 'react-router-dom';
 import HomeScreen from '@screens/HomeScreen';
 import UserScreen from '@screens/UserScreen';
@@ -19,8 +20,10 @@ export class AppNavigator extends Component {
         return (
             <Router>
                 <Header />
-                <Route path='/' exact Component={HomeScreen} />
-                <PrivateRoute Component={MainNavigator} />
+                <Switch>
+                    <Route path="/" exact component={MainScreen} />
+                    <PrivateRoute Component={MainNavigator} />
+                </Switch>
             </Router>
         )
     }
@@ -34,8 +37,9 @@ class MainNavigator extends Component {
     render() {
         return (
             <>
-                <NavBar />
-                <Route path='/' exact Component={HomeScreen} />
+                <Switch>
+                    <NavBar Component={<PrivateRoute path='/Home' exact Component={MainScreen} />} />
+                </Switch>
             </>
         )
     }

@@ -1,6 +1,7 @@
 div.header-wrapper {
 	height: 80px;
 	background-color: rgb(66, 87, 178);
+	position: fixed;
 }
 
 .logo a {
@@ -80,3 +81,12 @@ div.header-wrapper {
 	background: rgb(66, 87, 178) !important;
 	color: #fff;
 }
+
+@media only screen and (max-width: 600px) {
+	.util-bar-col {
+	  display: none;
+	}
+	.register-btn{
+		height: 35px;
+	}
+  }

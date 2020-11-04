@@ -11,24 +11,6 @@ export default class PrivateRoute extends React.Component {
         }
     }
 
-    // async getData() {
-    //     try {
-    //         await requestGetUserInfo()
-
-    //     } catch (err) {
-    //         if (err.code == 403) {
-
-    //             this.setState({
-    //                 verified: false
-    //             })
-    //         }
-    //     }
-    // }
-
-    // componentWillMount() {
-    //     this.getData()
-    // }
-
     render() {
         const { path, Component } = this.props;
         let token = Cookie.get("SESSION_ID")
@@ -37,7 +19,7 @@ export default class PrivateRoute extends React.Component {
             <Route path={path} exact
                 render={(props) => (
                     hasToken == true ?
-                        <Component {...props} /> :
+                        <Component {...this.props} /> :
                         <Redirect to='/' />
                 )} />
         )

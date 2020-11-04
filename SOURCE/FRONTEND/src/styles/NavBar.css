@@ -1,16 +1,16 @@
-.nav-bar .MuiPaper-root{
-    width: 250px !important;
+/* .nav-bar{
+    height: 100% !important;
+    width: 256px;
 }
 
-.nav-bar .MuiBackdrop-root{
-    display: none !important;
-    width: 0px !important;
+.nav-bar-colapse{
+    height: 100% !important;
+} */
+
+.collapse-toggle{
+    font-size: 20px;
 }
 
-.nav-bar .MuiDrawer-paper{
-    top:80px;
-}
-
-.nav-bar{
-    width: 250px !important;
-}
+/* .nav-bar .ant-menu{
+    height: 100%;
+} */

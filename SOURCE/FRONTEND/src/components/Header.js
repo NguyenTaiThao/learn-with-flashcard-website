@@ -69,7 +69,7 @@ class Header extends Component {
     renderUtilBar() {
         return (
             <>
-                <Col md={3} xs={6}>
+                <Col md={3} xs={6} className="util-bar-col">
                     <Row>
                         <Col className="util-bar">
                             <Link
@@ -252,10 +252,10 @@ class Header extends Component {
                     onCancel={() => this.handleShow("registerModal", false)}
                 >
                     <Row className="mb-4">
-                        <Col className="px-0 pr-md-1">
+                        <Col md={6} className="px-0 mb-4 mb-md-0">
                             <Button
                                 variant="outline-primary"
-                                className="w-100"
+                                className="w-100  mr-md-1"
                             >
                                 <Row className="align-items-center justify-content-center">
                                     <FacebookOutlined
@@ -269,10 +269,10 @@ class Header extends Component {
                             </Button>
                         </Col>
 
-                        <Col className="px-0 ml-md-1">
+                        <Col md={6} className="px-0">
                             <Button
                                 variant="outline-danger"
-                                className="w-100"
+                                className="w-100 ml-md-1"
                             >
                                 <Row className="align-items-center justify-content-center">
                                     <GoogleOutlined
