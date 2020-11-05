@@ -5,14 +5,16 @@ import {
     Route,
     Switch
 } from 'react-router-dom';
-import HomeScreen from '@screens/HomeScreen';
-import UserScreen from '@screens/UserScreen';
 
-import MainScreen from '@screens/MainScreen';
-import LoginScreen from '@screens/Auth/LoginScreen';
-import PrivateRoute from './PrivateRoute'
+// Component
 import Header from '@components/Header';
 import NavBar from '@components/NavBar';
+import PrivateRoute from './PrivateRoute'
+
+// Screen
+import HomeScreen from '@screens/HomeScreen';
+import UserScreen from '@screens/UserScreen';
+import MainScreen from '@screens/MainScreen';
 
 export class AppNavigator extends Component {
 
@@ -37,9 +39,12 @@ class MainNavigator extends Component {
     render() {
         return (
             <>
-                <Switch>
-                    <NavBar Component={<PrivateRoute path='/Home' exact Component={MainScreen} />} />
-                </Switch>
+                <NavBar Component={
+                    <Switch>
+                        <PrivateRoute path='/Home' exact Component={MainScreen} />
+                        <PrivateRoute path='/User' exact Component={UserScreen} />
+                    </Switch>
+                } />
             </>
         )
     }
