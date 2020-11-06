@@ -12,9 +12,10 @@ import NavBar from '@components/NavBar';
 import PrivateRoute from './PrivateRoute'
 
 // Screen
-import HomeScreen from '@screens/HomeScreen';
+import HomeScreen from '@screens/Home';
 import UserScreen from '@screens/UserScreen';
 import MainScreen from '@screens/MainScreen';
+import { Home } from '@material-ui/icons';
 
 export class AppNavigator extends Component {
 
@@ -23,7 +24,7 @@ export class AppNavigator extends Component {
             <Router>
                 <Header />
                 <Switch>
-                    <Route path="/" exact component={MainScreen} />
+                    <Route path="/" exact component={HomeScreen} />
                     <PrivateRoute Component={MainNavigator} />
                 </Switch>
             </Router>

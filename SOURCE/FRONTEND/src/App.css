@@ -47,8 +47,10 @@ html,body{
 
 .wrapper{
   width: 100% !important;
+  height: 100% !important;
   position: fixed;
   top: 80px;
+  overflow-y: auto;
 }
 
 @keyframes App-logo-spin {

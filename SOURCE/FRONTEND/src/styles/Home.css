@@ -1,0 +1,63 @@
+.left-part {
+    background: #3b4c9b;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.left-part .target span {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: normal;
+    color: white;
+}
+
+.left-part .action span {
+    color: white;
+    font-size: 20px;
+}
+
+.left-part .learn-now-btn {
+    width: 166px;
+    height: 68px;
+    background-color: #3CCFCF;
+}
+
+.left-part .role-check a {
+    font-size: 20px;
+    color: #3CCFCF !important;
+    font-weight: 500;
+}
+
+.right-part {
+    background: rgb(66, 87, 178);
+}
+
+.right-part .slide {
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    background: #364d79;
+}
+
+.right-part .target-student span {
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 20px;
+}
+
+.page-2 {
+    background-color: #fff;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .left-part .target span {
+        font-size: 35px;
+    }
+
+    .left-part .role-check a {
+        font-size: 17px;
+    }
+}
