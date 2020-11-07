@@ -1,3 +1,7 @@
+.page-1{
+    height: 90%;
+}
+
 .left-part {
     background: #3b4c9b;
     display: flex;
@@ -41,10 +45,25 @@
     background: #364d79;
 }
 
-.right-part .target-student span {
+.right-part p.target-student{
     text-transform: uppercase;
     color: #fff;
     font-size: 20px;
+    text-align: center;
+}
+
+.slick-dots{
+    opacity: 0;
+}
+
+.floating-text-div{
+    height: 30px;
+}
+
+.floating-text{
+    color:#fcfc4b;
+    font-size: 18px;
+    text-align: center;
 }
 
 .page-2 {
@@ -54,10 +73,22 @@
 
 @media only screen and (max-width: 600px) {
     .left-part .target span {
-        font-size: 35px;
+        font-size: 30px;
+    }
+    
+    .left-part .action span{
+        font-size: 16px;
     }
 
     .left-part .role-check a {
         font-size: 17px;
+    }
+
+    .right-part p.target-student{
+        font-size: 18px;
+    }
+
+    .floating-text{
+        font-size: 16px;
     }
 }

@@ -23,9 +23,9 @@ class HomeScreen extends Component {
         return (
             <>
                 <div className="wrapper">
-                    <Row className="w-100 h-100 page-1">
+                    <Row className="w-100 page-1">
                         <Col md={6} className="left-part">
-                            <Row className="target pb-5">
+                            <Row className="target pb-5 mt-5 mt-md-0">
                                 <Col md={7} sm={12} className="offset-0 offset-md-2">
                                     <span>Trở thành phiên bản xuất sắc nhất của chính bạn</span>
                                 </Col>
@@ -49,7 +49,7 @@ class HomeScreen extends Component {
                                 </Col>
                             </Row>
 
-                            <Row className="role-check">
+                            <Row className="role-check mb-5 mb-md-0">
                                 <Col
                                     md={3}
                                     xs={6}
@@ -71,29 +71,36 @@ class HomeScreen extends Component {
                                 effect="fade"
                                 dotPosition="right"
                                 autoplay={true}
+                                className="w-100"
                             >
-                                <div>
-                                    <img src={require("@src/assets/banner_01.png")} className="slide" />
+                                <div className="slide">
+                                    <img src={require("@src/assets/banner_01.png")}  className="w-100"/>
                                 </div>
-                                <div>
-                                    <img src={require("@src/assets/banner_02.png")} className="slide" />
+                                <div className="slide">
+                                    <img src={require("@src/assets/banner_02.png")}  className="w-100"/>
                                 </div>
-                                <div>
-                                    <img src={require("@src/assets/banner_03.png")} className="slide" />
+                                <div className="slide">
+                                    <img src={require("@src/assets/banner_03.png")}  className="w-100"/>
                                 </div>
                             </Carousel>
-                            <Row>
-                                <Col>
-                                    <Row className="target-student justify-content-center pt-5">
-                                        <span>
-                                            QUIZLET DÀNH CHO CÁC ĐỐI TƯỢNG HỌC SINH SAU
-                                        </span>
-                                    </Row>
-                                    <Row>
-                                        {/* {this.renderFloatText()} */}
-                                    </Row>
-                                </Col>
-                            </Row>
+                            <p className="target-student mt-3 mb-0">
+                                QUIZLET DÀNH CHO CÁC ĐỐI TƯỢNG HỌC SINH SAU
+                            </p>
+                            <Carousel
+                                dotPosition="right"
+                                autoplay={true}
+                                className="mt-1"
+                            >
+                                {/* <div className="floating-text-div"> */}
+                                    <span className="floating-text">Những học sinh tự nhủ "Mình có thể nhận được điểm cao hơn 10 không nhỉ?"</span>
+                                {/* </div> */}
+                                {/* <div className="floating-text-div"> */}
+                                    <span className="floating-text">Những học sinh tự nhủ "Giờ mình càng chăm học, thì càng thoải mái tận hưởng kỳ nghỉ."</span>
+                                {/* </div> */}
+                                {/* <div className="floating-text-div"> */}
+                                    <span className="floating-text">Những học sinh tự nhủ "Đêm nay, mình sẽ làm xong bài tập để cuối tuần có thể đi chơi."</span>
+                                {/* </div> */}
+                            </Carousel>
                         </Col>
                     </Row>
 
