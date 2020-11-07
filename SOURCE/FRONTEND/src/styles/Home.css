@@ -1,94 +1,143 @@
-.page-1{
-    height: 90%;
-}
+/* PAGE 1 */
+.page-1 {}
 
-.left-part {
+.page-1 .left-part {
     background: #3b4c9b;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-
-.left-part .target span {
+.page-1 .left-part .target span {
     font-size: 40px;
     font-weight: bold;
     line-height: normal;
     color: white;
 }
 
-.left-part .action span {
+.page-1 .left-part .action span {
     color: white;
     font-size: 20px;
 }
 
-.left-part .learn-now-btn {
+.page-1 .left-part .learn-now-btn {
     width: 166px;
     height: 68px;
     background-color: #3CCFCF;
 }
 
-.left-part .role-check a {
+.page-1 .left-part .role-check a {
     font-size: 20px;
     color: #3CCFCF !important;
     font-weight: 500;
 }
 
-.right-part {
+.page-1 .right-part {
     background: rgb(66, 87, 178);
 }
 
-.right-part .slide {
+.page-1 .right-part .slide {
     width: 100%;
     color: #fff;
     text-align: center;
     background: #364d79;
 }
 
-.right-part p.target-student{
+.page-1 .right-part p.target-student {
     text-transform: uppercase;
     color: #fff;
     font-size: 20px;
     text-align: center;
 }
 
-.slick-dots{
+.page-1 .slick-dots {
     opacity: 0;
 }
 
-.floating-text-div{
-    height: 30px;
-}
-
-.floating-text{
-    color:#fcfc4b;
+.page-1 .floating-text {
+    color: #fcfc4b;
     font-size: 18px;
     text-align: center;
+    height: 55px;
 }
 
+/* PAGE 2 */
 .page-2 {
     background-color: #fff;
 }
 
+.page-2 .title p {
+    font-size: 35px;
+    font-weight: 700;
+    text-align: center;
+}
 
+.page-2 .title em {
+    background-image: url(https://assets.quizlet.com/a/i/prismic/scribble.4d59e306220788c.svg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    line-height: 1.25;
+    padding: 35px;
+}
+
+.page-2 .home-element {
+    padding-left: 200px !important;
+    padding-right: 200px !important;
+}
+
+.page-2 .home-element .text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+}
+
+.page-2 .home-element .text .title{
+    font-size: 26px;
+    font-weight: 730;
+    line-height: normal;
+    margin-bottom: 40px;
+}
+
+.page-2 .home-element .text .content{
+    font-size: 19px;
+}
+
+/* ---responsive----- */
 @media only screen and (max-width: 600px) {
-    .left-part .target span {
+
+    /* page 1 */
+    .page-1 .left-part .target span {
         font-size: 30px;
     }
-    
-    .left-part .action span{
+
+    .page-1 .left-part .action span {
         font-size: 16px;
     }
 
-    .left-part .role-check a {
+    .page-1 .left-part .role-check a {
         font-size: 17px;
     }
 
-    .right-part p.target-student{
+    .page-1 .right-part p.target-student {
         font-size: 18px;
     }
 
-    .floating-text{
+    .page-1 .floating-text {
         font-size: 16px;
+    }
+
+    /* page 2 */
+    .page-2 .title {
+        padding: 0px !important;
+    }
+
+    .page-2 .home-element {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+
+    .page-2 .home-element .text{
+        padding: 5px;
     }
 }

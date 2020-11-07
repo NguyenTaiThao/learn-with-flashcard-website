@@ -9,7 +9,8 @@ module.exports = function (config, env) {
         "@constants": resolve("./src/constants/"),
         "@styles": resolve("./src/styles/"),
         "@action": resolve("./src/redux/actions"),
-        "@src": resolve("./src/")
+        "@src": resolve("./src/"),
+        "@assets": resolve("./src/assets/"),
         // etc...
     });
     return config;
