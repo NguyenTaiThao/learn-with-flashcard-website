@@ -6,6 +6,7 @@ import {
     Col,
     Button,
 } from 'react-bootstrap'
+import CarouselBootstrap from 'react-bootstrap/Carousel'
 import "@styles/Home.css"
 import { Link } from "react-router-dom"
 import { Carousel } from "antd";
@@ -78,25 +79,24 @@ class HomeScreen extends Component {
                     </Row>
                 </Col>
                 <Col md={6} className="right-part px-0">
-                    <Carousel
-                        effect="fade"
-                        dotPosition="right"
-                        autoplay={true}
-                        className="w-100"
+                    <CarouselBootstrap
+                        indicators={false}
+                        controls={false}
+                        keyboard={false}
                     >
-                        <div className="slide">
-                            <img src={require("@src/assets/banner_01.png")} className="w-100" />
-                        </div>
-                        <div className="slide">
-                            <img src={require("@src/assets/banner_02.png")} className="w-100" />
-                        </div>
-                        <div className="slide">
-                            <img src={require("@src/assets/banner_03.png")} className="w-100" />
-                        </div>
-                    </Carousel>
+                        <CarouselBootstrap.Item interval={3000}>
+                            <img src={require("@src/assets/banner_01.png")} className="w-100" alt="anh-slide" />
+                        </CarouselBootstrap.Item>
+                        <CarouselBootstrap.Item interval={3000}>
+                            <img src={require("@src/assets/banner_02.png")} className="w-100" alt="anh-slide" />
+                        </CarouselBootstrap.Item>
+                        <CarouselBootstrap.Item interval={3000}>
+                            <img src={require("@src/assets/banner_03.png")} className="w-100" alt="anh-slide" />
+                        </CarouselBootstrap.Item>
+                    </CarouselBootstrap>
                     <p className="target-student mt-3 mb-0">
                         QUIZLET DÀNH CHO CÁC ĐỐI TƯỢNG HỌC SINH SAU
-                            </p>
+                    </p>
                     <Carousel
                         dotPosition="right"
                         autoplay={true}
@@ -125,6 +125,7 @@ class HomeScreen extends Component {
                         <p className="text-center w-100"><em>90%</em>người dùng Quizlet cho biết họ đã cải thiện được điểm số</p>
                     </Row>
                 </Col>
+
                 <Col xs={12} className="px-5 home-element">
                     <Row>
                         <Col md={6} className="text">
@@ -135,7 +136,7 @@ class HomeScreen extends Component {
                             </p>
                         </Col>
                         <Col md={6} className="picture">
-                            <img src={require("@assets/effective.png")} className="w-100"></img>
+                            <img src={require("@assets/effective.png")} className="w-100" alt="anh minh hoa"></img>
                         </Col>
                     </Row>
                 </Col>
@@ -143,7 +144,7 @@ class HomeScreen extends Component {
                 <Col xs={12} className="mt-1 home-element">
                     <Row>
                         <Col md={6} className="picture">
-                            <img src={require("@assets/success.png")} className="w-100"></img>
+                            <img src={require("@assets/success.png")} className="w-100" alt="anh minh hoa"></img>
                         </Col>
                         <Col md={6} className="text">
                             <p className="title">Thành công tiếp theo của bạn đang ở rất gần rồi.</p>
@@ -163,11 +164,72 @@ class HomeScreen extends Component {
                             </p>
                         </Col>
                         <Col md={6} className="picture">
-                            <img src={require("@assets/try.png")} className="w-100"></img>
+                            <img src={require("@assets/try.png")} className="w-100" alt="anh minh hoa"></img>
                         </Col>
                     </Row>
                 </Col>
-            </Row>
+
+                <Col xs={12} className="home-element my-3">
+                    <CarouselBootstrap
+                        indicators={false}
+                        controls={false}
+                        keyboard={false}
+                    >
+                        <CarouselBootstrap.Item interval={5000}>
+                            <h3 className="user-review">Tôi phát hiện ra Quizlet hồi mới 12 tuổi.
+                            Nó đã giúp tôi cải thiện điểm số rất nhiều.
+                            Cảm ơn Quizlet đã giúp cho việc học trở nên vui vẻ và hiệu quả!
+                            </h3>
+                            <p className="user-info">-Nguyễn Tài Thao, 21 tuổi</p>
+                        </CarouselBootstrap.Item>
+                        <CarouselBootstrap.Item interval={5000}>
+                            <h3 className="user-review">Quizlet là một phương pháp học tuyệt vời.
+                            Tôi đã giới thiệu nó cho bạn bè và tất cả chúng tôi đang tiến bộ.
+                            Bất cứ khi nào nghĩ về Quizlet,
+                            tôi lại thấy niềm vui khi học trong vài phút thay vì nhiều giờ.
+                            </h3>
+                            <p className="user-info">-Trần Đức Trung, 22 tuổi</p>
+                        </CarouselBootstrap.Item>
+                        <CarouselBootstrap.Item interval={5000}>
+                            <h3 className="user-review">Trước đây, khi nói đến việc học, tôi dở vô cùng.
+                            Bây giờ tôi đang ở một trường đại học mới và họ giới thiệu tôi với Quizlet.
+                            Tôi không còn căng thẳng mỗi khi học và làm bài tập nữa. CẢM ƠN QUIZLET!!!
+                            </h3>
+                            <p className="user-info">-Phạm Tuấn Dũng, 18 tuổi</p>
+                        </CarouselBootstrap.Item>
+                    </CarouselBootstrap>
+                </Col>
+
+                <Col xs={12} className="text-center confirm-div">
+                    <h3 className="question">Bạn đã sẵn sàng cải thiện điểm số?</h3>
+                    <Button
+                        variant="info"
+                        className="learn-now-btn"
+                    >
+                        Bắt đầu học
+                    </Button>
+                </Col>
+
+                <Col xs={12} className="teacher-div">
+                    <Row>
+                        <Col md={6} className="left">
+                            <p className="teacher">GIÁO VIÊN</p>
+                            <p className="role">Truyền năng lượng cho học sinh của bạn</p>
+                            <p className="target">Giúp các em tự tin học bất cứ nội dung nào,
+                            dù cho mục tiêu phấn đấu có là gì đi nữa. Sử dụng các học phần miễn phí,
+                            chế độ học và trò chơi trong lớp của Quizlet,
+                            bạn có thể dễ dàng khích lệ học sinh của mình.
+                            </p>
+                            <Link className="link">Mang Quizlet đến lớp của bạn</Link>
+                        </Col>
+                        <Col md={6} className="px-0 right">
+                            <img src={require("@src/assets/teacher.png")} className="w-100" alt="anh-slide" />
+                        </Col>
+                    </Row>
+                </Col>
+
+                <div style={{ width: "100%", height: "500px" }}></div>
+            </Row >
         )
     }
 }
