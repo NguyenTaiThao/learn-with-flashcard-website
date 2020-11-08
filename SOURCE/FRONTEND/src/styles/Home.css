@@ -147,12 +147,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* background: #c5f1f1; */
     background: #f2fbf6;
 }
 
 .page-2 .teacher-div .teacher{
-    line-height: normal;
+    line-height: 0.9;
     font-size: 18px;
     font-weight: 650;
 }  
@@ -160,7 +159,7 @@
 .page-2 .teacher-div .role{
     font-size: 26px;
     font-weight: 700;
-    line-height: 5px;
+    line-height: 0.5;
 }
 
 .page-2 .teacher-div .target{
@@ -212,5 +211,21 @@
 
     .page-2 .home-element .text{
         padding: 5px;
+    }
+
+    .page-2 .user-review{
+        font-size: 25px;
+    }
+
+    .page-2 .user-info{
+        font-size: 15px;
+    }
+
+    .page-2 .teacher-div .left{
+        padding: 20px 5px;
+    }
+
+    .page-2 .teacher-div .role{
+        line-height: 0.9;
     }
 }
