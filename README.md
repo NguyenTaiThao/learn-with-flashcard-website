@@ -1,4 +1,4 @@
-# Learn new definition with flast card website
+# Learn new definition with flash card website
 ## Function
 - None
 ## Technology
