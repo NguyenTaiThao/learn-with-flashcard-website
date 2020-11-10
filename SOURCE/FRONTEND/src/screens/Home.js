@@ -9,9 +9,14 @@ import {
 import CarouselBootstrap from 'react-bootstrap/Carousel'
 import "@styles/Home.css"
 import { Link } from "react-router-dom"
-import { Carousel } from "antd";
-
-
+import { Carousel, Select } from "antd";
+import Divider from '@material-ui/core/Divider';
+import {
+    YoutubeOutlined,
+    FacebookFilled,
+    TwitterOutlined,
+    InstagramOutlined
+} from '@ant-design/icons';
 class HomeScreen extends Component {
     constructor(props) {
         super(props)
@@ -28,6 +33,8 @@ class HomeScreen extends Component {
                     {this.renderPage1()}
 
                     {this.renderPage2()}
+
+                    {this.renderFooter()}
                 </div>
             </>
         )
@@ -83,6 +90,7 @@ class HomeScreen extends Component {
                         indicators={false}
                         controls={false}
                         keyboard={false}
+                        fade={true}
                     >
                         <CarouselBootstrap.Item interval={3000}>
                             <img src={require("@src/assets/banner_01.png")} className="w-100" alt="anh-slide" />
@@ -227,12 +235,163 @@ class HomeScreen extends Component {
                         </Col>
                     </Row>
                 </Col>
-
-                <div style={{ width: "100%", height: "500px" }}></div>
             </Row >
         )
     }
-}
 
+    renderFooter() {
+        return (
+            <>
+                <Row className="footer">
+                    <Col md={2} xs={6} className="offset-md-1">
+                        <Row className="title">
+                            <b>Chủ đề</b>
+                        </Row>
+                        <Row>
+                            <ul>
+                                <li>
+                                    <Link>Khoa học</Link>
+                                </li>
+                                <li>
+                                    <Link>Khoa học xã hội</Link>
+                                </li>
+                                <li>
+                                    <Link>Khác</Link>
+                                </li>
+                                <li>
+                                    <Link>Nghệ thuật nhân văn</Link>
+                                </li>
+                                <li>
+                                    <Link>Toán học</Link>
+                                </li>
+                                <li>
+                                    <Link>Ngôn ngữ</Link>
+                                </li>
+                            </ul>
+                        </Row>
+                    </Col>
+                    <Col md={2} xs={6}>
+                        <Row className="title">
+                            <b>Tính năng</b>
+                        </Row>
+                        <Row>
+                            <ul>
+                                <li>
+                                    <Link>Quizlet Live</Link>
+                                </li>
+                                <li>
+                                    <Link>Chế độ học</Link>
+                                </li>
+                                <li>
+                                    <Link>Sơ đồ</Link>
+                                </li>
+                                <li>
+                                    <Link>Thẻ ghi nhớ</Link>
+                                </li>
+                                <li>
+                                    <Link>Ứng dụng</Link>
+                                </li>
+                            </ul>
+                        </Row>
+                    </Col>
+                    <Col md={2}>
+                        <Row className="title">
+                            <b>Hỗ trợ</b>
+                        </Row>
+                        <Row>
+                            <ul>
+                                <li>
+                                    <Link>Đăng kí</Link>
+                                </li>
+                                <li>
+                                    <Link>Trung tâm hỗ trợ</Link>
+                                </li>
+                                <li>
+                                    <Link>Quy tắc danh dự</Link>
+                                </li>
+                                <li>
+                                    <Link>Nguyễn tắc cộng đồng</Link>
+                                </li>
+                                <li>
+                                    <Link>Giác viên</Link>
+                                </li>
+                            </ul>
+                        </Row>
+                    </Col>
+                    <Col md={2}>
+                        <Row className="title">
+                            <b>Giới thiệu</b>
+                        </Row>
+                        <Row>
+                            <ul>
+                                <li>
+                                    <Link>Công ty</Link>
+                                </li>
+                                <li>
+                                    <Link>Blog</Link>
+                                </li>
+                                <li>
+                                    <Link>Báo chí</Link>
+                                </li>
+                                <li>
+                                    <Link>Tuyển dụng</Link>
+                                </li>
+                                <li>
+                                    <Link>Quảng cáo</Link>
+                                </li>
+                                <li>
+                                    <Link>Quyền riêng tư</Link>
+                                </li>
+                                <li>
+                                    <Link>Chính sách quảng cáo và cookie</Link>
+                                </li>
+                                <li>
+                                    <Link>điều khoản dịch vụ</Link>
+                                </li>
+                            </ul>
+                        </Row>
+                    </Col>
+                    <Col md={2}>
+                        <Row className="title">
+                            <b>Ngôn ngữ</b>
+                        </Row>
+                        <Row>
+                            <Select defaultValue="vi" className="w-100 lang-select">
+                                <Select.Option value="vi">Tiếng Việt</Select.Option>
+                                <Select.Option value="en">English</Select.Option>
+                                <Select.Option value="ja">日本語</Select.Option>
+                            </Select>
+                        </Row>
+                    </Col>
+                    <Col xs={10} className="offset-1 divider">
+                        <Divider />
+                    </Col>
+                    <Col xs={10} className="offset-1 contact">
+                        <Row>
+                            <Col md={6} className="left px-0">
+                                <Link>
+                                    <FacebookFilled className="contact-icon" />
+                                </Link>
+                                <Link>
+                                    <YoutubeOutlined className="contact-icon" />
+                                </Link>
+                                <Link>
+                                    <TwitterOutlined className="contact-icon" />
+                                </Link>
+                                <Link>
+                                    <InstagramOutlined className="contact-icon contact-icon-last" />
+                                </Link>
+                            </Col>
+                            <Col md={6} className="right px-0">
+                                <span className="copyright">© 2020 Quizlet Inc.</span>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <div style={{ width: "100%", height: "100px" }}></div>
+                </Row>
+            </>
+        )
+    }
+}
 
 export default HomeScreen

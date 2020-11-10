@@ -24,7 +24,7 @@
     width: 166px;
     height: 68px;
     background-color: #3CCFCF !important;
-    border:none !important;
+    border: none !important;
     font-weight: 700 !important;
     font-size: 18px !important;
 }
@@ -88,21 +88,21 @@
     padding-right: 200px !important;
 }
 
-.page-2 .home-element .text{
+.page-2 .home-element .text {
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 40px;
 }
 
-.page-2 .home-element .text .title{
+.page-2 .home-element .text .title {
     font-size: 26px;
     font-weight: 730;
     line-height: normal;
     margin-bottom: 40px;
 }
 
-.page-2 .home-element .text .content{
+.page-2 .home-element .text .content {
     font-size: 19px;
 }
 
@@ -118,13 +118,13 @@
     position: relative;
 }
 
-.page-2 .user-review{
+.page-2 .user-review {
     font-weight: 700;
     font-size: 30px;
     text-align: center;
 }
 
-.page-2 .user-info{
+.page-2 .user-info {
     text-align: center;
     text-transform: uppercase;
     font-size: 17px;
@@ -132,17 +132,17 @@
     color: #A9A9A9;
 }
 
-.page-2 .confirm-div .question{
+.page-2 .confirm-div .question {
     font-size: 25px !important;
     font-weight: 750 !important;
     margin-top: 120px;
 }
 
-.page-2 .teacher-div{
+.page-2 .teacher-div {
     margin-top: 40px;
 }
 
-.page-2 .teacher-div .left{
+.page-2 .teacher-div .left {
     padding: 0px 70px;
     display: flex;
     flex-direction: column;
@@ -150,29 +150,100 @@
     background: #f2fbf6;
 }
 
-.page-2 .teacher-div .teacher{
+.page-2 .teacher-div .teacher {
     line-height: 0.9;
     font-size: 18px;
     font-weight: 650;
-}  
+}
 
-.page-2 .teacher-div .role{
+.page-2 .teacher-div .role {
     font-size: 26px;
     font-weight: 700;
     line-height: 0.5;
 }
 
-.page-2 .teacher-div .target{
+.page-2 .teacher-div .target {
     font-size: 20px;
     line-height: normal;
     margin-top: 25px;
 }
 
-.page-2 .teacher-div .link{
+.page-2 .teacher-div .link {
     color: #3CCFCF;
     font-size: 21.5px;
     font-weight: 600;
     margin-top: 35px;
+}
+
+/* footer */
+.footer {
+    background: rgb(66, 87, 178);
+    padding: 55px 0px;
+    margin-top: 70px !important;
+}
+
+.footer .title {
+    color: #fff;
+    font-size: 17px;
+    text-align: left;
+    margin-bottom: 25px !important;
+    font-weight: 450;
+}
+
+.footer ul {
+    list-style-type: none;
+}
+
+.footer a {
+    color: #fff !important;
+    font-size: 14.7px;
+    font-weight: 350;
+    line-height: 2;
+}
+
+.footer a:hover{
+    color: rgba(255, 255, 255, 0.562) !important;
+}
+
+.footer .lang-select {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.footer .divider {
+    margin-top: 80px;
+}
+
+.footer .divider .MuiDivider-root {
+    background: rgba(255, 255, 255, 0.473) !important;
+}
+
+.footer .contact{
+    margin-top: 20px;
+}
+
+.footer .contact .left {
+    text-align: left;
+}
+
+.footer .contact .right {
+    text-align: right;
+}
+
+.footer .contact .left .contact-icon {
+    color: white;
+    font-size: 20px;
+    margin-right: 25px;
+}
+
+.footer .contact .left .contact-icon-last{
+    margin-right: 0px;
+}
+
+.footer .contact .right .copyright {
+    color: white;
+    font-size: 18px;
 }
 
 /* ---responsive----- */
@@ -204,28 +275,37 @@
         padding: 0px !important;
     }
 
+    .page-2 .title em {
+        display: block;
+    }
+
     .page-2 .home-element {
         padding-left: 5px !important;
         padding-right: 5px !important;
     }
 
-    .page-2 .home-element .text{
+    .page-2 .home-element .text {
         padding: 5px;
     }
 
-    .page-2 .user-review{
+    .page-2 .user-review {
         font-size: 25px;
     }
 
-    .page-2 .user-info{
+    .page-2 .user-info {
         font-size: 15px;
     }
 
-    .page-2 .teacher-div .left{
+    .page-2 .teacher-div .left {
         padding: 20px 5px;
     }
 
-    .page-2 .teacher-div .role{
+    .page-2 .teacher-div .role {
         line-height: 0.9;
     }
+
+    .footer .contact .left, .footer .contact .right  {
+        text-align: center;
+    }
+    
 }
