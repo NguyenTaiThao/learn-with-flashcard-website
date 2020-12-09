@@ -1,0 +1,13 @@
+I.	Mô tả web
+*User:
+•	Tạo folder chứa các bộ thẻ
+•	Tạo, thêm, xóa, sửa, tìm kiếm bộ thẻ(crud)
+•	CRUD thẻ
+•	Bán các bộ thẻ
+•	Mua bộ thẻ của người khác (expand if possible)
+•	Comment vào bộ thẻ của người khác
+*Admin:
+•	Quản lý user: CRUD
+•	Quản lý bộ thẻ, thẻ, comment 
+ 
+
