@@ -1,1 +1,37 @@
-node_modules/
+### Code ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### Laravel ###
+/vendor
+/node_modules/
+npm-debug.log
+yarn-error.log
+DO_NOT_UPLOAD_HERE
+readme*
+sitemap*
+
+### environment file ###
+.environment
+
+### Public Files ###
+/public_html/css/*.scss
+/public_html/css/*.css.map
+/public_html/files/*
+
+### Hostinger Files ###
+*.sqlite
+acme-client
+.cache
+.cagefs
+.cl.selector
+.config
+.local
+.ssh
+messagesystemctl
+*microsoft.gpg
+.bash*
+/v8-compile-cache-0
