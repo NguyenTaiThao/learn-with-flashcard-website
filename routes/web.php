@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FolderController;
+use App\Http\Controllers\SetController;
 use App\Models\Folder;
 use App\Models\User;
 use Illuminate\Database\Schema\Grammars\RenameColumn;
@@ -27,6 +28,13 @@ Route::get('/test', [FolderController::class, 'test']);
 Route::group(['prefix' => 'folder'], function () {
     Route::post('/add', [FolderController::class, 'addFolder']);
     Route::post('/edit/{id}', [FolderController::class, 'editFolder']);
-    Route::post('/delete/{id}', [FolderController::class, 'deleteFolder']);
+    Route::get('/delete/{id}', [FolderController::class, 'deleteFolder']);
 });
+
+Route::group(['prefix' => 'set'], function () {
+    Route::post('/add', [SetController::class, 'addSet']);
+    Route::post('/edit/{id}', [SetController::class, 'editSet']);
+    Route::post('/delete/{id}', [SetController::class, 'deleteSet']);
+});
+
 
