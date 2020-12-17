@@ -45,8 +45,6 @@ export default class NavBar extends Component {
     }
 
     listMenu = () => (
-        // <div className={this.state.collapsed ? "nav-bar-colapse" : "nav-bar"}>
-        // <div className="nav-bar">
             <Menu
                 onClick={this.handleClick}
                 defaultSelectedKeys={['1']}
@@ -67,24 +65,24 @@ export default class NavBar extends Component {
 
                 <Divider />
 
-                <Menu.Item key="1" icon={<HomeOutlined />}>
-                    Trang chủ
+                <Menu.Item key="1" icon={<HomeOutlined style={{fontSize:"20px"}}/>}>
+                    <b>Trang chủ</b>
                 </Menu.Item>
 
-                <Menu.Item key="2" icon={<BarChartOutlined />}>
-                    Tiến độ
+                <Menu.Item key="2" icon={<BarChartOutlined style={{fontSize:"20px"}}/>}>
+                    <b>Tiến độ</b>
                 </Menu.Item>
 
-                <Menu.Item key="3" icon={<AppstoreOutlined />}>
-                    Học phần
+                <Menu.Item key="3" icon={<AppstoreOutlined style={{fontSize:"20px"}}/>}>
+                    <b>Học phần</b>
                 </Menu.Item>
 
                 <Divider />
 
                 <SubMenu
                     key="sub1"
-                    icon={<FolderOutlined />}
-                    title="Thư mục"
+                    icon={<FolderOutlined style={{fontSize:"20px"}}/>}
+                    title={<b>Thư mục</b>}
                 >
                     <Menu.Item key="5">Thự mục 1</Menu.Item>
                     <Menu.Item key="6">Thư mục 2</Menu.Item>
@@ -96,8 +94,8 @@ export default class NavBar extends Component {
 
                 <SubMenu
                     key="sub2"
-                    icon={<UsergroupAddOutlined />}
-                    title="Lớp học"
+                    icon={<UsergroupAddOutlined style={{fontSize:"20px"}}/>}
+                    title={<b>Lớp học</b>}
                 >
                     <Menu.Item key="9">Lớp 10</Menu.Item>
                     <Menu.Item key="10">Lớp 11</Menu.Item>
