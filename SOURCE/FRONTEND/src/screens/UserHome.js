@@ -9,8 +9,10 @@ export default class UserHome extends Component {
     render() {
         return (
             <>
-                <Row className="container">
-                    asfasdf
+                <Row className="w-100">
+                    <Col className="float-div">
+                        
+                    </Col>
                 </Row>
             </>
         )

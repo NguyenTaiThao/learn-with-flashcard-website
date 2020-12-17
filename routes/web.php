@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FolderController;
 use App\Models\Folder;
 use App\Models\User;
 use Illuminate\Database\Schema\Grammars\RenameColumn;
@@ -21,16 +22,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', function () {
-   $folders = Folder::all();
-   foreach($folders as $folder){
-    //    foreach($user->folders as $folder){
-    //        echo $user->name." has ".$folder->name."<br>";
-    //    }
-    echo $folder->user->name;
-       echo "<hr>";
-   } 
-});
+Route::get('/test', [FolderController::class, 'test']);
 
 
 
