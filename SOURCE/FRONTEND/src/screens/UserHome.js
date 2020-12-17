@@ -9,7 +9,6 @@ import { Skeleton, Switch, Card, Avatar } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
 export default class UserHome extends Component {
     constructor(props) {
         super(props);
@@ -108,12 +107,12 @@ export default class UserHome extends Component {
                                 ]}
                             >
                                 <Skeleton loading={loading} avatar active>
-                                    <Card
+                                    <Card.Meta
                                         avatar={
                                             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                         }
-                                        title="Card title"
-                                        description="This is the description"
+                                        title="IT midterm"
+                                        description="99 thuật ngữ"
                                     />
                                 </Skeleton>
                             </Card>
@@ -127,12 +126,12 @@ export default class UserHome extends Component {
                                 ]}
                             >
                                 <Skeleton loading={loading} avatar active>
-                                    <Card
+                                    <Card.Meta
                                         avatar={
                                             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                         }
-                                        title="Card title"
-                                        description="This is the description"
+                                        title="IT midterm"
+                                        description="99 thuật ngữ"
                                     />
                                 </Skeleton>
                             </Card>
@@ -146,16 +145,16 @@ export default class UserHome extends Component {
                                 ]}
                             >
                                 <Skeleton loading={loading} avatar active>
-                                    <Card
+                                    <Card.Meta
                                         avatar={
                                             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                         }
-                                        title="Card title"
-                                        description="This is the description"
+                                        title="IT midterm"
+                                        description="99 thuật ngữ"
                                     />
                                 </Skeleton>
                             </Card>
-                            
+
                             <Card
                                 style={{ width: 400, marginTop: 16 }}
                                 actions={[
@@ -165,12 +164,12 @@ export default class UserHome extends Component {
                                 ]}
                             >
                                 <Skeleton loading={loading} avatar active>
-                                    <Card
+                                    <Card.Meta
                                         avatar={
                                             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                         }
-                                        title="Card title"
-                                        description="This is the description"
+                                        title="IT nihongo"
+                                        description="133 thuật ngữ"
                                     />
                                 </Skeleton>
                             </Card>
