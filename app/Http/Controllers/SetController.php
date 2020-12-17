@@ -76,7 +76,7 @@ class SetController extends Controller
             return [
                 'status' => 1,
                 'code' => 1,
-                'msg' => 'Delete folder successfully'
+                'msg' => 'Delete set successfully'
             ];
         }
     }

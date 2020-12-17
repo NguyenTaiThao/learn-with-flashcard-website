@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\SetController;
 use App\Models\Folder;
@@ -35,6 +36,12 @@ Route::group(['prefix' => 'set'], function () {
     Route::post('/add', [SetController::class, 'addSet']);
     Route::post('/edit/{id}', [SetController::class, 'editSet']);
     Route::post('/delete/{id}', [SetController::class, 'deleteSet']);
+});
+
+Route::group(['prefix' => 'card'], function () {
+    Route::post('/add', [CardController::class, 'addCard']);
+    Route::post('/edit/{id}', [CardController::class, 'editCard']);
+    Route::post('/delete/{id}', [CardController::class, 'deleteCard']);
 });
 
 
