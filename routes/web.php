@@ -26,7 +26,3 @@ Route::get('/test', [FolderController::class, 'test']);
 
 
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
