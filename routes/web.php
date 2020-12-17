@@ -24,9 +24,9 @@ Route::get('/', function () {
 
 Route::get('/test', [FolderController::class, 'test']);
 
-
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::group(['prefix' => 'folder'], function () {
+    Route::post('/add', [FolderController::class, 'addFolder']);
+    Route::post('/edit/{id}', [FolderController::class, 'editFolder']);
+    Route::post('/delete/{id}', [FolderController::class, 'deleteFolder']);
+});
 

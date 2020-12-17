@@ -8,6 +8,7 @@
 ### Laravel ###
 /vendor
 /node_modules/
+/SOURCE/FRONTEND/node_modules   
 npm-debug.log
 yarn-error.log
 DO_NOT_UPLOAD_HERE
