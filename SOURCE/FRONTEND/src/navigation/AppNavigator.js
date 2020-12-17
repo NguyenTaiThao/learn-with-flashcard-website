@@ -6,6 +6,8 @@ import {
     Switch
 } from 'react-router-dom';
 
+import {ROUTER} from "@constants/Constant";
+
 // Component
 import Header from '@components/Header';
 import NavBar from '@components/NavBar';
@@ -13,8 +15,8 @@ import PrivateRoute from './PrivateRoute'
 
 // Screen
 import HomeScreen from '@screens/Home';
-import UserScreen from '@screens/UserScreen';
-import MainScreen from '@screens/MainScreen';
+import ProgressScreen from '@screens/Progress';
+import UserHomeScreen from '@screens/UserHome'
 import { Home } from '@material-ui/icons';
 
 export class AppNavigator extends Component {
@@ -42,8 +44,8 @@ class MainNavigator extends Component {
             <>
                 <NavBar Component={
                     <Switch>
-                        <PrivateRoute path='/Home' exact Component={MainScreen} />
-                        <PrivateRoute path='/User' exact Component={UserScreen} />
+                        <PrivateRoute path={ROUTER.USER_HOME} exact Component={UserHomeScreen} />
+                        <PrivateRoute path={ROUTER.PROGRESS} exact Component={ProgressScreen} />
                     </Switch>
                 } />
             </>

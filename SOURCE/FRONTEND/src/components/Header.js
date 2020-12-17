@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import "@styles/Header.css"
 import { Col, Row, Button } from 'react-bootstrap'
-import { Modal, Form, Input, Checkbox } from 'antd'
+import { Modal, Form, Input, Checkbox, Avatar } from 'antd'
 import {
     UserOutlined,
     LockOutlined,
@@ -14,6 +14,8 @@ import {
 } from '@ant-design/icons'
 import { Link, withRouter } from "react-router-dom"
 import "animate.css"
+import Cookie from 'js-cookie'
+import { IconButton, Popover, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core';
 
 class Header extends Component {
     constructor(props) {
@@ -21,7 +23,9 @@ class Header extends Component {
         this.state = {
             loginModal: false,
             registerModal: false,
-            showSearchBox: false
+            showSearchBox: false,
+            popover: false,
+            anchorEl: null,
         }
     }
 
@@ -89,6 +93,122 @@ class Header extends Component {
                     </Row>
                 </Col>
 
+                {this.renderAuthenButton()}
+            </>
+        )
+    }
+
+    handlePopover = (e) => {
+        this.setState({
+            popover: !this.state.popover,
+            anchorEl: e?.currentTarget || null,
+        })
+    }
+
+    renderAuthenButton() {
+        if (Cookie.get("SESSION_ID")) {
+            return (
+                <Col md={7} className="button">
+                    <Row className="align-items-center justify-content-center justify-content-md-end">
+                        <IconButton
+                            className="avatar-button"
+                        >
+                            <Avatar
+                                style={{ "background": "orange" }}
+                                onClick={(e) => this.handlePopover(e)}
+                                size="large"
+                            >
+                                T
+                            </Avatar>
+                        </IconButton>
+                        <Popover
+                            open={this.state.popover}
+                            onClose={(e) => this.handlePopover(e)}
+                            anchorEl={this.state.anchorEl}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                            className="mt-3"
+                        >
+                            <Row className="py-4">
+                                <Col xs={3}>
+                                    <Avatar
+                                        style={{ "background": "orange" }}
+                                        size={50}
+                                    >
+                                        T
+                                    </Avatar>
+                                </Col>
+                                <Col xs={9}>
+                                    <Row>
+                                        <b>Nguyen Tai Thao</b>
+                                    </Row>
+                                    <Row>
+                                        <Link>Xem hồ sơ</Link>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <Divider />
+                            <List className="py-0">
+                                <ListItem button className="py-3">
+                                    <Row className="w-100">
+                                        <Col xs={3} className="px-2">
+                                            <i class="far fa-cog user-utils-icon"></i>
+                                        </Col>
+                                        <Col xs={9} className="px-0">
+                                            <b className="user-utils-text">Cài đặt</b>
+                                        </Col>
+                                    </Row>
+                                </ListItem>
+                                <ListItem button className="py-3">
+                                    <Row className="w-100">
+                                        <Col xs={3} className="px-2">
+                                            <i class="far fa-comment-alt user-utils-icon"></i>
+                                        </Col>
+                                        <Col xs={9} className="px-0">
+                                            <b className="user-utils-text">Trung tâm hỗ trợ</b>
+                                        </Col>
+                                    </Row>
+                                </ListItem>
+                                <ListItem button className="py-3">
+                                    <Row className="w-100">
+                                        <Col xs={3} className="px-2">
+                                            <i class="fas fa-shield-alt user-utils-icon"></i>
+                                        </Col>
+                                        <Col xs={9} className="px-0">
+                                            <b className="user-utils-text">Quyền riêng tư</b>
+                                        </Col>
+                                    </Row>
+                                </ListItem>
+
+                                <Divider />
+
+                                <ListItem
+                                    button
+                                    className="py-4"
+                                    onClick={() => this.handleLogout()}
+                                >
+                                    <Row className="w-100">
+                                        <Col xs={3} className="px-2">
+                                            <i class="fas fa-sign-out-alt user-utils-icon"></i>
+                                        </Col>
+                                        <Col xs={9} className="px-0">
+                                            <b className="logout-text user-utils-text">Đăng xuất</b>
+                                        </Col>
+                                    </Row>
+                                </ListItem>
+                            </List>
+                        </Popover>
+                    </Row>
+                </Col>
+            )
+        } else {
+            return (
                 <Col md={7} className="button">
                     <Row className="align-items-center justify-content-center justify-content-md-end">
                         <a
@@ -96,17 +216,17 @@ class Header extends Component {
                             onClick={() => this.handleShow("loginModal", true)}
                         >
                             Đăng nhập
-                                    </a>
+                        </a>
                         <Button
                             variant="info register-btn font-weight-bold"
                             onClick={() => this.handleShow("registerModal", true)}
                         >
                             Đăng ký
-                                    </Button>
+                        </Button>
                     </Row>
                 </Col>
-            </>
-        )
+            )
+        }
     }
 
     renderSearchBox() {
@@ -140,13 +260,30 @@ class Header extends Component {
         )
     }
 
+    handleLogout = () => {
+        this.setState({
+            popover: false,
+            anchorEl: null,
+        })
+        Cookie.remove("SESSION_ID");
+        this.props.history.push("/");
+    }
+
+    handleOk = () => {
+        Cookie.set("SESSION_ID", "abc")
+        this.setState({
+            loginModal: false
+        })
+        this.props.history.push("/Home");
+    }
+
     renderLoginModal() {
         return (
             <>
                 <Modal
                     title="Đăng nhập"
                     visible={this.state.loginModal}
-                    confirmLoading={true}
+                    // confirmLoading={false}
                     okText="Đăng nhập"
                     cancelText="Hủy bỏ"
                     onOk={this.handleOk}
@@ -192,7 +329,6 @@ class Header extends Component {
                         initialValues={{
                             remember: true,
                         }}
-                    // onFinish={onFinish}
                     >
                         <Form.Item
                             name="username"
@@ -246,7 +382,7 @@ class Header extends Component {
                 <Modal
                     title="Đăng ký"
                     visible={this.state.registerModal}
-                    confirmLoading={true}
+                    // confirmLoading={true}
                     okText="Đăng ký"
                     onOk={this.handleOk}
                     onCancel={() => this.handleShow("registerModal", false)}

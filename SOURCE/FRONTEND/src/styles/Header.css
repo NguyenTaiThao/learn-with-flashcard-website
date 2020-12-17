@@ -82,6 +82,24 @@ div.header-wrapper {
 	color: #fff;
 }
 
+.avatar-button:focus{
+	outline: none !important;
+}
+
+.user-utils-icon{
+	font-size: 20px;
+	color: #333;
+}
+
+.user-utils-text{
+	font-weight: 700!important;
+	color: #333;
+}
+
+.logout-text{
+	color: orange !important;
+}
+
 @media only screen and (max-width: 600px) {
 	.util-bar-col {
 	  display: none;
