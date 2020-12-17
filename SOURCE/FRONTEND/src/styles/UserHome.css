@@ -3,3 +3,17 @@
     height: 100%;
     background-color: blueviolet;
 }
+
+.suggested-folder .title{
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.suggested-folder .banner{
+    font-size: 17px;
+}
+
+.suggested-folder .change-mode{
+    width: 200px;
+    height: 50px;
+}
