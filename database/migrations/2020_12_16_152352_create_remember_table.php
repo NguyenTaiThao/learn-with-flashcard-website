@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCardSetTable extends Migration
+class CreateRememberTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateCardSetTable extends Migration
      */
     public function up()
     {
-        Schema::create('card_set', function (Blueprint $table) {
+        Schema::create('remember', function (Blueprint $table) {
             $table->id();
-            
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('card_id');
-            $table->foreign('card_id')->references('id')->on('cards')->onDelete('cascade');
-            $table->unsignedBigInteger('set_id');
-            $table->foreign('set_id')->references('id')->on('sets')->onDelete('cascade');
-
+            $table->boolean('status');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('card_id')->references('id')->on('cards')->onDelete('cascade');
         });
     }
 
@@ -32,6 +31,6 @@ class CreateCardSetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('card_set');
+        Schema::dropIfExists('remember');
     }
 }

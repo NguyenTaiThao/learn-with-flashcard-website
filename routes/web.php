@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Folder;
+use App\Models\User;
 use Illuminate\Database\Schema\Grammars\RenameColumn;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -19,10 +21,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/test', function () {
+   $folders = Folder::all();
+   foreach($folders as $folder){
+    //    foreach($user->folders as $folder){
+    //        echo $user->name." has ".$folder->name."<br>";
+    //    }
+    echo $folder->user->name;
+       echo "<hr>";
+   } 
+});
 
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+

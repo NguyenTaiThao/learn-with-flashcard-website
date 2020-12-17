@@ -23,6 +23,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    protected $table = 'users';
+
     protected $fillable = [
         'name',
         'email',
@@ -58,4 +61,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function folders()
+    {
+        return $this->hasMany('App\Models\Folder', 'user_id', 'id');
+    }
+
+    public function bills()
+    {
+        return $this->hasMany('App\Models\Bill', 'user_id', 'id');
+    }
 }

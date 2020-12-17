@@ -18,8 +18,8 @@ class CreateBillDetailTable extends Migration
             $table->integer('quantum')->unsigned();
             $table->double('price');
 
-            $table->unsignedBigInteger('card_id');
-            $table->foreign('card_id')->references('id')->on('cards')->onDelete('cascade');
+            $table->unsignedBigInteger('set_id');
+            $table->foreign('set_id')->references('id')->on('sets')->onDelete('cascade');
             $table->unsignedBigInteger('bill_id');
             $table->foreign('bill_id')->references('id')->on('bills')->onDelete('cascade');
 
