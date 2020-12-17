@@ -38,7 +38,7 @@ body {
 
 .content-wrapper {
     width: 100%;
-    height: 100%;
+    height: 150%;
     background: #f6f7fb;
 }
 
@@ -51,11 +51,26 @@ body {
 }
 
 .float-div {
-    background: #fff;
-    -webkit-box-shadow: -1px 0px 30px -10px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: -1px 0px 30px -10px rgba(0, 0, 0, 0.75);
-    box-shadow: -1px 0px 30px -10px rgba(0, 0, 0, 0.75);
-    margin-left: 10px;
-    margin-right: 10px;
+    background: rgb(255, 255, 255);
+    -webkit-box-shadow: -1px 0px 30px -10px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: -1px 0px 30px -10px rgba(0, 0, 0, 0.25);
+    box-shadow: -1px 0px 30px -10px rgba(0, 0, 0, 0.25);
     border-radius: 7px;
+}
+
+.typical-btn {
+    background-color: #3CCFCF !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.typical-btn:hover {
+    background-color: #3ccfcfc2 !important;
+}
+
+.folder-card{
+    width: 95% !important;
 }
