@@ -12,11 +12,11 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
+    //use HasApiTokens;
     use HasFactory;
-    use HasProfilePhoto;
+    //use HasProfilePhoto;
     use Notifiable;
-    use TwoFactorAuthenticatable;
+    //use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -40,28 +40,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
+        // 'two_factor_recovery_codes',
+        // 'two_factor_secret',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    public function isTokenExist($token)
+    {
+        return User::where('remember_token', $token)->first();
+    }
 
+    // Relationship
     public function folders()
     {
         return $this->hasMany('App\Models\Folder', 'user_id', 'id');

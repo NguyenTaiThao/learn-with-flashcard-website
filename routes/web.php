@@ -24,5 +24,9 @@ Route::get('/', function () {
 
 Route::get('/test', [FolderController::class, 'test']);
 
-
+Route::group(['prefix' => 'folder'], function () {
+    Route::post('/add', [FolderController::class, 'addFolder']);
+    Route::post('/edit/{id}', [FolderController::class, 'editFolder']);
+    Route::post('/delete/{id}', [FolderController::class, 'deleteFolder']);
+});
 
