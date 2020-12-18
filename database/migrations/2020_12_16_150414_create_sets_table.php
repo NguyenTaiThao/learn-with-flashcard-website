@@ -16,7 +16,7 @@ class CreateSetsTable extends Migration
         Schema::create('sets', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->double('price');
+            $table->unsignedDouble('price')->default(0);
             $table->unsignedBigInteger('folder_id');
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
             $table->timestamps();
