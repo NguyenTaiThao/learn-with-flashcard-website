@@ -1,7 +1,7 @@
 div.header-wrapper {
 	height: 80px;
 	background-color: rgb(66, 87, 178);
-	position: fixed;
+	/* position: fixed; */
 }
 
 .logo a {

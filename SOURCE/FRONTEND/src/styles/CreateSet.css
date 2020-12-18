@@ -1,0 +1,39 @@
+.create-set-header .title {
+    font-size: 22px;
+}
+
+.create-set-header .create-btn {
+    width: 80px;
+    height: 45px;
+}
+
+.new-div {
+    background: #fff;
+    border-radius: 5px;
+}
+
+.card-order {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.new-div-icon {
+    font-size: 18px;
+    color: #333;
+}
+
+.new-div-icon:hover {
+    color: rgba(255, 0, 0, 0.637);
+}
+
+.new-card-btn {
+    border-bottom: 4px solid #3CCFCF;
+    color: #333;
+    font-size: 20px;
+}
+
+.new-card-btn:hover {
+    border-bottom: 5px solid orange;
+    color: orange;
+}

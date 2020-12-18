@@ -17,8 +17,8 @@ import PrivateRoute from './PrivateRoute'
 import HomeScreen from '@screens/Home';
 import ProgressScreen from '@screens/Progress';
 import UserHomeScreen from '@screens/UserHome'
-import { Home } from '@material-ui/icons';
-
+import CreateSetScreen from '@screens/CreateSet'
+import LearnScreen from "@screens/Learn"
 export class AppNavigator extends Component {
 
     render() {
@@ -46,6 +46,8 @@ class MainNavigator extends Component {
                     <Switch>
                         <PrivateRoute path={ROUTER.USER_HOME} exact Component={UserHomeScreen} />
                         <PrivateRoute path={ROUTER.PROGRESS} exact Component={ProgressScreen} />
+                        <PrivateRoute path={ROUTER.CREATE_SET} exact Component={CreateSetScreen} />
+                        <PrivateRoute path={ROUTER.CREATE_SET} exact Component={LearnScreen} />
                     </Switch>
                 } />
             </>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import '@styles/NavBar.css'
-import { Row } from "react-bootstrap"
+import {ROUTER} from "@constants/Constant"
 import Divider from '@material-ui/core/Divider';
 import { Menu } from 'antd';
 import {
@@ -13,10 +13,12 @@ import {
     UsergroupAddOutlined,
 } from '@ant-design/icons';
 
+import { withRouter } from "react-router-dom"
+
 const { SubMenu } = Menu;
 const drawerWidth = 256;
 
-export default class NavBar extends Component {
+class NavBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -51,7 +53,7 @@ export default class NavBar extends Component {
                 defaultOpenKeys={['sub1']}
                 mode="inline"
                 inlineCollapsed={this.state.collapsed}
-                className="h-100"
+                className=""
                 style={{maxWidth:"256px"}}
             >
                 <div
@@ -65,15 +67,27 @@ export default class NavBar extends Component {
 
                 <Divider />
 
-                <Menu.Item key="1" icon={<HomeOutlined style={{fontSize:"20px"}}/>}>
+                <Menu.Item 
+                    key="1" 
+                    icon={<HomeOutlined style={{fontSize:"20px"}}/>}
+                    onClick={() => this.props.history.push(ROUTER.USER_HOME)}
+                >
                     <b>Trang chủ</b>
                 </Menu.Item>
 
-                <Menu.Item key="2" icon={<BarChartOutlined style={{fontSize:"20px"}}/>}>
+                <Menu.Item 
+                    key="2" 
+                    icon={<BarChartOutlined style={{fontSize:"20px"}}/>}
+                    onClick={() => this.props.history.push(ROUTER.PROGRESS)}
+                >
                     <b>Tiến độ</b>
                 </Menu.Item>
 
-                <Menu.Item key="3" icon={<AppstoreOutlined style={{fontSize:"20px"}}/>}>
+                <Menu.Item 
+                    key="3" 
+                    icon={<AppstoreOutlined style={{fontSize:"20px"}}/>}
+                    onClick={() => this.props.history.push(ROUTER.FOLDER)}
+                >
                     <b>Học phần</b>
                 </Menu.Item>
 
@@ -83,6 +97,7 @@ export default class NavBar extends Component {
                     key="sub1"
                     icon={<FolderOutlined style={{fontSize:"20px"}}/>}
                     title={<b>Thư mục</b>}
+                    onClick={() => this.props.history.push(ROUTER.FOLDER)}
                 >
                     <Menu.Item key="5">Thự mục 1</Menu.Item>
                     <Menu.Item key="6">Thư mục 2</Menu.Item>
@@ -110,3 +125,5 @@ export default class NavBar extends Component {
         // </div>
     )
 }
+
+export default  withRouter(NavBar)

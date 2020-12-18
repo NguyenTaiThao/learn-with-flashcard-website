@@ -38,16 +38,17 @@ body {
 
 .content-wrapper {
     width: 100%;
-    height: 150%;
+    height:100%;
     background: #f6f7fb;
+    overflow-y: scroll;
 }
 
 .wrapper {
     width: 100% !important;
-    height: 100% !important;
-    position: fixed;
+    height: 88%;
+    position: absolute;
     top: 80px;
-    overflow-y: auto;
+    overflow: hidden !important;
 }
 
 .float-div {
@@ -71,6 +72,20 @@ body {
     background-color: #3ccfcfc2 !important;
 }
 
+.typical-text{
+    color:#3CCFCF !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+}
+
+.typical-text:hover{
+    color:orange !important;
+}
+
 .folder-card{
     width: 95% !important;
+}
+
+.cursor{
+    cursor: pointer;
 }
