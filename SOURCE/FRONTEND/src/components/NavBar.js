@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import '@styles/NavBar.css'
-import {ROUTER} from "@constants/Constant"
+import { ROUTER } from "@constants/Constant"
 import Divider from '@material-ui/core/Divider';
 import { Menu } from 'antd';
 import {
@@ -47,83 +47,100 @@ class NavBar extends Component {
     }
 
     listMenu = () => (
-            <Menu
-                onClick={this.handleClick}
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
-                mode="inline"
-                inlineCollapsed={this.state.collapsed}
-                className=""
-                style={{maxWidth:"256px"}}
+        <Menu
+            onClick={this.handleClick}
+            defaultSelectedKeys={['1']}
+            defaultOpenKeys={['sub1']}
+            mode="inline"
+            inlineCollapsed={this.state.collapsed}
+            className=""
+            style={{ maxWidth: "256px" }}
+        >
+            <div
+                onClick={this.toggleCollapsed}
+                className={`collapse-toggle text-right pr-4 py-3`}
             >
-                <div
-                    onClick={this.toggleCollapsed}
-                    className={`collapse-toggle text-right pr-4 py-3`}
-                >
-                    {React.createElement(this.state.collapsed ?
-                        MenuUnfoldOutlined : MenuFoldOutlined
-                    )}
-                </div>
+                {React.createElement(this.state.collapsed ?
+                    MenuUnfoldOutlined : MenuFoldOutlined
+                )}
+            </div>
 
-                <Divider />
+            <Divider />
 
-                <Menu.Item 
-                    key="1" 
-                    icon={<HomeOutlined style={{fontSize:"20px"}}/>}
-                    onClick={() => this.props.history.push(ROUTER.USER_HOME)}
-                >
-                    <b>Trang chủ</b>
-                </Menu.Item>
+            <Menu.Item
+                key="1"
+                icon={<HomeOutlined style={{ fontSize: "20px" }} />}
+                onClick={() => this.props.history.push(ROUTER.USER_HOME)}
+            >
+                <b>Trang chủ</b>
+            </Menu.Item>
 
-                <Menu.Item 
-                    key="2" 
-                    icon={<BarChartOutlined style={{fontSize:"20px"}}/>}
-                    onClick={() => this.props.history.push(ROUTER.PROGRESS)}
-                >
-                    <b>Tiến độ</b>
-                </Menu.Item>
+            <Menu.Item
+                key="2"
+                icon={<BarChartOutlined style={{ fontSize: "20px" }} />}
+                onClick={() => this.props.history.push(ROUTER.PROGRESS)}
+            >
+                <b>Tiến độ</b>
+            </Menu.Item>
 
-                <Menu.Item 
-                    key="3" 
-                    icon={<AppstoreOutlined style={{fontSize:"20px"}}/>}
-                    onClick={() => this.props.history.push(ROUTER.SET)}
-                >
-                    <b>Học phần</b>
-                </Menu.Item>
+            <Menu.Item
+                key="3"
+                icon={<AppstoreOutlined style={{ fontSize: "20px" }} />}
+                onClick={() => this.props.history.push(ROUTER.SET)}
+            >
+                <b>Học phần</b>
+            </Menu.Item>
 
-                <Divider />
+            <Divider />
 
-                <SubMenu
-                    key="sub1"
-                    icon={<FolderOutlined style={{fontSize:"20px"}}/>}
-                    title={<b>Thư mục</b>}
+            <SubMenu
+                key="sub1"
+                icon={<FolderOutlined style={{ fontSize: "20px" }} />}
+                title={<b>Thư mục</b>}
+            >
+                <Menu.Item
+                    key="5"
                     onClick={() => this.props.history.push(ROUTER.FOLDER)}
                 >
-                    <Menu.Item key="5">Tất cả</Menu.Item>
-                    <Menu.Item key="6">Thư mục 1</Menu.Item>
-                    <Menu.Item key="7">Thư mục 2</Menu.Item>
-                    <Menu.Item key="8">
-                        <span className="text-info">Thêm thư mục</span>
-                    </Menu.Item>
-                </SubMenu>
-
-                <SubMenu
-                    key="sub2"
-                    icon={<UsergroupAddOutlined style={{fontSize:"20px"}}/>}
-                    title={<b>Lớp học</b>}
+                    Tất cả
+                </Menu.Item>
+                <Menu.Item
+                    key="6"
+                    onClick={() => this.props.history.push(ROUTER.FOLDER_CONTENT)}
                 >
-                    <Menu.Item key="9">Lớp 10</Menu.Item>
-                    <Menu.Item key="10">Lớp 11</Menu.Item>
-                    <Menu.Item key="11">
-                        <span className="text-info">Tham gia hoặc tạo lớp</span>
-                    </Menu.Item>
-                </SubMenu>
+                    Thư mục 1
+                </Menu.Item>
+                <Menu.Item
+                    key="7"
+                    onClick={() => this.props.history.push(ROUTER.FOLDER_CONTENT)}
+                >
+                    Thư mục 2
+                </Menu.Item>
+                <Menu.Item
+                    key="8"
+                    onClick={() => this.props.history.push(ROUTER.FOLDER_CREATE)}
+                >
+                    <span className="text-info">Thêm thư mục</span>
+                </Menu.Item>
+            </SubMenu>
 
-                <Divider />
-            </Menu>
+            <SubMenu
+                key="sub2"
+                icon={<UsergroupAddOutlined style={{ fontSize: "20px" }} />}
+                title={<b>Lớp học</b>}
+            >
+                <Menu.Item key="9">Lớp 10</Menu.Item>
+                <Menu.Item key="10">Lớp 11</Menu.Item>
+                <Menu.Item key="11">
+                    <span className="text-info">Tham gia hoặc tạo lớp</span>
+                </Menu.Item>
+            </SubMenu>
+
+            <Divider />
+        </Menu>
 
         // </div>
     )
 }
 
-export default  withRouter(NavBar)
+export default withRouter(NavBar)

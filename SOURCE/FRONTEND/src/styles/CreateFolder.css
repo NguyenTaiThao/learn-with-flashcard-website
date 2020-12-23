@@ -1,0 +1,47 @@
+.float-div .create-folder-title {
+    font-size: 30px;
+}
+
+.folder-content .set-count {
+    color: rgba(0, 0, 0, 0.849);
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.folder-content .vertical-divider {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.folder-content .made-by {
+    font-size: 17px;
+    color: rgba(0, 0, 0, 0.308);
+    font-weight: 500;
+}
+
+.folder-content .folder-icon {
+    font-size: 60px;
+    font-weight: 160;
+    color: rgba(0, 0, 0, 0.308);
+    margin-right: 20px;
+}
+
+.folder-content .title {
+    font-size: 30px;
+    font-weight: 650;
+}
+
+.folder-content .discription {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.708);
+}
+
+.folder-content .function-btn {
+    background-color: #3CCFCF;
+    border: none;
+    margin-right: 10px;
+}
+
+.folder-content .function-btn:last-child{
+    margin-right: 0px;  
+}
