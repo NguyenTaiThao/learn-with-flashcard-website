@@ -3,6 +3,7 @@
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\SetController;
+use App\Http\Controllers\UserController;
 use App\Models\Folder;
 use App\Models\User;
 use Illuminate\Database\Schema\Grammars\RenameColumn;
@@ -23,6 +24,10 @@ use Illuminate\Support\Facades\Schema;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+Route::get('/logout', [UserController::class, 'logout']);
 
 Route::get('/test', [FolderController::class, 'test']);
 
