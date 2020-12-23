@@ -75,4 +75,32 @@ class UserController extends Controller
             ];
         }
     }
+
+    public function logout(Request $request)
+    {
+        $token = $request->header();
+        $user_model = new User;
+        $user = $user_model->isTokenExist($token);
+        if ($user == null) {
+            return [
+                'status' => 0,
+                'code' => 403,
+                'msg' => 'No token found'
+            ];
+        }else{
+            //logout user you want to, by id
+            $userToLogout = User::find($request->user_id);
+            Auth::setUser($userToLogout);
+            $userToLogout->remember_token = "";
+            $userToLogout->save();
+            Auth::logout();
+            //set again current user
+            //Auth::setUser($user);
+            return [
+                'status' => 1,
+                'code' => 1,
+                'msg' => 'Logout successfully'
+            ];
+        }
+    }
 }
