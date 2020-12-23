@@ -1,0 +1,28 @@
+.learn .card-front {
+    font-size: 30px;
+}
+
+.learn .card-back {
+    font-size: 25px;
+}
+
+.learn .back-btn {
+    font-size: 18px;
+}
+
+.learn .back-icon {
+    font-size: 18px;
+}
+
+.learn .back-btn:hover {
+    color: orange;
+}
+
+.learn .title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.learn .title-icon {
+    color: rgb(72 92 180);
+}

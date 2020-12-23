@@ -22,7 +22,7 @@ class NavBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            collapsed: false
+            collapsed: false,
         }
     }
 
@@ -53,7 +53,6 @@ class NavBar extends Component {
             defaultOpenKeys={['sub1']}
             mode="inline"
             inlineCollapsed={this.state.collapsed}
-            className=""
             style={{ maxWidth: "256px" }}
         >
             <div
@@ -141,6 +140,10 @@ class NavBar extends Component {
 
         // </div>
     )
+
+    activeMenu = () => {
+        var pathName = "/" + window.location.pathname.split("/")[1];
+    }
 }
 
 export default withRouter(NavBar)
