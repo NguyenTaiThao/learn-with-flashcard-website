@@ -16,7 +16,7 @@ import { Link, withRouter } from "react-router-dom"
 import "animate.css"
 import Cookie from 'js-cookie'
 import { IconButton, Popover, List, ListItem, Divider } from '@material-ui/core';
-import {ROUTER} from "@constants/Constant"
+import { ROUTER } from "@constants/Constant"
 
 class Header extends Component {
     constructor(props) {
@@ -86,7 +86,7 @@ class Header extends Component {
                         </Col>
                         <span className="text-black-50">|</span>
                         <Col className="util-bar">
-                            <Link onClick={()=>this.props.history.push(ROUTER.CREATE_SET)}>
+                            <Link onClick={() => this.props.history.push(ROUTER.CREATE_SET)}>
                                 <FolderAddOutlined className="mr-1" />
                                 <span className="font-weight-bold">Tạo mới</span>
                             </Link>
@@ -150,7 +150,11 @@ class Header extends Component {
                                         <b>Nguyen Tai Thao</b>
                                     </Row>
                                     <Row>
-                                        <Link>Xem hồ sơ</Link>
+                                        <Link
+                                            onClick={() => this.props.history.push(ROUTER.SET)}
+                                        >
+                                            Xem hồ sơ
+                                        </Link>
                                     </Row>
                                 </Col>
                             </Row>
