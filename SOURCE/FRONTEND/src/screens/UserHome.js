@@ -71,7 +71,7 @@ export default class UserHome extends Component {
                                 <b>Gần đây</b>
                             </Col>
                             <Col className="text-right px-0">
-                                <b>Xem tất cả <i class="fas fa-chevron-right"></i></b>
+                                <b className="typical-text">Xem tất cả <i class="fas fa-chevron-right"></i></b>
                             </Col>
                         </Row>
 

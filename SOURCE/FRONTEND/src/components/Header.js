@@ -115,7 +115,7 @@ class Header extends Component {
                             className="avatar-button"
                         >
                             <Avatar
-                                style={{ "background": "orange" }}
+                                style={{ "background": "red" }}
                                 onClick={(e) => this.handlePopover(e)}
                                 size="large"
                             >
@@ -139,7 +139,7 @@ class Header extends Component {
                             <Row className="py-4">
                                 <Col xs={3}>
                                     <Avatar
-                                        style={{ "background": "orange" }}
+                                        style={{ "background": "red" }}
                                         size={50}
                                     >
                                         T

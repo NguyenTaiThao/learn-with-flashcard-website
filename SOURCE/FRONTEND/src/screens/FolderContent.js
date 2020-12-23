@@ -1,0 +1,18 @@
+import React, { Component } from 'react';
+
+class FolderContent extends Component {
+
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return (
+            <>
+                <h1> FolderContent Screen </h1>
+            </>
+        )
+    }
+}
+
+export default FolderContent;

@@ -86,7 +86,7 @@ class NavBar extends Component {
                 <Menu.Item 
                     key="3" 
                     icon={<AppstoreOutlined style={{fontSize:"20px"}}/>}
-                    onClick={() => this.props.history.push(ROUTER.FOLDER)}
+                    onClick={() => this.props.history.push(ROUTER.SET)}
                 >
                     <b>Học phần</b>
                 </Menu.Item>
@@ -99,9 +99,9 @@ class NavBar extends Component {
                     title={<b>Thư mục</b>}
                     onClick={() => this.props.history.push(ROUTER.FOLDER)}
                 >
-                    <Menu.Item key="5">Thự mục 1</Menu.Item>
-                    <Menu.Item key="6">Thư mục 2</Menu.Item>
-                    <Menu.Item key="7">Thư mục 4</Menu.Item>
+                    <Menu.Item key="5">Tất cả</Menu.Item>
+                    <Menu.Item key="6">Thư mục 1</Menu.Item>
+                    <Menu.Item key="7">Thư mục 2</Menu.Item>
                     <Menu.Item key="8">
                         <span className="text-info">Thêm thư mục</span>
                     </Menu.Item>
