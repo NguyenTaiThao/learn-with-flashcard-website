@@ -54,5 +54,7 @@ Route::group(['prefix' => 'card'], function () {
 });
 
 Route::get('/recentSets', [UserController::class, 'recentSets']);
+Route::post('/createOrUpdateSet', [SetController::class, 'createOrUpdateSet']);
+Route::post('/setToFolder', [SetController::class, 'setToFolder']);
 
 

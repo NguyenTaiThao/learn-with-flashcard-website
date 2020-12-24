@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    protected $user_model;
+    protected $set_model;
+
+    public function __construct(User $user, Set $set)
+    {
+        $this->user_model = $user;
+        $this->set_model = $set;
+    }
+
+
     public function register(Request $request)
     {
         $request->validate(
@@ -84,8 +95,7 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         $token = $request->header("token");
-        $user_model = new User;
-        $user = $user_model->isTokenExist($token);
+        $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
             return [
                 'status' => 0,
@@ -94,7 +104,7 @@ class UserController extends Controller
             ];
         } else {
             //logout user you want to, by id
-            $userToLogout = User::find($request->user_id);
+            $userToLogout = User::find($user->id);
             Auth::setUser($userToLogout);
             $userToLogout->remember_token = "";
             $userToLogout->save();
@@ -113,8 +123,7 @@ class UserController extends Controller
     public function recentSets(Request $request)
     {
         $token = $request->header('token');
-        $user_model = new User;
-        $user = $user_model->isTokenExist($token);
+        $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
             return [
                 'status' => 0,
@@ -122,22 +131,16 @@ class UserController extends Controller
                 'msg' => 'No token found'
             ];
         } else {
-            $data = $user->folders()->with(['sets' => function ($query) {
-                $query->orderBy('updated_at', 'DESC')->limit(5);
-            }])->get();
+            $data = $this->set_model->recentSets($user->id);
             $sets = [];
             for ($i=0; $i<count($data); $i++) {
-                $edit_sets = $data[$i]->sets->toArray();
-                for ($i=0; $i<count($edit_sets); $i++) {
-                    $edit_sets[$i]['completed'] = 0.14;
-                }
-                $sets = array_merge($sets, $edit_sets);
+                $data[$i]['completed'] = 0.15;
             }
             return [
                 'status' => 1,
                 'code' => 1,
                 'msg' => 'Get User\'s Info Successfully',
-                'data' => $sets
+                'data' => $data
             ];
         }
     }
@@ -145,9 +148,8 @@ class UserController extends Controller
     public function userInfo(Request $request)
     {
         $token = $request->header("token");
-        $user_model = new User;
         try{
-            $user = $user_model->isTokenExist($token);
+            $user = $this->user_model->isTokenExist($token);
             if ($user == null) {
                 return [
                     'status' => 0,

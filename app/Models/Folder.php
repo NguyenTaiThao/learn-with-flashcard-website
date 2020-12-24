@@ -19,4 +19,9 @@ class Folder extends Model
     {
         return $this->hasMany('App\Models\Set', 'folder_id', 'id');
     }
+
+    public function minFolderID($user_id)
+    {
+        return Folder::where('user_id', $user_id)->min('id');
+    }
 }
