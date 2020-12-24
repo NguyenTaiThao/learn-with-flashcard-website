@@ -78,7 +78,7 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        $token = $request->header();
+        $token = $request->header('token');
         $user_model = new User;
         $user = $user_model->isTokenExist($token);
         if ($user == null) {
@@ -102,5 +102,39 @@ class UserController extends Controller
                 'msg' => 'Logout successfully'
             ];
         }
+    }
+
+
+    public function recentSets(Request $request)
+    {
+        $token = $request->header('token');
+        $user_model = new User;
+        $user = $user_model->isTokenExist($token);
+        if ($user == null) {
+            return [
+                'status' => 0,
+                'code' => 403,
+                'msg' => 'No token found'
+            ];
+        }else{
+            $data = $user->folders()->with(['sets' => function ($query) {
+                $query->orderBy('updated_at', 'DESC')->limit(5);
+            }])->get();
+            $sets = [];
+            for($i=0; $i<count($data); $i++){
+                $edit_sets = $data[$i]->sets->toArray();
+                for ($i=0; $i<count($edit_sets); $i++) {
+                    $edit_sets[$i]['completed'] = 0.14;
+                }
+                $sets = array_merge($sets, $edit_sets);
+            }
+            return [
+                'status' => 1,
+                'code' => 1,
+                'msg' => 'Get User\'s Info Successfully',
+                'data' => $sets
+            ];
+        }
+
     }
 }

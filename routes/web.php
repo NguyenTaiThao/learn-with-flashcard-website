@@ -49,4 +49,6 @@ Route::group(['prefix' => 'card'], function () {
     Route::post('/delete/{id}', [CardController::class, 'deleteCard']);
 });
 
+Route::get('/recentSets', [UserController::class, 'recentSets']);
+
 
