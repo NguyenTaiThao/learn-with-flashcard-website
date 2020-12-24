@@ -31,6 +31,10 @@ Route::post('/logout', [UserController::class, 'logout']);
 
 Route::get('/test', [FolderController::class, 'test']);
 
+Route::group(['prefix' => 'user'], function(){
+    Route::get('/info', [UserController::class, 'userInfo']);
+});
+
 Route::group(['prefix' => 'folder'], function () {
     Route::post('/add', [FolderController::class, 'addFolder']);
     Route::post('/edit/{id}', [FolderController::class, 'editFolder']);
