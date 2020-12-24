@@ -134,7 +134,9 @@ class SetController extends Controller
             return $this->tokenNotExist();
         }else{
             $set = $this->set_model::Find($request->set_id);
-            if ($set->folder_id == $this->folder_model->minFolderID($user->id)) { //đây là trường hợp set chưa thuộc folder nào
+            if ($set->folder_id == $this->folder_model->minFolderID($user->id)
+                || $request->folder_id == $this->folder_model->minFolderID($user->id))
+            { //đây là trường hợp set chưa thuộc folder nào hoặc folder muốn chuyển tới là "Không thuộc folder nào"
                 $set->folder_id = $request->folder_id; // chỉ cần chuyển ID
                 $set->save();
             }else // trường hợp đã thuộc 1 nhóm rồi
@@ -146,9 +148,17 @@ class SetController extends Controller
                 $newSet_id = $new_set->id;
                 //cần clone toàn bộ card có trong set luôn
                 foreach($set->cards as $key => $value){
-                    
+                    $new_card = $value->replicate();
+                    $new_card->set_id = $newSet_id;
+                    $new_card->save();
                 }
             }
+            return [
+                'status' => 1,
+                'code' => 1,
+                'msg' => 'Ok bro!',
+                'data' => $set
+            ];
         }
     }
 }
