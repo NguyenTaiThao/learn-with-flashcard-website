@@ -18,11 +18,13 @@ class UserController extends Controller
 
     protected $user_model;
     protected $set_model;
+    protected $folder_model;
 
-    public function __construct(User $user, Set $set)
+    public function __construct(User $user, Set $set, Folder $folder)
     {
         $this->user_model = $user;
         $this->set_model = $set;
+        $this->folder_model = $set;
     }
 
 
@@ -58,18 +60,19 @@ class UserController extends Controller
             $user->password = $encrypted_password;
             $user->name = $request->name;
             $user->save();
+            $user_id = $user->id;
+            $folder = new Folder;
+            $folder->name = "Học phần của bạn";
+            $folder->description = "Các học phần riêng biệt, không nằm trong thư mục nhất định";
+            $folder->user_id = $user_id;
+            $folder->save();
             return [
                 'status' => 1,
                 'code' => 1,
                 'msg' => 'Register successfully'
             ];
         }catch(Exception $e){
-            $returnData = [
-                'status' => 0,
-                'msg' => "Something went wrong",
-                "err" => $e
-            ];
-            return response()->json($returnData, 500);
+            return $this->internalServerError($e);
         }
     }
 
@@ -112,12 +115,7 @@ class UserController extends Controller
                 return response()->json($returnData, 400);
             }
         }catch(Exception $e){
-            $returnData = [
-                'status' => 0,
-                'msg' => "Something went wrong",
-                "err" => $e
-            ];
-            return response()->json($returnData, 500);
+            return $this->internalServerError($e);
         }
     }
 
@@ -128,25 +126,25 @@ class UserController extends Controller
         $token = $request->header("token");
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
-            return [
-                'status' => 0,
-                'code' => 403,
-                'msg' => 'No token found'
-            ];
-        } else {
-            //logout user you want to, by id
-            $userToLogout = User::find($user->id);
-            Auth::setUser($userToLogout);
-            $userToLogout->remember_token = "";
-            $userToLogout->save();
-            Auth::logout();
-            //set again current user
-            //Auth::setUser($user);
-            return [
-                'status' => 1,
-                'code' => 1,
-                'msg' => 'Logout successfully'
-            ];
+            return $this->tokenNotExist();
+        }else{
+            try {
+                //logout user you want to, by id
+                $userToLogout = User::find($user->id);
+                Auth::setUser($userToLogout);
+                $userToLogout->remember_token = "";
+                $userToLogout->save();
+                Auth::logout();
+                //set again current user
+                //Auth::setUser($user);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Logout successfully'
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
         }
     }
 
@@ -196,12 +194,7 @@ class UserController extends Controller
                 ];
             }
         }catch(Exception $e){
-            return[
-                'status' => 1,
-                'code' => 500,
-                'msg' => "",
-                "err" => $e
-            ];
+            return $this->internalServerError($e);
         }
     }
 }
