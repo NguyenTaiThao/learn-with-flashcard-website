@@ -125,7 +125,8 @@ class UserController extends Controller
                 return [
                     'status' => 1,
                     'code' => 200,
-                    'msg' => $user
+                    'msg' => "Thành công",
+                    'data' => $user
                 ];
             }
         }catch(Exception $e){
