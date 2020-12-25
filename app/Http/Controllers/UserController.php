@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Set;
 use App\Models\Card;
 use Exception;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -151,26 +152,26 @@ class UserController extends Controller
 
     public function recentSets(Request $request)
     {
-        $token = $request->header('token');
+        $token = $request->header("token");
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
-            return [
-                'status' => 0,
-                'code' => 403,
-                'msg' => 'No token found'
-            ];
-        } else {
-            $data = $this->set_model->recentSets($user->id);
-            $sets = [];
-            for ($i=0; $i<count($data); $i++) {
-                $data[$i]['completed'] = 0.15;
+            return $this->tokenNotExist();
+        }else {
+            try {
+                $data = $this->set_model->recentSets($user->id);
+                $sets = [];
+                for ($i=0; $i<count($data); $i++) {
+                    $data[$i]['completed'] = 0.15;
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Get User\'s Info Successfully',
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
             }
-            return [
-                'status' => 1,
-                'code' => 1,
-                'msg' => 'Get User\'s Info Successfully',
-                'data' => $data
-            ];
         }
     }
 
@@ -180,18 +181,14 @@ class UserController extends Controller
         try{
             $user = $this->user_model->isTokenExist($token);
             if ($user == null) {
-                return [
-                    'status' => 0,
-                    'code' => 403,
-                    'msg' => 'No token found'
-                ];
+                return $this->tokenNotExist();
             } else {
-                return [
+                $returnData = [
                     'status' => 1,
-                    'code' => 200,
                     'msg' => "Thành công",
                     'data' => $user
                 ];
+                return response()->json($returnData, 200);
             }
         }catch(Exception $e){
             return $this->internalServerError($e);

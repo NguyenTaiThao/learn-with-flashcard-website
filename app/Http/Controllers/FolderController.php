@@ -7,6 +7,8 @@ use App\Models\Set;
 use Illuminate\Http\Request;
 use App\Models\Folder;
 use App\Models\User;
+use Exception;
+use Symfony\Component\CssSelector\Exception\InternalErrorException;
 
 class FolderController extends Controller
 {
@@ -43,16 +45,20 @@ class FolderController extends Controller
         if ($user == null) {
             return $this->tokenNotExist();
         }else{
-            $folder = new Folder;
-            $folder->name = $request->name;
-            $folder->description = $request->description;
-            $folder->user_id = $user->id;
-            $folder->save();
-            return [
-                'status' => 1,
-                'code' => 1,
-                'msg' => 'Create folder successfully'
-            ];
+            try {
+                $folder = new Folder;
+                $folder->name = $request->name;
+                $folder->description = $request->description;
+                $folder->user_id = $user->id;
+                $folder->save();
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Create folder successfully'
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->InternalErrorException($e);
+            }
         }
     }
 
@@ -113,7 +119,7 @@ class FolderController extends Controller
         if ($user == null) {
             return $this->tokenNotExist();
         }else{
-            
+
         }
     }
 }
