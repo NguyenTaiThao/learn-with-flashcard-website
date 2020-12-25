@@ -17,7 +17,14 @@ import "animate.css"
 import Cookie from 'js-cookie'
 import { IconButton, Popover, List, ListItem, Divider } from '@material-ui/core';
 import { ROUTER } from "@constants/Constant"
+import { requestRegister, requestLogin } from "@constants/Api"
+import { connect } from "react-redux";
+import { getUserInfo } from "@src/redux/actions";
+import { notification } from "antd"
+import reactotron from "reactotron-react-js"
+import NotifyContext from "@context/NotifyContext"
 
+import _ from "lodash"
 class Header extends Component {
     constructor(props) {
         super(props)
@@ -27,12 +34,58 @@ class Header extends Component {
             showSearchBox: false,
             popover: false,
             anchorEl: null,
+            loginLoading: false,
+            registerLoading: false,
+            searchBox: "",
+            registerForm: {
+                email: "",
+                password: "",
+                repassword: "",
+                username: ""
+            },
+
+            loginForm: {
+                email: "",
+                password: ""
+            }
+        }
+    }
+
+    static contextType = NotifyContext
+
+    componentDidMount() {
+        if (Cookie.get("SESSION_ID")) {
+            this.props.getUserInfo()
         }
     }
 
     handleShow(modal, visible) {
         this.setState({
             [modal]: visible
+        })
+    }
+
+    onChangeSearch = (value) => {
+        this.setState({
+            onChangeSearch: value
+        })
+    }
+
+    onChangeRegister = (field, value) => {
+        this.setState({
+            registerForm: {
+                ...this.state.registerForm,
+                [field]: value
+            }
+        })
+    }
+
+    onChangeLogin = (field, value) => {
+        this.setState({
+            loginForm: {
+                ...this.state.loginForm,
+                [field]: value
+            }
         })
     }
 
@@ -108,6 +161,8 @@ class Header extends Component {
 
     renderAuthenButton() {
         if (Cookie.get("SESSION_ID")) {
+            const info = this.props.userState.data
+
             return (
                 <Col md={7} className="button">
                     <Row className="align-items-center justify-content-center justify-content-md-end">
@@ -119,7 +174,7 @@ class Header extends Component {
                                 onClick={(e) => this.handlePopover(e)}
                                 size="large"
                             >
-                                T
+                                <span className="text-uppercase">{info && info?.name?.charAt(0)}</span>
                             </Avatar>
                         </IconButton>
                         <Popover
@@ -142,12 +197,12 @@ class Header extends Component {
                                         style={{ "background": "red" }}
                                         size={50}
                                     >
-                                        T
+                                        <span className="text-uppercase">{info && info?.name?.charAt(0)}</span>
                                     </Avatar>
                                 </Col>
                                 <Col xs={9}>
                                     <Row>
-                                        <b>Nguyen Tai Thao</b>
+                                        <b>{info && info?.name}</b>
                                     </Row>
                                     <Row>
                                         <Link
@@ -249,6 +304,8 @@ class Header extends Component {
                                 prefix={<SearchOutlined />}
                                 className="search-box"
                                 autoFocus={true}
+                                value={this.state.searchBox}
+                                onChange={(event) => this.onChangeSearch(event.target.value)}
                             />
                         </Col>
                         <CloseCircleOutlined
@@ -265,33 +322,64 @@ class Header extends Component {
         )
     }
 
-    handleLogout = () => {
+    handleLogout = async () => {
         this.setState({
             popover: false,
             anchorEl: null,
         })
         Cookie.remove("SESSION_ID");
         this.props.history.push("/");
+        this.context("success", "Thành công", "Đăng xuất thành công.")
     }
 
-    handleOk = () => {
-        Cookie.set("SESSION_ID", "abc")
-        this.setState({
-            loginModal: false
-        })
-        this.props.history.push("/Home");
+    handleLogin = async () => {
+        this.setState({ loginLoading: true })
+        let { loginForm } = this.state
+        try {
+            let res = await requestLogin({ ...loginForm });
+            Cookie.set("SESSION_ID", res.data.remember_token)
+            this.setState({
+                loginModal: false
+            })
+            this.props.getUserInfo();
+            this.props.history.push(ROUTER.USER_HOME)
+            this.setState({ loginLoading: false })
+        } catch (e) {
+            this.setState({ loginLoading: false })
+            reactotron.log("err login", e, loginForm)
+            this.context("error", "Thất bại", "Đăng nhập thất bại.")
+        }
+
+    }
+
+    handleRegister = async () => {
+        this.setState({ registerLoading: true })
+        let { registerForm } = this.state
+        try {
+            let res = await requestRegister({ ...registerForm, repassword: this.state.registerForm.password });
+            this.setState({
+                registerModal: false
+            })
+            this.setState({ registerLoading: false })
+            this.context("success", "Thành công", "Đăng kí tài khoản thành công.")
+        } catch (e) {
+            this.setState({ registerLoading: false })
+            reactotron.log("err register", e, registerForm)
+            this.context("error", "Thất bại", "Đăng kí tài khoản thất bại.")
+        }
     }
 
     renderLoginModal() {
+        const { loginForm } = this.state
         return (
             <>
                 <Modal
                     title="Đăng nhập"
                     visible={this.state.loginModal}
-                    // confirmLoading={false}
+                    confirmLoading={this.state.loginLoading}
                     okText="Đăng nhập"
                     cancelText="Hủy bỏ"
-                    onOk={this.handleOk}
+                    onOk={this.handleLogin}
                     onCancel={() => this.handleShow("loginModal", false)}
                 >
                     <Button
@@ -336,11 +424,11 @@ class Header extends Component {
                         }}
                     >
                         <Form.Item
-                            name="username"
+                            name="email"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Vui lòng nhập username!',
+                                    message: 'Vui lòng nhập email!',
                                 },
                             ]}
                         >
@@ -348,6 +436,8 @@ class Header extends Component {
                                 prefix={<UserOutlined className="site-form-item-icon" />}
                                 placeholder="Tên người dùng"
                                 className="login-input"
+                                value={loginForm.email}
+                                onChange={(event) => this.onChangeLogin("email", event.target.value)}
                             />
                         </Form.Item>
                         <Form.Item
@@ -364,6 +454,8 @@ class Header extends Component {
                                 type="password"
                                 placeholder="Mật khẩu"
                                 className="login-input"
+                                value={loginForm.password}
+                                onChange={(event) => this.onChangeLogin("password", event.target.value)}
                             />
                         </Form.Item>
                         <Form.Item className="login-option">
@@ -382,14 +474,15 @@ class Header extends Component {
     }
 
     renderRegisterModal() {
+        const { registerForm } = this.state
         return (
             <>
                 <Modal
                     title="Đăng ký"
                     visible={this.state.registerModal}
-                    // confirmLoading={true}
+                    confirmLoading={this.state.registerLoading}
                     okText="Đăng ký"
-                    onOk={this.handleOk}
+                    onOk={this.handleRegister}
                     onCancel={() => this.handleShow("registerModal", false)}
                 >
                     <Row className="mb-4">
@@ -459,6 +552,8 @@ class Header extends Component {
                                 prefix={<UserOutlined className="site-form-item-icon" />}
                                 placeholder="Tên người dùng"
                                 className="login-input"
+                                value={registerForm.username}
+                                onChange={(event) => this.onChangeRegister("username", event.target.value)}
                             />
                         </Form.Item>
 
@@ -475,6 +570,8 @@ class Header extends Component {
                                 prefix={<MailOutlined className="site-form-item-icon" />}
                                 placeholder="Email"
                                 className="login-input"
+                                value={registerForm.email}
+                                onChange={(event) => this.onChangeRegister("email", event.target.value)}
                             />
                         </Form.Item>
 
@@ -492,6 +589,8 @@ class Header extends Component {
                                 type="password"
                                 placeholder="Mật khẩu"
                                 className="login-input"
+                                value={registerForm.password}
+                                onChange={(event) => this.onChangeRegister("password", event.target.value)}
                             />
                         </Form.Item>
                         <Form.Item
@@ -518,5 +617,12 @@ class Header extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    userState: state.userReducer,
+});
 
-export default withRouter(Header)
+const mapDispatchToProps = {
+    getUserInfo,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header))

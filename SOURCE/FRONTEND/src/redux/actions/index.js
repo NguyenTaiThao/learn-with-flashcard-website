@@ -1,8 +1,8 @@
 import {
-  GET_USER, REQUEST_LOGIN,
+  GET_USER
 } from "./type";
 
-export const getUserInfoAction = () => ({
+export const getUserInfo = (payload) => ({
   type: GET_USER,
-  payload: {}
+  payload: payload,
 });

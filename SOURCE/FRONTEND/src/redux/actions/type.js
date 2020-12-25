@@ -1,6 +1,6 @@
-//user
-export const RESET = 'windsoft/reset';
+export const RESET = 'flashcard/reset';
 
-export const GET_USER = 'windsoft/getUser';
-export const GET_USER_SUCCESS = 'windsoft/getUserSucces';
-export const GET_USER_FAIL = 'windsoft/getUserFail';
+//user
+export const GET_USER = 'flashcard/getUser';
+export const GET_USER_SUCCESS = 'flashcard/getUserSucces';
+export const GET_USER_FAIL = 'flashcard/getUserFail';

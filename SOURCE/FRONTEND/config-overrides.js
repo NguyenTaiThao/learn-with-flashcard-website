@@ -11,6 +11,7 @@ module.exports = function (config, env) {
         "@action": resolve("./src/redux/actions"),
         "@src": resolve("./src/"),
         "@assets": resolve("./src/assets/"),
+        "@context": resolve("./src/context/"),
         // etc...
     });
     return config;

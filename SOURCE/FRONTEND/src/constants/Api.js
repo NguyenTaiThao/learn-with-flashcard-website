@@ -1,10 +1,10 @@
 import axios from "axios";
 import Cookie from 'js-cookie';
-const Reactotron = process.env.NODE_ENV !== "production" && require("reactotron-react-js").default; 
+const Reactotron = process.env.NODE_ENV !== "production" && require("reactotron-react-js").default;
 
 function createAxios() {
   var axiosInstant = axios.create();
-  axiosInstant.defaults.baseURL = "http://150.95.114.185:8888/";
+  axiosInstant.defaults.baseURL = "http://127.0.0.1:8000/";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 
@@ -19,23 +19,23 @@ function createAxios() {
 
   axiosInstant.interceptors.response.use(
     response => {
-    Reactotron.apisauce(response);
-  
-    // if (response.data && response.data.code == 403) {
-    //   showMessages(
-    //     R.strings().notif_tab_cus,
-    //     R.strings().require_login_againt,
-    //     () =>
-    //       AsyncStorage.removeItem(ASYNC_STORAGE.TOKEN, () => {
-    //         const store = require("@app/redux/store").default;
-    //         store.dispatch({ type: "reset" });
-    //         NavigationUtil.navigate(SCREEN_ROUTER_AUTH.AUTH_LOADING);
-    //       })
-    //   );
-    // } else if (response.data && response.data.status != 1)
-    //   showMessages(R.strings().notif_tab_cus, response.data.message);
-    return response;
-  });
+      Reactotron.apisauce(response);
+
+      // if (response.data && response.data.code == 403) {
+      //   showMessages(
+      //     R.strings().notif_tab_cus,
+      //     R.strings().require_login_againt,
+      //     () =>
+      //       AsyncStorage.removeItem(ASYNC_STORAGE.TOKEN, () => {
+      //         const store = require("@app/redux/store").default;
+      //         store.dispatch({ type: "reset" });
+      //         NavigationUtil.navigate(SCREEN_ROUTER_AUTH.AUTH_LOADING);
+      //       })
+      //   );
+      // } else if (response.data && response.data.status != 1)
+      //   showMessages(R.strings().notif_tab_cus, response.data.message);
+      return response;
+    });
 
   return axiosInstant;
 }
@@ -56,21 +56,32 @@ function handleResult(api) {
   });
 }
 
-export const requestHomeData = (deviceID = "") => {
+
+// ========================= USER ===============================
+export const requestRegister = (payload) => {
   return handleResult(
-    getAxios.get(`api/Service/GetHomeScreen?deviceID=${deviceID}`)
+    getAxios.post("register", {
+      "email": payload.email || "",
+      "password": payload.password || "",
+      "re_password": payload.repassword || "",
+      "name": payload.username || ""
+    })
   );
 };
 
 export const requestGetUserInfo = () => {
-  return handleResult(getAxios.get(`users/getUserInfo`))
+  return handleResult(getAxios.get(`user/info`))
 }
 
 export const requestLogin = (payload) => {
-  return handleResult(getAxios.post(`users/login`, {
-    USERNAME: payload.USERNAME,
-    PASS: payload.PASS
-  }))
+  return handleResult(
+    getAxios.post(`login`, {
+      email: payload.email || "",
+      password: payload.password || ""
+    }))
 }
 
+export const requestLogout = () => {
+  return handleResult(getAxios.post(`logout`))
+}
 

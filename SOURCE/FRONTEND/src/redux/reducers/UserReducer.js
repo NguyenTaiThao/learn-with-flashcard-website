@@ -16,14 +16,14 @@ export default function(state = initialState, action) {
         ...state,
         isLoading: false,
         error: null,
-        data: action.payload
+        data: action.payload?.response?.data
       };
     }
     case GET_USER_FAIL: {
      
       return {
         ...state,
-        error: action.payload,
+        error: action.payload?.response?.err,
         isLoading: false,
       };
     }
