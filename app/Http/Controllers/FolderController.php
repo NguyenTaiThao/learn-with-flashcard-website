@@ -90,13 +90,16 @@ class FolderController extends Controller
         if ($user == null) {
             return $this->tokenNotExist();
         }else{
-            $folder = Folder::find($request->folder_id);
-            $folder->delete();
-            return [
-                'status' => 1,
-                'code' => 1,
-                'msg' => 'Delete folder successfully'
-            ];
+            try{
+                Folder::find($request->folder_id)->delete();
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Delete folder successfully'
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
         }
     }
 
@@ -107,8 +110,17 @@ class FolderController extends Controller
         if ($user == null) {
             return $this->tokenNotExist();
         }else{
-            $data = $user->folders()->orderBy('updated_at', 'DESC')->with('sets')->get();
-            return $data;
+            try{
+                $data = $user->allFolders();
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Lấy thành công ".count($data)." folder",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
         }
     }
 
@@ -119,7 +131,24 @@ class FolderController extends Controller
         if ($user == null) {
             return $this->tokenNotExist();
         }else{
-
+            try{
+                if($request->id == 0){ //trường hợp tạo mới folder
+                    $folder = new Folder;
+                    $folder->user_id = $user->id;
+                }else{ //trường hợp update folder
+                    $folder = Folder::find($request->id);
+                }
+                $folder->name = $request->name;
+                $folder->description = $request->description;
+                $folder->save();
+                $returnData = [
+                    'status' => 1,
+                    'msg' => $request->id == 0 ? 'Create folder successfully' : 'Update folder successfully'
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
         }
     }
 }

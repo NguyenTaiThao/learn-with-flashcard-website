@@ -52,5 +52,5 @@ Route::get('/recentSets', [UserController::class, 'recentSets']);
 Route::post('/createOrUpdateSet', [SetController::class, 'createOrUpdateSet']);
 Route::post('/setToFolder', [SetController::class, 'setToFolder']);
 Route::get('/listFolders', [FolderController::class, 'listFolders']);
-Route::post('/createOrUpdateFolder', [SetController::class, 'createOrUpdateFolder']);
+Route::post('/createOrUpdateFolder', [FolderController::class, 'createOrUpdateFolder']);
 
