@@ -33,7 +33,7 @@ Route::group(['prefix' => 'user'], function(){
 Route::group(['prefix' => 'folder'], function () {
     Route::post('/add', [FolderController::class, 'addFolder']);
     Route::post('/edit/{id}', [FolderController::class, 'editFolder']);
-    Route::get('/delete/{id}', [FolderController::class, 'deleteFolder']);
+    Route::post('/delete', [FolderController::class, 'deleteFolder']);
 });
 
 Route::group(['prefix' => 'set'], function () {

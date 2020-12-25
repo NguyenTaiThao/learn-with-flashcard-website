@@ -12,19 +12,6 @@ use Symfony\Component\CssSelector\Exception\InternalErrorException;
 
 class FolderController extends Controller
 {
-    protected $user_model;
-    protected $set_model;
-    protected $folder_model;
-    protected $card_model;
-
-    public function __construct(User $user, Set $set, Folder $folder, Card $card)
-    {
-        $this->user_model = $user;
-        $this->set_model = $set;
-        $this->folder_model = $folder;
-        $this->card_model = $card;
-    }
-
     public function createFolder(Request $request)
     {
         $token = $request->header();
@@ -91,12 +78,20 @@ class FolderController extends Controller
             return $this->tokenNotExist();
         }else{
             try{
-                Folder::find($request->folder_id)->delete();
-                $returnData = [
-                    'status' => 1,
-                    'msg' => 'Delete folder successfully'
-                ];
-                return response()->json($returnData, 200);
+                if($this->folder_model->find($request->folder_id) == NULL){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => 'Folder does not exist'
+                    ];
+                    return response()->json($returnData, 400);
+                }else{
+                    $this->folder_model->find($request->folder_id)->delete();
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => 'Delete folder successfully'
+                    ];
+                    return response()->json($returnData, 200);
+                }
             }catch(Exception $e){
                 return $this->internalServerError($e);
             }
