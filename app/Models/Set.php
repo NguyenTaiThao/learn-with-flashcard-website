@@ -24,4 +24,13 @@ class Set extends Model
     {
         return $this->belongsToMany('App\Bill', 'role_user_table', 'set_id', 'bill_id');
     }
+
+    public function recentSets($user_id){
+        $data = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
+                    ->where('folders.user_id', $user_id)
+                    ->orderBy('sets.updated_at', 'desc')
+                    ->limit(5)
+                    ->get('sets.*');
+        return $data;
+    }
 }
