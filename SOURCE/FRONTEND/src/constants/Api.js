@@ -4,7 +4,7 @@ const Reactotron = process.env.NODE_ENV !== "production" && require("reactotron-
 
 function createAxios() {
   var axiosInstant = axios.create();
-  axiosInstant.defaults.baseURL = "http://127.0.0.1:8000/";
+  axiosInstant.defaults.baseURL = "https://flashcard-web-project.herokuapp.com/";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 
