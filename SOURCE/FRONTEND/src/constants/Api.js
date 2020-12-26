@@ -49,12 +49,8 @@ export const getAxios = createAxios();
 /* Support function */
 function handleResult(api) {
   return api.then(res => {
-    Reactotron.log("res", res)
     if (res.data.status != 1) {
-      if(res.data.status === 0){
-        return Promise.reject(res.data);
-      }
-      return Promise.reject({...res.data, msg:res.data.message});
+      return Promise.reject(res.data);
     }
     return Promise.resolve(res.data);
   });
