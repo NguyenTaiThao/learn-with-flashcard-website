@@ -346,8 +346,8 @@ class Header extends Component {
             this.setState({ loginLoading: false })
         } catch (e) {
             this.setState({ loginLoading: false })
-            reactotron.log("err login", e, loginForm)
-            this.context("error", "Thất bại", "Đăng nhập thất bại.")
+            reactotron.log("err login", e)
+            this.context("error", "Đăng nhập thất bại.", e?.msg)
         }
 
     }
