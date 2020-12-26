@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Bill', 'user_id', 'id');
     }
+
+    public function allFolders()
+    {
+        return $this->folders()->orderBy('updated_at', 'DESC')->with('sets')->get();
+    }
 }

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Card;
+use App\Models\Set;
 use Illuminate\Http\Request;
 use App\Models\Folder;
 use App\Models\User;
+use Exception;
+use Symfony\Component\CssSelector\Exception\InternalErrorException;
 
 class FolderController extends Controller
 {
@@ -23,41 +27,35 @@ class FolderController extends Controller
 
     public function addFolder(Request $request)
     {
-        $token = $request->header();
-        $user_model = new User;
-        $user = $user_model->isTokenExist($token);
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
-            return [
-                'status' => 0,
-                'code' => 403,
-                'msg' => 'No token found'
-            ];
+            return $this->tokenNotExist();
         }else{
-            $folder = new Folder;
-            $folder->name = $request->name;
-            $folder->description = $request->description;
-            $folder->user_id = $user->id;
-            $folder->save();
-            return [
-                'status' => 1,
-                'code' => 1,
-                'msg' => 'Create folder successfully'
-            ];
+            try {
+                $folder = new Folder;
+                $folder->name = $request->name;
+                $folder->description = $request->description;
+                $folder->user_id = $user->id;
+                $folder->save();
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Create folder successfully'
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->InternalErrorException($e);
+            }
         }
     }
 
 
     public function editFolder(Request $request)
     {
-        $token = $request->header();
-        $user_model = new User;
-        $user = $user_model->isTokenExist($token);
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
-            return [
-                'status' => 0,
-                'code' => 403,
-                'msg' => 'No token found'
-            ];
+            return $this->tokenNotExist();
         }else{
             $folder = Folder::find($request->folder_id);
             $folder->name = $request->name;
@@ -74,25 +72,78 @@ class FolderController extends Controller
 
     public function deleteFolder(Request $request)
     {
-        $token = $request->header();
-        $user_model = new User;
-        $user = $user_model->isTokenExist($token);
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
-            return [
-                'status' => 0,
-                'code' => 403,
-                'msg' => 'No token found'
-            ];
+            return $this->tokenNotExist();
         }else{
-            $folder = Folder::find($request->folder_id);
-            $folder->delete();
-            return [
-                'status' => 1,
-                'code' => 1,
-                'msg' => 'Delete folder successfully'
-            ];
+            try{
+                if($this->folder_model->find($request->folder_id) == NULL){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => 'Folder does not exist'
+                    ];
+                    return response()->json($returnData, 400);
+                }else{
+                    $this->folder_model->find($request->folder_id)->delete();
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => 'Delete folder successfully'
+                    ];
+                    return response()->json($returnData, 200);
+                }
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
         }
     }
-    
 
+    public function listFolders(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try{
+                $data = $user->allFolders();
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Lấy thành công ".count($data)." folder",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function createOrUpdateFolder(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try{
+                if($request->id == 0){ //trường hợp tạo mới folder
+                    $folder = new Folder;
+                    $folder->user_id = $user->id;
+                }else{ //trường hợp update folder
+                    $folder = Folder::find($request->id);
+                }
+                $folder->name = $request->name;
+                $folder->description = $request->description;
+                $folder->save();
+                $returnData = [
+                    'status' => 1,
+                    'msg' => $request->id == 0 ? 'Create folder successfully' : 'Update folder successfully'
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
+        }
+    }
 }
