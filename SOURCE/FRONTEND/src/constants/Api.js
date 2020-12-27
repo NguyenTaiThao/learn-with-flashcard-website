@@ -87,7 +87,7 @@ export const requestLogout = () => {
 }
 
 export const requestFolders = (payload) => {
-  return handleResult(getAxios.post(`listFolders`)
+  return handleResult(getAxios.get(`listFolders`))
 }
 
 export const requestCreateFolder = (payload) => {
@@ -95,7 +95,7 @@ export const requestCreateFolder = (payload) => {
 }
 
 export const requestSets = (payload) => {
-  return handleResult(getAxios.post(`listFolders`)
+  return handleResult(getAxios.get(`listFolders`))
 }
 
 export const requestCreateSet = (payload) => {
