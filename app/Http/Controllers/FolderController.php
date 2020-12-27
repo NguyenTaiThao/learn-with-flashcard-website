@@ -160,4 +160,33 @@ class FolderController extends Controller
             }
         }
     }
+
+    public function folderDetail(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try{
+                $folder = $this->folder_model->folderDetail($request->id);
+                if($folder == NULL){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => 'Folder does not exist!',
+                    ];
+                    return response()->json($returnData, 400);
+                }else{
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => 'Get Folder\'s detail successfully!',
+                        'data' => $folder
+                    ];
+                    return response()->json($returnData, 200);
+                }
+            }catch(Exception $e){
+                $this->internalServerError($e);
+            }
+        }
+    }
 }

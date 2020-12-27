@@ -135,13 +135,21 @@ class SetController extends Controller
             return $this->tokenNotExist();
         }else{
             try{
-                $set = $this->set_model->setDetail(10);
-                $returnData = [
-                    'status' => 1,
-                    'msg' => 'Get Set\'s detail successfully!',
-                    'data' => $set
-                ];
-                return response()->json($returnData, 200);
+                $set = $this->set_model->setDetail($request->id);
+                if($set == NULL){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => 'This Set does not exist!'
+                    ];
+                    return response()->json($returnData, 400);
+                }else{
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => 'Get Set\'s detail successfully!',
+                        'data' => $set
+                    ];
+                    return response()->json($returnData, 200);
+                }
             }catch(Exception $e){
                 $this->internalServerError($e);
             }
