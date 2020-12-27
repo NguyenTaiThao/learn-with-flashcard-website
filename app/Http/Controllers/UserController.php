@@ -182,7 +182,7 @@ class UserController extends Controller
                 $sets = $this->set_model->listSetsByTime($user->id);
                 $returnData = [
                     'status' => 1,
-                    'msg' => 'Get User\'s Info Successfully',
+                    'msg' => 'Get Sets from time by time',
                     'data' => $sets
                 ];
                 return response()->json($returnData, 200);

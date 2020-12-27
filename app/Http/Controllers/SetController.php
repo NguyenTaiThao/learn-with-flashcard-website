@@ -126,4 +126,25 @@ class SetController extends Controller
             }
         }
     }
+
+    public function setDetail(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try{
+                $set = $this->set_model->setDetail(10);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Get Set\'s detail successfully!',
+                    'data' => $set
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                $this->internalServerError($e);
+            }
+        }
+    }
 }

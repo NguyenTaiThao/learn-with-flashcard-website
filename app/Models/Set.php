@@ -70,6 +70,9 @@ class Set extends Model
 
     public function setDetail($id)
     {
-        $set = $this->findOrFail($id)->with('cards')->first();
+        $set = $this->where('id',$id)->with('cards')->first();
+        $set->total_cards = count($set->cards);
+        $set->remembered_cards = count($set->cards()->where('remember', 1)->get());
+        return $set;
     }
 }
