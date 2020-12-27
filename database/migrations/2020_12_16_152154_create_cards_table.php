@@ -18,6 +18,8 @@ class CreateCardsTable extends Migration
             $table->string('front_side');
             $table->string('back_side');
             $table->unsignedBigInteger('set_id');
+            $table->tinyInteger('remember')->default(0);
+
             $table->foreign('set_id')->references('id')->on('sets')->onDelete('cascade');
             $table->timestamps();
         });

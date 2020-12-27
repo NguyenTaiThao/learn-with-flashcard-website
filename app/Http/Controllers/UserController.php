@@ -158,15 +158,11 @@ class UserController extends Controller
             return $this->tokenNotExist();
         }else {
             try {
-                $data = $this->set_model->recentSets($user->id);
-                $sets = [];
-                for ($i=0; $i<count($data); $i++) {
-                    $data[$i]['completed'] = 0.15;
-                }
+                $sets = $this->set_model->recentSets($user->id);
                 $returnData = [
                     'status' => 1,
                     'msg' => 'Get User\'s Info Successfully',
-                    'data' => $data
+                    'data' => $sets
                 ];
                 return response()->json($returnData, 200);
             }catch(Exception $e){

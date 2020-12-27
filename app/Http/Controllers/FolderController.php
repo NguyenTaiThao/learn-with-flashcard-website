@@ -12,16 +12,15 @@ use Symfony\Component\CssSelector\Exception\InternalErrorException;
 
 class FolderController extends Controller
 {
-    public function createFolder(Request $request)
+
+    protected $folders_per_page = 3;
+    protected $current_page = 1;
+
+    public function test(Request $request)
     {
         $token = $request->header();
         $bodyContent = $request->getContent();
         $bodyContent = json_decode($bodyContent, true);
-
-
-        return [
-            "request" => $bodyContent
-        ];
     }
 
 
@@ -106,10 +105,23 @@ class FolderController extends Controller
             return $this->tokenNotExist();
         }else{
             try{
-                $data = $user->allFolders();
+                if($request->current_page == NULL){
+                    $this->current_page = 1;
+                }else{
+                    $this->current_page = $request->current_page;
+                }
+                $data = $user->listFolders($this->current_page, $this->folders_per_page);
+                if(count($data['folders']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ folders để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
                 $returnData = [
                     'status' => 1,
-                    'msg' => "Lấy thành công ".count($data)." folder",
+                    'msg' => "Thành công",
                     'data' => $data
                 ];
                 return response()->json($returnData, 200);
@@ -121,9 +133,10 @@ class FolderController extends Controller
 
     public function createOrUpdateFolder(Request $request)
     {
-        $token = $request->header("token");
+        $token = $request->header('token');
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
+            dd("123");
             return $this->tokenNotExist();
         }else{
             try{

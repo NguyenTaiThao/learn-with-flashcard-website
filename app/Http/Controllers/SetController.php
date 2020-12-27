@@ -70,9 +70,12 @@ class SetController extends Controller
                     }
                     $card->front_side = $value['front_side'];
                     $card->back_side = $value['back_side'];
+                    $card->remember = $value['remember'];
                     $card->set_id = $set_id;
                     $card->save();
                 }
+                $set->completed = $this->set_model->completedPercent($set->id);
+                $set->save();
                 $returnData = [
                     'status' => 1,
                     'msg' => $request->id == 0 ? 'Create Set Successfully' : 'Update Set Successfully',
@@ -102,6 +105,7 @@ class SetController extends Controller
                     //cần clone set sang folder mới
                     $new_set = $set->replicate();
                     $new_set->folder_id = $request->folder_id;
+                    $new_set->completed = 0;
                     $new_set->save();
                     $newSet_id = $new_set->id;
                     //cần clone toàn bộ card có trong set luôn
@@ -114,7 +118,7 @@ class SetController extends Controller
                 $returnData = [
                     'status' => 1,
                     'msg' => 'Add Set to Folder successfully!',
-                    'data' => $set
+                    'data' => $new_set
                 ];
                 return response()->json($returnData, 200);
             }catch(Exception $e){

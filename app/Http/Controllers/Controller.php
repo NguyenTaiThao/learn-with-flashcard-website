@@ -16,10 +16,12 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    //model
     protected $user_model;
     protected $set_model;
     protected $folder_model;
     protected $card_model;
+
 
     public function __construct(User $user, Set $set, Folder $folder, Card $card)
     {
