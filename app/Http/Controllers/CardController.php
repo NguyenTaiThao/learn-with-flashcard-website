@@ -7,6 +7,7 @@ use App\Models\Folder;
 use App\Models\User;
 use App\Models\Set;
 use App\Models\Card;
+use Exception;
 
 class CardController extends Controller
 {
@@ -63,22 +64,28 @@ class CardController extends Controller
     public function deleteCard(Request $request)
     {
         $token = $request->header();
-        $user_model = new User;
-        $user = $user_model->isTokenExist($token);
+        $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
-            return [
-                'status' => 0,
-                'code' => 403,
-                'msg' => 'No token found'
-            ];
+            return $this->tokenNotExist();
         }else{
-            $set = Card::find($request->card_id);
-            $set->delete();
-            return [
-                'status' => 1,
-                'code' => 1,
-                'msg' => 'Delete card successfully'
-            ];
+            try {
+                if($this->card_model->find($request->card_id) == NULL){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => 'Card does not exist'
+                    ];
+                    return response()->json($returnData, 400);
+                }else{
+                    $this->card_model->find($request->card_id)->delete();
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => 'Delete card successfully'
+                    ];
+                    return response()->json($returnData, 200);
+                }
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
         }
     }
 }
