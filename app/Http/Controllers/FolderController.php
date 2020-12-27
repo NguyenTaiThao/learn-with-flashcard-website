@@ -110,7 +110,8 @@ class FolderController extends Controller
                 }else{
                     $this->current_page = $request->current_page;
                 }
-                $data = $user->listFolders($this->current_page, $this->folders_per_page);
+                $defaul_folder = $this->folder_model->minFolderID($user->id);
+                $data = $user->listFolders($this->current_page, $this->folders_per_page, $defaul_folder);
                 if(count($data['folders']) == 0){
                     $returnData = [
                         'status' => 0,
