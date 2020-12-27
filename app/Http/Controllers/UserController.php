@@ -171,6 +171,27 @@ class UserController extends Controller
         }
     }
 
+    public function listSetsByTime(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else {
+            try {
+                $sets = $this->set_model->listSetsByTime($user->id);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Get User\'s Info Successfully',
+                    'data' => $sets
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
     public function userInfo(Request $request)
     {
         $token = $request->header("token");

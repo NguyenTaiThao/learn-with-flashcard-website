@@ -49,8 +49,10 @@ Route::group(['prefix' => 'card'], function () {
 });
 
 Route::get('/recentSets', [UserController::class, 'recentSets']);
+Route::get('/listSetsByTime', [UserController::class, 'listSetsByTime']);
 Route::post('/createOrUpdateSet', [SetController::class, 'createOrUpdateSet']);
 Route::post('/setToFolder', [SetController::class, 'setToFolder']);
 Route::get('/listFolders', [FolderController::class, 'listFolders']);
 Route::post('/createOrUpdateFolder', [FolderController::class, 'createOrUpdateFolder']);
+Route::get('/setDetail', [SetController::class, 'setDetail']);
 

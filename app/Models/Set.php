@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Set extends Model
 {
@@ -44,5 +45,31 @@ class Set extends Model
         return $sets;
     }
 
+    public function listSetsByTime($user_id){
+        $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
+                    ->where('folders.user_id', $user_id)
+                    ->whereBetween('sets.created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+                    ->get('sets.*');
+        foreach ($sets as $key => $value) {
+            $value->number_of_cards = count($value->cards);
+        }
+        $data['this_week'] = $sets;
+        for($month = 1; $month <= 12; $month++){
+            $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
+                        ->where('folders.user_id', $user_id)
+                        ->whereYear('sets.created_at', Carbon::now()->year)
+                        ->whereMonth('sets.created_at', $month)
+                        ->get('sets.*');
+            foreach ($sets as $key => $value) {
+                $value->number_of_cards = count($value->cards);
+            }
+            $data[$month] = $sets;
+        }
+        return $data;
+    }
 
+    public function setDetail($id)
+    {
+        $set = $this->findOrFail($id)->with('cards')->first();
+    }
 }
