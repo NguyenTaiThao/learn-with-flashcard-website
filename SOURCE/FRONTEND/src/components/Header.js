@@ -17,14 +17,14 @@ import "animate.css"
 import Cookie from 'js-cookie'
 import { IconButton, Popover, List, ListItem, Divider } from '@material-ui/core';
 import { ROUTER } from "@constants/Constant"
-import { requestRegister, requestLogin } from "@constants/Api"
+import { requestRegister, requestLogin, requestLogout } from "@constants/Api"
 import { connect } from "react-redux";
 import { getUserInfo } from "@src/redux/actions";
 import { notification } from "antd"
 import reactotron from "reactotron-react-js"
 import NotifyContext from "@context/NotifyContext"
-
 import _ from "lodash"
+import Loading from "@components/Loading"
 class Header extends Component {
     constructor(props) {
         super(props)
@@ -36,6 +36,7 @@ class Header extends Component {
             anchorEl: null,
             loginLoading: false,
             registerLoading: false,
+            loading: false,
             searchBox: "",
             registerForm: {
                 email: "",
@@ -92,6 +93,7 @@ class Header extends Component {
     render() {
         return (
             <>
+                <Loading open={this.state.loading} />
                 {/* hiển thị header */}
                 {this.renderHeader()}
 
@@ -326,9 +328,12 @@ class Header extends Component {
         this.setState({
             popover: false,
             anchorEl: null,
+            loading:true
         })
-        Cookie.remove("SESSION_ID");
-        this.props.history.push("/");
+        await requestLogout()
+        this.setState({loading:false})
+        Cookie.remove("SESSION_ID")
+        this.props.history.push("/")
         this.context("success", "Thành công", "Đăng xuất thành công.")
     }
 

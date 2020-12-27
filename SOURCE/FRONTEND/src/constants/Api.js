@@ -5,6 +5,7 @@ const Reactotron = process.env.NODE_ENV !== "production" && require("reactotron-
 function createAxios() {
   var axiosInstant = axios.create();
   axiosInstant.defaults.baseURL = "https://flashcard-web-project.herokuapp.com/api/";
+  // axiosInstant.defaults.baseURL = "http://127.0.0.1:8000/api/";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 
@@ -85,3 +86,18 @@ export const requestLogout = () => {
   return handleResult(getAxios.post(`logout`))
 }
 
+export const requestFolders = (payload) => {
+  return handleResult(getAxios.post(`listFolders`)
+}
+
+export const requestCreateFolder = (payload) => {
+  return handleResult(getAxios.post(`createOrUpdateFolder`, {...payload}))
+}
+
+export const requestSets = (payload) => {
+  return handleResult(getAxios.post(`listFolders`)
+}
+
+export const requestCreateSet = (payload) => {
+  return handleResult(getAxios.post(`createOrUpdateSet`, {...payload}))
+}

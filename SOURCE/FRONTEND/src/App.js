@@ -10,20 +10,21 @@ import NotifyContext from "@context/NotifyContext"
 const notify = (type, message, des) => {
   notification[type]({
     message: message,
-    description:des,
+    description: des,
     duration: 2
   });
 }
 
 function App() {
   return (
-    <Provider store={store}>
-      <NotifyContext.Provider value={notify}>
-        <AppNavigator />
-      </NotifyContext.Provider>
-      <BackTop />
-    </Provider>
-
+    <>
+      <Provider store={store}>
+        <NotifyContext.Provider value={notify}>
+          <AppNavigator />
+        </NotifyContext.Provider>
+      </Provider>
+      <BackTop style={{ zIndex: "9999" }} />
+    </>
   );
 }
 

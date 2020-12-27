@@ -89,3 +89,11 @@ body {
 .cursor{
     cursor: pointer;
 }
+
+.back-drop{
+    z-index: 100000 !important;
+}
+
+.back-drop .loading-icon{
+    color:#fff;
+}
