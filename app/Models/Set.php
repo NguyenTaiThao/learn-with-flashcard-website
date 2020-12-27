@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use phpDocumentor\Reflection\PseudoTypes\False_;
 
 class Set extends Model
 {
@@ -74,5 +75,37 @@ class Set extends Model
         $set->total_cards = count($set->cards);
         $set->remembered_cards = count($set->cards()->where('remember', 1)->get());
         return $set;
+    }
+
+    public function multipleChoiceGame($id)
+    {
+        $set = $this->where('id',$id)->with('cards')->first();
+        $questions = [];
+        $multiple_choice = [];
+        $data = [];
+        foreach ($set->cards as $key => $value) {
+            $questions[$key] = $value->front_side;
+            $multiple_choice[$key] = $value->back_side;
+        }
+        $data['number_of_questions'] = count($set->cards);
+        if ($data['number_of_questions'] >= 4) {
+            foreach ($questions as $key => $value) {
+                $data[$key]['question'] = $value;
+                $data[$key]['CORRECT ANSWER'] = $multiple_choice[$key];
+                $numbers = range(0, count($questions)-1);
+                unset($numbers[$key]);
+                shuffle($numbers);
+                $random_numbers = array_slice($numbers, 0, 3);
+                array_push($random_numbers, $key);
+                shuffle($random_numbers);
+                $data[$key]['answer 1'] = $multiple_choice[$random_numbers[0]];
+                $data[$key]['answer 2'] = $multiple_choice[$random_numbers[1]];
+                $data[$key]['answer 3'] = $multiple_choice[$random_numbers[2]];
+                $data[$key]['answer 4'] = $multiple_choice[$random_numbers[3]];
+            }
+            return $data;
+        }else{
+            return $data;
+        }
     }
 }

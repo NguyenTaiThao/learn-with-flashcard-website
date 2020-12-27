@@ -155,4 +155,34 @@ class SetController extends Controller
             }
         }
     }
+
+    public function multipleChoiceGame(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try{
+                $set = $this->set_model->multipleChoiceGame($request->id);
+                if($set['number_of_questions'] < 4){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => 'Không đủ số thẻ để chơi. Cần ít nhất 4 thẻ.',
+                        'number_of_questions' => $set["number_of_questions"]
+                    ];
+                    return response()->json($returnData, 500);
+                }else{
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => 'Tạo game Trắc ngiệm thành công!',
+                        'data' => $set
+                    ];
+                    return response()->json($returnData, 200);
+                }
+            }catch(Exception $e){
+                $this->internalServerError($e);
+            }
+        }
+    }
 }

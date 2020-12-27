@@ -55,5 +55,6 @@ Route::post('/setToFolder', [SetController::class, 'setToFolder']);
 Route::get('/listFolders', [FolderController::class, 'listFolders']);
 Route::post('/createOrUpdateFolder', [FolderController::class, 'createOrUpdateFolder']);
 Route::get('/setDetail', [SetController::class, 'setDetail']);
-Route::get('/folderDetail', [folderController::class, 'folderDetail']);
+Route::get('/folderDetail', [FolderController::class, 'folderDetail']);
+Route::get('/multipleChoiceGame', [SetController::class, 'multipleChoiceGame']);
 
