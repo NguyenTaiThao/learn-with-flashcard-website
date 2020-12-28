@@ -52,7 +52,7 @@ class UserController extends Controller
                 'status' => 0,
                 'msg' => $validator->errors()->all()
             );
-            return response()->json($returnData, 400);
+            return response()->json($returnData, 200);
         }
         try {
             $encrypted_password = bcrypt($request->password);
