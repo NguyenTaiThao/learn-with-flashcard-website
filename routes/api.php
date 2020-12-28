@@ -6,8 +6,13 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\SetController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\GetWeatherController;
 use App\Models\Folder;
 use App\Models\User;
+use App\Mail\NotifyMail;
+use Illuminate\Mail;
+use Illuminate\Support\Facades\Mail as FacadesMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +54,16 @@ Route::group(['prefix' => 'card'], function () {
 });
 
 Route::get('/recentSets', [UserController::class, 'recentSets']);
+Route::get('/listSetsByTime', [UserController::class, 'listSetsByTime']);
 Route::post('/createOrUpdateSet', [SetController::class, 'createOrUpdateSet']);
 Route::post('/setToFolder', [SetController::class, 'setToFolder']);
 Route::get('/listFolders', [FolderController::class, 'listFolders']);
 Route::post('/createOrUpdateFolder', [FolderController::class, 'createOrUpdateFolder']);
+Route::get('/setDetail', [SetController::class, 'setDetail']);
+Route::get('/folderDetail', [FolderController::class, 'folderDetail']);
+Route::get('/multipleChoiceGame', [SetController::class, 'multipleChoiceGame']);
+
+
+Route::get('send-mail', [MailController::class, 'sendEmail']);
+Route::get('getWeather', [GetWeatherController::class, 'getWeather']);
 

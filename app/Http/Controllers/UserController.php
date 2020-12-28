@@ -52,7 +52,7 @@ class UserController extends Controller
                 'status' => 0,
                 'msg' => $validator->errors()->all()
             );
-            return response()->json($returnData, 400);
+            return response()->json($returnData, 200);
         }
         try {
             $encrypted_password = bcrypt($request->password);
@@ -94,7 +94,7 @@ class UserController extends Controller
                 'status' => 0,
                 'msg' => $validator->errors()->all()
             );
-            return response()->json($returnData, 400);
+            return response()->json($returnData, 200);
         }
         try {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -113,7 +113,7 @@ class UserController extends Controller
                     'status' => 0,
                     'msg' => 'Email or password is incorrect'
                 ];
-                return response()->json($returnData, 400);
+                return response()->json($returnData, 200);
             }
         }catch(Exception $e){
             return $this->internalServerError($e);
@@ -158,15 +158,32 @@ class UserController extends Controller
             return $this->tokenNotExist();
         }else {
             try {
-                $data = $this->set_model->recentSets($user->id);
-                $sets = [];
-                for ($i=0; $i<count($data); $i++) {
-                    $data[$i]['completed'] = 0.15;
-                }
+                $sets = $this->set_model->recentSets($user->id);
                 $returnData = [
                     'status' => 1,
                     'msg' => 'Get User\'s Info Successfully',
-                    'data' => $data
+                    'data' => $sets
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function listSetsByTime(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else {
+            try {
+                $sets = $this->set_model->listSetsByTime($user->id);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Get Sets from time by time',
+                    'data' => $sets
                 ];
                 return response()->json($returnData, 200);
             }catch(Exception $e){

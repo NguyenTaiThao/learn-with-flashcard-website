@@ -24,4 +24,11 @@ class Folder extends Model
     {
         return Folder::where('user_id', $user_id)->min('id');
     }
+
+    public function folderDetail($id)
+    {
+        $folder = $this->where('id',$id)->with('sets')->firstOrFail();
+        $folder->total_sets = count($folder->sets);
+        return $folder;
+    }
 }

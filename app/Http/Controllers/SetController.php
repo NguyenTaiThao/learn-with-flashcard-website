@@ -13,7 +13,7 @@ class SetController extends Controller
 {
     public function deleteSet(Request $request)
     {
-        $token = $request->header();
+        $token = $request->header("token");
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
             return $this->tokenNotExist();
@@ -41,7 +41,7 @@ class SetController extends Controller
 
     public function createOrUpdateSet(Request $request)
     {
-        $token = $request->header();
+        $token = $request->header("token");
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
            return $this->tokenNotExist();
@@ -70,9 +70,12 @@ class SetController extends Controller
                     }
                     $card->front_side = $value['front_side'];
                     $card->back_side = $value['back_side'];
+                    $card->remember = $value['remember'];
                     $card->set_id = $set_id;
                     $card->save();
                 }
+                $set->completed = $this->set_model->completedPercent($set->id);
+                $set->save();
                 $returnData = [
                     'status' => 1,
                     'msg' => $request->id == 0 ? 'Create Set Successfully' : 'Update Set Successfully',
@@ -102,6 +105,7 @@ class SetController extends Controller
                     //cần clone set sang folder mới
                     $new_set = $set->replicate();
                     $new_set->folder_id = $request->folder_id;
+                    $new_set->completed = 0;
                     $new_set->save();
                     $newSet_id = $new_set->id;
                     //cần clone toàn bộ card có trong set luôn
@@ -114,11 +118,70 @@ class SetController extends Controller
                 $returnData = [
                     'status' => 1,
                     'msg' => 'Add Set to Folder successfully!',
-                    'data' => $set
+                    'data' => $new_set
                 ];
                 return response()->json($returnData, 200);
             }catch(Exception $e){
                 return $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function setDetail(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try{
+                $set = $this->set_model->setDetail($request->id);
+                if($set == NULL){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => 'This Set does not exist!'
+                    ];
+                    return response()->json($returnData, 400);
+                }else{
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => 'Get Set\'s detail successfully!',
+                        'data' => $set
+                    ];
+                    return response()->json($returnData, 200);
+                }
+            }catch(Exception $e){
+                $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function multipleChoiceGame(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try{
+                $set = $this->set_model->multipleChoiceGame($request->id);
+                if($set['number_of_questions'] < 4){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => 'Không đủ số thẻ để chơi. Cần ít nhất 4 thẻ.',
+                        'number_of_questions' => $set["number_of_questions"]
+                    ];
+                    return response()->json($returnData, 500);
+                }else{
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => 'Tạo game Trắc ngiệm thành công!',
+                        'data' => $set
+                    ];
+                    return response()->json($returnData, 200);
+                }
+            }catch(Exception $e){
+                $this->internalServerError($e);
             }
         }
     }
