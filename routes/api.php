@@ -6,8 +6,12 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\SetController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MailController;
 use App\Models\Folder;
 use App\Models\User;
+use App\Mail\NotifyMail;
+use Illuminate\Mail;
+use Illuminate\Support\Facades\Mail as FacadesMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,4 +61,7 @@ Route::post('/createOrUpdateFolder', [FolderController::class, 'createOrUpdateFo
 Route::get('/setDetail', [SetController::class, 'setDetail']);
 Route::get('/folderDetail', [FolderController::class, 'folderDetail']);
 Route::get('/multipleChoiceGame', [SetController::class, 'multipleChoiceGame']);
+
+
+Route::get('send-mail', [MailController::class, 'sendEmail']);
 
