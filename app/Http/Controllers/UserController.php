@@ -94,7 +94,7 @@ class UserController extends Controller
                 'status' => 0,
                 'msg' => $validator->errors()->all()
             );
-            return response()->json($returnData, 400);
+            return response()->json($returnData, 200);
         }
         try {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
