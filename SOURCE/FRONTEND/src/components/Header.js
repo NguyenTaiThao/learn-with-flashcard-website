@@ -194,7 +194,7 @@ class Header extends Component {
                             className="mt-3"
                         >
                             <Row className="py-4">
-                                <Col xs={3}>
+                                <Col xs={4}>
                                     <Avatar
                                         style={{ "background": "red" }}
                                         size={50}
@@ -202,7 +202,7 @@ class Header extends Component {
                                         <span className="text-uppercase">{info && info?.name?.charAt(0)}</span>
                                     </Avatar>
                                 </Col>
-                                <Col xs={9}>
+                                <Col xs={8} className="pl-2">
                                     <Row>
                                         <b>{info && info?.name}</b>
                                     </Row>

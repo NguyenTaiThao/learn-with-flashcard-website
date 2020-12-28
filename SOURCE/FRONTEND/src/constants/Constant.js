@@ -6,6 +6,7 @@ const ROUTER = {
     FOLDER_CREATE: "/create-folder",
     CREATE_SET:"/create-set",
     SET_LEARNED:"/set/learned",
+    RECENT_ACT:"/recentActivities",
     SET:"/set",
     LEARN:"/learn",
     FOLDER_CONTENT:"/folder-content"

@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookie from 'js-cookie';
+import reactotron from "src/ReactotronConfig";
 const Reactotron = process.env.NODE_ENV !== "production" && require("reactotron-react-js").default;
 
 function createAxios() {
@@ -50,10 +51,15 @@ export const getAxios = createAxios();
 /* Support function */
 function handleResult(api) {
   return api.then(res => {
-    if (res.data.status != 1) {
-      return Promise.reject(res.data);
+    if (res.status == 403) {
+      Cookie.remove("SESSION_ID");
+      alert("Phiên đăng nhập hết hạn")
+    } else {
+      if (res.data.status != 1) {
+        return Promise.reject(res.data);
+      }
+      return Promise.resolve(res.data);
     }
-    return Promise.resolve(res.data);
   });
 }
 
@@ -86,12 +92,12 @@ export const requestLogout = () => {
   return handleResult(getAxios.post(`logout`))
 }
 
-export const requestFolders = (payload) => {
+export const requestFolders = () => {
   return handleResult(getAxios.get(`listFolders`))
 }
 
 export const requestCreateFolder = (payload) => {
-  return handleResult(getAxios.post(`createOrUpdateFolder`, {...payload}))
+  return handleResult(getAxios.post(`createOrUpdateFolder`, { ...payload }))
 }
 
 export const requestSets = (payload) => {
@@ -99,5 +105,13 @@ export const requestSets = (payload) => {
 }
 
 export const requestCreateSet = (payload) => {
-  return handleResult(getAxios.post(`createOrUpdateSet`, {...payload}))
+  return handleResult(getAxios.post(`createOrUpdateSet`, { ...payload }))
+}
+
+export const requestRecentSets = () => {
+  return handleResult(getAxios.get(`recentSets`))
+}
+
+export const requestRecentAct = () => {
+  return handleResult(getAxios.get(`listSetsByTime`))
 }

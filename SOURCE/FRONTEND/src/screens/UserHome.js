@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { ROUTER } from '../constants/Constant';
 import { Row, Col, Button } from "react-bootstrap"
 import reactotron from '../ReactotronConfig';
@@ -7,13 +6,15 @@ import CanvasJSReact from '@assets/canvasjs-3.2.5/canvasjs.react';
 import "@styles/UserHome.css"
 import { Skeleton, Switch, Card, Avatar } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-
+import { withRouter } from "react-router-dom"
+import { connect } from "react-redux"
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-export default class UserHome extends Component {
+
+class UserHome extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
+            loading: false,
         }
     }
     render() {
@@ -71,33 +72,16 @@ export default class UserHome extends Component {
                                 <b>Gần đây</b>
                             </Col>
                             <Col className="text-right px-0">
-                                <b className="typical-text">Xem tất cả <i class="fas fa-chevron-right"></i></b>
+                                <b
+                                    className="typical-text"
+                                    onClick={() => this.props.history.push(ROUTER.RECENT_ACT)}
+                                >
+                                    Xem tất cả <i class="fas fa-chevron-right"></i>
+                                </b>
                             </Col>
                         </Row>
 
                         <Row className="justify-content-between">
-                            {/* <Col md={5} className="float-div py-3 px-3">
-                                <Row>
-                                    <b>IT midterm</b>
-                                </Row>
-                                <Row>
-                                    99 thuật ngữ
-                                </Row>
-                                <Row className="mt-5">
-                                    thaont
-                                </Row>
-                            </Col>
-                            <Col md={5} className="float-div py-3 px-3">
-                                <Row>
-                                    <b>IT midterm</b>
-                                </Row>
-                                <Row>
-                                    99 thuật ngữ
-                                </Row>
-                                <Row className="mt-5">
-                                    thaont
-                                </Row>
-                            </Col> */}
                             <Card
                                 style={{ width: 400, marginTop: 16 }}
                                 actions={[
@@ -180,3 +164,5 @@ export default class UserHome extends Component {
         )
     }
 }
+
+export default connect(null, null)(withRouter(UserHome))

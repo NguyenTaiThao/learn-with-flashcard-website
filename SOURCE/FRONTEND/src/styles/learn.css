@@ -1,3 +1,8 @@
+.hide, .learn{
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
 .learn .card-front {
     font-size: 30px;
 }

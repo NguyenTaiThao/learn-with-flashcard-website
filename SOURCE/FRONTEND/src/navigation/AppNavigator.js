@@ -57,6 +57,7 @@ class MainNavigator extends Component {
                         <PrivateRoute path={ROUTER.LEARN} exact Component={LearnScreen} screen="folder"/>
                         <PrivateRoute path={ROUTER.FOLDER_CONTENT} exact Component={FolderContentScreen} screen="folder"/>
                         <PrivateRoute path={ROUTER.FOLDER_CREATE} exact Component={FolderCreateScreen} screen="folder"/>
+                        <PrivateRoute path={ROUTER.RECENT_ACT} exact Component={FolderScreen} screen="recentActivities"/>
                     </Switch>
                 } />
             </>

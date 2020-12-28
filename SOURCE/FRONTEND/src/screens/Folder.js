@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Row, Col } from "react-bootstrap"
-import { Avatar, Radio, Divider } from 'antd'
+import { Avatar, Radio, Divider, Skeleton, Result, Button } from 'antd'
 import { Link, withRouter } from "react-router-dom"
 import "@styles/Folder.css"
 import { ROUTER } from "@constants/Constant"
-
+import { requestFolders } from "@constants/Api"
+import reactotron from 'reactotron-react-js';
+import { connect } from 'react-redux'
 class Folder extends Component {
 
     constructor(props) {
@@ -14,11 +16,33 @@ class Folder extends Component {
             recentActivities: [1, 2, 3, 4, 5],
             learned: [1, 2, 3, 4, 5],
             made: [1, 2, 3, 4, 5],
-            folder: [1, 2, 3, 4, 5],
+            folder: [],
+            loading: false
+        }
+    }
+
+    componentDidMount() {
+        this.getFolder()
+    }
+
+    async getFolder() {
+        try {
+            this.setState({
+                loading: true
+            })
+            let res = await requestFolders();
+            this.setState({
+                folder: res.data,
+                loading: false
+            })
+        } catch (e) {
+            this.setState({ loading: false })
         }
     }
 
     render() {
+        const data = this.state[this.props.screen]
+        const user = this.props.userState.data
         return (
             <>
                 <Row className="bg-white p-4 folder">
@@ -27,18 +51,18 @@ class Folder extends Component {
                             style={{ "background": "red" }}
                             size={110}
                         >
-                            T
+                            <span className="text-uppercase">{ user && user?.name?.charAt(0)}</span>
                         </Avatar>
                     </Col>
                     <Col md={9} className="d-flex flex-column justify-content-center">
                         <Row>
-                            <span className="username">Nguyễn Tài Thao</span>
+                            <span className="username">{user && user?.name}</span>
                         </Row>
                         <Row className="mt-2">
                             <Radio.Group value={this.state.filter} onChange={(e) => this.handleFilter(e)}>
                                 <Radio.Button
                                     value="recent-activities"
-                                // onClick={() => this.pushRef(ROUTER.)}
+                                onClick={() => this.pushRef(ROUTER.RECENT_ACT)}
                                 >
                                     <span className="txt-btn m-2">Hoạt động gần đây</span>
                                 </Radio.Button>
@@ -69,14 +93,45 @@ class Folder extends Component {
                     <Col md={8}>
                         <Divider orientation="left" className="count-divider" plain>
                             <span className="element-count">
-                                Tổng có: <span className="font-number">{this.state[this.props.screen].length}</span>
+                                Tổng có: <span className="font-number">{this.state[this.props.screen]?.length || 0}</span>
                             </span>
                         </Divider>
-                        {this.state[this.props.screen].map((ele) => this.renderContent(ele))}
+                        {this.renderData(data)}
                     </Col>
                 </Row>
             </>
         )
+    }
+
+    renderData(data) {
+        if (this.state.loading) {
+            return (
+                <>
+                    {this.renderSkeletor()}
+                </>
+            )
+        } else {
+            if (data.length > 0) {
+                return (
+                    <>
+                        {data?.map((ele) => this.renderContent(ele))}
+                    </>
+                )
+            } else {
+                return (
+                    <>
+                        <Result
+                            title="Bạn chưa sở hữu thư mục nào"
+                            extra={
+                                <Button type="primary" key="console">
+                                    Tạo thư mục mới
+                                </Button>
+                            }
+                        />,
+                    </>
+                )
+            }
+        }
     }
 
     handleFilter = (event) => {
@@ -85,7 +140,13 @@ class Folder extends Component {
         })
     }
 
-    renderContent() {
+    renderSkeletor() {
+        return (
+            [1, 2, 3, 4].map(() => <Skeleton paragraph={{ rows: 1 }} active className="mb-2" />)
+        )
+    }
+
+    renderContent(ele) {
         let screen = this.props.screen
         if (screen == "folder") {
             return (
@@ -99,7 +160,7 @@ class Folder extends Component {
                         </Col>
                         <Col md={12}>
                             <i class="fal fa-folder element-name-icon"></i>
-                            <span className="element-name">IT nihongo 1</span>
+                            <span className="element-name">{ele.name}</span>
                         </Col>
                     </Row>
                 </>
@@ -161,4 +222,12 @@ class Folder extends Component {
     }
 }
 
-export default withRouter(Folder);
+const mapStateToProps = (state) => ({
+    userState: state.userReducer
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Folder));
