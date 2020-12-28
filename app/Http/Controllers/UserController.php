@@ -113,7 +113,7 @@ class UserController extends Controller
                     'status' => 0,
                     'msg' => 'Email or password is incorrect'
                 ];
-                return response()->json($returnData, 400);
+                return response()->json($returnData, 200);
             }
         }catch(Exception $e){
             return $this->internalServerError($e);
