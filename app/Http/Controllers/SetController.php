@@ -13,7 +13,7 @@ class SetController extends Controller
 {
     public function deleteSet(Request $request)
     {
-        $token = $request->header();
+        $token = $request->header("token");
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
             return $this->tokenNotExist();

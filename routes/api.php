@@ -7,6 +7,7 @@ use App\Http\Controllers\FolderController;
 use App\Http\Controllers\SetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\GetWeatherController;
 use App\Models\Folder;
 use App\Models\User;
 use App\Mail\NotifyMail;
@@ -64,4 +65,5 @@ Route::get('/multipleChoiceGame', [SetController::class, 'multipleChoiceGame']);
 
 
 Route::get('send-mail', [MailController::class, 'sendEmail']);
+Route::get('getWeather', [GetWeatherController::class, 'getWeather']);
 
