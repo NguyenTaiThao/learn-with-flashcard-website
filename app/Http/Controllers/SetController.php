@@ -146,7 +146,7 @@ class SetController extends Controller
                     $returnData = [
                         'status' => 1,
                         'msg' => 'Get Set\'s detail successfully!',
-                        'data' => $set
+                        'data' => "123"
                     ];
                     return response()->json($returnData, 200);
                 }
