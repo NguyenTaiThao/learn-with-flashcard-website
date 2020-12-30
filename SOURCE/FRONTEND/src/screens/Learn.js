@@ -4,7 +4,7 @@ import { Row, Col } from "react-bootstrap"
 import "@styles/learn.css"
 import { Divider, Fab, Slide } from "@material-ui/core"
 import { Progress, Button } from 'antd';
-
+import {withRouter} from "react-router-dom"
 class Learn extends Component {
 
     constructor(props) {
@@ -41,9 +41,17 @@ class Learn extends Component {
             <>
                 <Row className="h-100 learn">
                     <Col xs={2} className="float-div ml-3 px-0">
-                        <Row className="align-items-baseline py-3">
-                            <i class="far fa-chevron-left pl-4 pr-2 typical-text back-icon"></i>
-                            <span className="back-btn cursor">
+                        <Row
+                            className="align-items-baseline py-3"
+                        >
+                            <i
+                                class="far fa-chevron-left pl-4 pr-2 typical-text back-icon"
+                                onClick={() => this.props.history.goBack()}
+                            ></i>
+                            <span 
+                                className="back-btn cursor"
+                                onClick={() => this.props.history.goBack()}    
+                            >
                                 Trở về
                             </span>
                         </Row>
@@ -184,4 +192,4 @@ class Learn extends Component {
     }
 }
 
-export default Learn;
+export default withRouter(Learn);

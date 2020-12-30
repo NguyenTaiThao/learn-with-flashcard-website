@@ -51,7 +51,7 @@ export const getAxios = createAxios();
 /* Support function */
 function handleResult(api) {
   return api.then(res => {
-    if (res.status == 403) {
+    if (res.data.code == 403) {
       Cookie.remove("SESSION_ID");
       alert("Phiên đăng nhập hết hạn")
     } else {
@@ -60,7 +60,7 @@ function handleResult(api) {
       }
       return Promise.resolve(res.data);
     }
-  });
+  }).catch(e => Reactotron.log("catch err", e))
 }
 
 
@@ -92,26 +92,26 @@ export const requestLogout = () => {
   return handleResult(getAxios.post(`logout`))
 }
 
-export const requestFolders = () => {
-  return handleResult(getAxios.get(`listFolders`))
+export const requestFolders = (payload) => {
+  return handleResult(getAxios.get(`listFolders`, { current_page: payload.page }))
 }
 
 export const requestCreateFolder = (payload) => {
   return handleResult(getAxios.post(`createOrUpdateFolder`, { ...payload }))
 }
 
-export const requestSets = (payload) => {
-  return handleResult(getAxios.get(`listFolders`))
+export const requestRecentSets = (payload) => {
+  return handleResult(getAxios.get(`recentSets`, {...payload}))
+}
+
+export const requestLearn = (payload) => {
+  return handleResult(getAxios.get(`recentSets`, {...payload}))
 }
 
 export const requestCreateSet = (payload) => {
   return handleResult(getAxios.post(`createOrUpdateSet`, { ...payload }))
 }
 
-export const requestRecentSets = () => {
-  return handleResult(getAxios.get(`recentSets`))
-}
-
-export const requestRecentAct = () => {
-  return handleResult(getAxios.get(`listSetsByTime`))
+export const requestRecentAct = (payload) => {
+  return handleResult(getAxios.get(`listSetsByTime`, {...payload}))
 }
