@@ -48,6 +48,6 @@ class Controller extends BaseController
             'msg' => 'Something went wrong',
             'error' => $e
         ];
-        return response()->json($returnData, 500);
+        return response()->json($returnData, 200);
     }
 }
