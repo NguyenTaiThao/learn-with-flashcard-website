@@ -35,9 +35,10 @@ class Controller extends BaseController
     {
         $returnData = [
             'status' => 0,
-            'msg' => 'No token found'
+            'msg' => 'No token found',
+            'code' => 403
         ];
-        return response()->json($returnData, 403);
+        return response()->json($returnData, 200);
     }
 
     public function internalServerError(Exception $e)
