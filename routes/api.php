@@ -45,7 +45,8 @@ Route::group(['prefix' => 'set'], function () {
     Route::post('/add', [SetController::class, 'addSet']);
     Route::post('/edit/{id}', [SetController::class, 'editSet']);
     Route::post('/delete/{id}', [SetController::class, 'deleteSet']);
-    Route::get('/completed', [SetController::class, 'completedSet']);
+    Route::get('/completed', [SetController::class, 'completedSets']);
+    Route::get('/created', [SetController::class, 'createdSets']);
 });
 
 Route::group(['prefix' => 'card'], function () {

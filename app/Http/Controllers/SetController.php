@@ -193,7 +193,7 @@ class SetController extends Controller
         }
     }
 
-    public function completedSet(Request $request)
+    public function completedSets(Request $request)
     {
         $token = $request->header("token");
         $user = $this->user_model->isTokenExist($token);
@@ -201,7 +201,7 @@ class SetController extends Controller
             return $this->tokenNotExist();
         }else{
             try {
-                $data = $this->set_model->completedSet($request->current_page, $this->sets_per_page, $user->id);
+                $data = $this->set_model->completedSets($request->current_page, $this->sets_per_page, $user->id);
                 if(count($data['sets']) == 0){
                     $returnData = [
                         'status' => 0,
@@ -216,6 +216,34 @@ class SetController extends Controller
                     'data' => $data
                 ];
                 return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function createdSets(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->createdSets($request->current_page, $this->sets_per_page, $user->id);
+                if(count($data['sets']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ sets để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
                 return response()->json($returnData, 200);
             } catch (Exception $e) {
                 $this->internalServerError($e);

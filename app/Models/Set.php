@@ -132,8 +132,17 @@ class Set extends Model
         return count($sets);
     }
 
+    public function allCreatedSet($user_id)
+    {
+        $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
+                    ->where([['folders.user_id', "=", $user_id], ['sets.is_purchased', "=", 0]])
+                    ->orderBy('sets.updated_at', 'desc')
+                    ->get('sets.*');
+        return count($sets);
+    }
 
-    public function completedSet($current_page, $sets_per_page, $user_id)
+
+    public function completedSets($current_page, $sets_per_page, $user_id)
     {
         $offset = ($current_page - 1) * $sets_per_page;
         $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
@@ -143,6 +152,21 @@ class Set extends Model
                     ->offset($offset)
                     ->get('sets.*');
         $paginate = $this->paginate($this->allCompletedSet($user_id), $current_page, $sets_per_page);
+        $data['paginate'] = $paginate;
+        $data['sets'] = $sets;
+        return $data;
+    }
+
+    public function createdSets($current_page, $sets_per_page, $user_id)
+    {
+        $offset = ($current_page - 1) * $sets_per_page;
+        $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
+                    ->where([['folders.user_id', "=", $user_id], ['sets.is_purchased', "=", 0]])
+                    ->orderBy('sets.updated_at', 'desc')
+                    ->limit($sets_per_page)
+                    ->offset($offset)
+                    ->get('sets.*');
+        $paginate = $this->paginate($this->allCreatedSet($user_id), $current_page, $sets_per_page);
         $data['paginate'] = $paginate;
         $data['sets'] = $sets;
         return $data;
