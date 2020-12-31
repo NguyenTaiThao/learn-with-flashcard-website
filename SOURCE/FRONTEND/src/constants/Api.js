@@ -22,29 +22,12 @@ function createAxios() {
   axiosInstant.interceptors.response.use(
     response => {
       Reactotron.apisauce(response);
-
-      // if (response.data && response.data.code == 403) {
-      //   showMessages(
-      //     R.strings().notif_tab_cus,
-      //     R.strings().require_login_againt,
-      //     () =>
-      //       AsyncStorage.removeItem(ASYNC_STORAGE.TOKEN, () => {
-      //         const store = require("@app/redux/store").default;
-      //         store.dispatch({ type: "reset" });
-      //         NavigationUtil.navigate(SCREEN_ROUTER_AUTH.AUTH_LOADING);
-      //       })
-      //   );
-      // } else if (response.data && response.data.status != 1)
-      //   showMessages(R.strings().notif_tab_cus, response.data.message);
       return response;
     });
 
   return axiosInstant;
 }
 
-
-// return axiosInstant;
-// }
 
 export const getAxios = createAxios();
 
@@ -60,7 +43,7 @@ function handleResult(api) {
       }
       return Promise.resolve(res.data);
     }
-  }).catch(e => Reactotron.log("catch err", e))
+  }).catch((e) => Reactotron.log("API err",e))
 }
 
 
@@ -96,16 +79,20 @@ export const requestFolders = (payload) => {
   return handleResult(getAxios.get(`listFolders`, { current_page: payload.page }))
 }
 
+export const requestFolderDetail = (payload) => {
+  return handleResult(getAxios.get(`folderDetail?id=${payload.id}`, ))
+}
+
 export const requestCreateFolder = (payload) => {
   return handleResult(getAxios.post(`createOrUpdateFolder`, { ...payload }))
 }
 
 export const requestRecentSets = (payload) => {
-  return handleResult(getAxios.get(`recentSets`, {...payload}))
+  return handleResult(getAxios.get(`recentSets`, { ...payload }))
 }
 
 export const requestLearn = (payload) => {
-  return handleResult(getAxios.get(`recentSets`, {...payload}))
+  return handleResult(getAxios.get(`recentSets`, { ...payload }))
 }
 
 export const requestCreateSet = (payload) => {
@@ -113,5 +100,9 @@ export const requestCreateSet = (payload) => {
 }
 
 export const requestRecentAct = (payload) => {
-  return handleResult(getAxios.get(`listSetsByTime`, {...payload}))
+  return handleResult(getAxios.get(`listSetsByTime`, { ...payload }))
+}
+
+export const requestSetDetail = (payload) => {
+  return handleResult(getAxios.get(`setDetail?id=${payload.id}`))
 }

@@ -86,7 +86,7 @@ class NavBar extends Component {
                 icon={<BarChartOutlined style={{ fontSize: "20px" }} />}
                 onClick={() => this.props.history.push(ROUTER.PROGRESS)}
             >
-                <b>Tiến độ</b>
+                <b>Thống kê</b>
             </Menu.Item>
 
             <Menu.Item
@@ -123,7 +123,7 @@ class NavBar extends Component {
                     return (
                         <Menu.Item
                             key={6 + index}
-                            onClick={() => this.props.history.push(ROUTER.FOLDER_CONTENT)}
+                            onClick={() => this.pushRef(ROUTER.FOLDER_CONTENT, e.id)}
                         >
                             <span>{e.name}</span>
                         </Menu.Item>
@@ -131,14 +131,14 @@ class NavBar extends Component {
                 }
                 )}
                 <Menu.Item
-                    key="8"
+                    key={6 + this.props.folderState?.data?.folders?.length}
                     onClick={() => this.props.history.push(ROUTER.FOLDER_CREATE)}
                 >
                     <span className="text-info">Thêm thư mục</span>
                 </Menu.Item>
             </SubMenu>
 
-            <SubMenu
+            {/* <SubMenu
                 key="sub2"
                 icon={<UsergroupAddOutlined style={{ fontSize: "20px" }} />}
                 title={<b>Lớp học</b>}
@@ -148,7 +148,7 @@ class NavBar extends Component {
                 <Menu.Item key="11">
                     <span className="text-info">Tham gia hoặc tạo lớp</span>
                 </Menu.Item>
-            </SubMenu>
+            </SubMenu> */}
 
             <Divider />
         </Menu>
@@ -158,6 +158,13 @@ class NavBar extends Component {
 
     activeMenu = () => {
         var pathName = "/" + window.location.pathname.split("/")[1];
+    }
+
+    pushRef(link, id) {
+        this.props.history.push({
+            pathname: link,
+            state: { id: id }
+        })
     }
 }
 

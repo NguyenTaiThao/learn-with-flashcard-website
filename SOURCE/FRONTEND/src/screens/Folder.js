@@ -199,7 +199,7 @@ class Folder extends Component {
                 <>
                     <Row
                         className="float-div folder-element py-md-2 mt-3 cursor"
-                        onClick={() => this.pushRef(ROUTER.FOLDER_CONTENT)}
+                        onClick={() => this.pushRef(ROUTER.FOLDER_CONTENT, ele.id)}
                     >
                         <Col md={12}>
                             <span className="info">{ele && ele?.number_of_sets} học phần</span>
@@ -215,7 +215,7 @@ class Folder extends Component {
             return (
                 <>
                     <Row className="float-div folder-element py-md-2 mt-3 cursor"
-                        onClick={() => this.pushRef(ROUTER.LEARN)}
+                        onClick={() => this.pushRef(ROUTER.LEARN, ele.id)}
                     >
                         <Col md={12}>
                             <span className="info">2 thuật ngữ</span>
@@ -231,7 +231,7 @@ class Folder extends Component {
             return (
                 <>
                     <Row className="float-div folder-element py-md-2 mt-3 cursor"
-                        onClick={() => this.pushRef(ROUTER.LEARN)}
+                        onClick={() => this.pushRef(ROUTER.LEARN, ele.id)}
                     >
                         <Col md={12}>
                             <span className="info">{ele && ele?.number_of_cards} thuật ngữ</span>
@@ -247,7 +247,7 @@ class Folder extends Component {
             return (
                 <>
                     <Row className="float-div folder-element py-md-2 mt-3 cursor"
-                        onClick={() => this.pushRef(ROUTER.LEARN)}
+                        onClick={() => this.pushRef(ROUTER.LEARN, ele.id)}
                     >
                         <Col md={12}>
                             <span className="info">{ele && ele?.number_of_cards} thuật ngữ</span>
@@ -263,8 +263,11 @@ class Folder extends Component {
 
     }
 
-    pushRef(link) {
-        this.props.history.push(link)
+    pushRef(link, id) {
+        this.props.history.push({
+            pathname: link,
+            state: { id: id }
+        })
     }
 }
 
