@@ -68,7 +68,7 @@ class Header extends Component {
 
     onChangeSearch = (value) => {
         this.setState({
-            onChangeSearch: value
+            searchBox: value
         })
     }
 

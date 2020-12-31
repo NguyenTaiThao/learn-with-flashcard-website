@@ -4,7 +4,7 @@ import { Row, Col, Button } from "react-bootstrap"
 import reactotron from 'reactotron-react-js';
 import CanvasJSReact from '@assets/canvasjs-3.2.5/canvasjs.react';
 import "@styles/UserHome.css"
-import { Skeleton, Tooltip, Card, Avatar } from 'antd';
+import { Skeleton, Tooltip, Card, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { withRouter } from "react-router-dom"
 import { connect } from "react-redux"
@@ -91,8 +91,9 @@ class UserHome extends Component {
                                     <Button
                                         variant="secondary"
                                         className="typical-btn change-mode mt-3"
+                                        onClick={()=> this.pushRef(ROUTER.LEARN, data[0]?.id)}
                                     >
-                                        Dùng chế độ học
+                                        Tiếp tục luyện tập
                                     </Button>
                                 </Row>
                             </Col>
@@ -121,13 +122,19 @@ class UserHome extends Component {
                                             placement="bottom"
                                             title="Học"
                                         >
-                                            <BookOutlined key="learn" />
+                                            <BookOutlined
+                                                key="learn"
+                                                onClick={() => this.pushRef(ROUTER.LEARN, e?.id)}
+                                            />
                                         </Tooltip>,
                                         <Tooltip
                                             placement="bottom"
                                             title="Chỉnh sửa"
                                         >
-                                            <EditOutlined key="edit" />
+                                            <EditOutlined
+                                                key="edit"
+                                                onClick={() => this.pushRef(ROUTER.LEARN, e?.id)}
+                                            />
                                         </Tooltip>,
                                         <Tooltip
                                             placement="bottom"
@@ -139,9 +146,6 @@ class UserHome extends Component {
                                 >
                                     <Skeleton loading={loading} avatar active>
                                         <Card.Meta
-                                            // avatar={
-                                            //     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                            // }
                                             title={e && e?.title}
                                             description={`${e && e?.cards.length} thuật ngữ`}
                                         />
@@ -158,44 +162,64 @@ class UserHome extends Component {
                                                     placement="bottom"
                                                     title="Học"
                                                 >
-                                                    <BookOutlined key="learn" />
+                                                    <BookOutlined
+                                                        key="learn"
+                                                        onClick={() => this.pushRef(ROUTER.LEARN, e?.id)}
+                                                    />
                                                 </Tooltip>,
                                                 <Tooltip
                                                     placement="bottom"
                                                     title="Chỉnh sửa"
                                                 >
-                                                    <EditOutlined key="edit" />
+                                                    <EditOutlined
+                                                        key="edit"
+                                                        onClick={() => this.pushRef(ROUTER.LEARN, e?.id)}
+                                                    />
                                                 </Tooltip>,
                                                 <Tooltip
                                                     placement="bottom"
                                                     title="Xóa"
                                                 >
-                                                    <DeleteOutlined key="delete" />
+                                                    <Popconfirm
+                                                        title="Bạn muốn xóa học phần này và tất cả các thẻ card trong nó?"
+                                                        onConfirm={this.removeSet}
+                                                        // onCancel={cancel}
+                                                        okText="Đồng ý"
+                                                        cancelText="Hủy"
+                                                    >
+                                                        <DeleteOutlined key="delete" />
+                                                    </Popconfirm>
                                                 </Tooltip>,
                                             ]}
                                         >
                                             <Skeleton loading={loading} avatar active>
-                                                <Card.Meta
-                                                // avatar={
-                                                //     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                                // }
-                                                // title={e && e?.title}
-                                                // description={`${e && e?.cards.length} thuật ngữ`}
-                                                />
+                                                <Card.Meta />
                                             </Skeleton>
                                         </Card>
                                     )}
 
                                 </>
                             }
-
-
-
                         </Row>
                     </Col>
                 </Row>
             </>
         )
+    }
+
+    pushRef(link, id) {
+        this.props.history.push({
+            pathname: link,
+            state: { id: id }
+        })
+    }
+
+    removeSet = async () => {
+        try{
+            
+        }catch(e){
+            reactotron.log("remove set err", e)
+        }
     }
 }
 

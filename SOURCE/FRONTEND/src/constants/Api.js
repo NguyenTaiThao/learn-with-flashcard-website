@@ -106,3 +106,15 @@ export const requestRecentAct = (payload) => {
 export const requestSetDetail = (payload) => {
   return handleResult(getAxios.get(`setDetail?id=${payload.id}`))
 }
+
+export const requestRemoveSet = (payload) => {
+  return handleResult(getAxios.get(`setDetail`,payload))
+}
+
+export const requestRemoveFolder = (payload) => {
+  return handleResult(getAxios.get(`folder/delete`,payload))
+}
+
+export const requestSetToFolder = (payload) => {
+  return handleResult(getAxios.get(`setToFolder`,payload))
+}

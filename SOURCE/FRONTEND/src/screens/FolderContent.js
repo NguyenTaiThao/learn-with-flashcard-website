@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "@styles/FolderContent.css"
 import { Row, Col } from "react-bootstrap"
-import { Skeleton, Result, Card, Avatar, Tooltip, Button } from 'antd';
+import { Skeleton, Popconfirm, Card, Tooltip, Button } from 'antd';
 import { EditOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { withRouter, Redirect } from 'react-router-dom'
 import { ROUTER } from "@constants/Constant"
@@ -100,13 +100,21 @@ class FolderContent extends Component {
                                 />
                             </Tooltip>
                             <Tooltip placement="bottom" title="Xóa">
-                                <Button
-                                    type="primary"
-                                    shape="circle"
-                                    icon={<i class="far fa-trash"></i>}
-                                    size="large"
-                                    className="function-btn"
-                                />
+                                <Popconfirm
+                                    title="Bạn muốn xóa học phần này và tất cả các thẻ card trong nó?"
+                                    onConfirm={this.removeSet}
+                                    // onCancel={cancel}
+                                    okText="Đồng ý"
+                                    cancelText="Hủy"
+                                >
+                                    <Button
+                                        type="primary"
+                                        shape="circle"
+                                        icon={<i class="far fa-trash"></i>}
+                                        size="large"
+                                        className="function-btn"
+                                    />
+                                </Popconfirm>
                             </Tooltip>
                         </Col>
                     </Row>
@@ -120,7 +128,10 @@ class FolderContent extends Component {
                                         placement="bottom"
                                         title="Học"
                                     >
-                                        <BookOutlined key="learn" />
+                                        <BookOutlined
+                                            key="learn"
+                                            onClick={() => this.pushRef(ROUTER.LEARN, ele?.id)}
+                                        />
                                     </Tooltip>,
                                     <Tooltip
                                         placement="bottom"
@@ -132,7 +143,15 @@ class FolderContent extends Component {
                                         placement="bottom"
                                         title="Xóa"
                                     >
-                                        <DeleteOutlined key="delete" />
+                                        <Popconfirm
+                                            title="Bạn muốn xóa học phần này và tất cả các thẻ card trong nó?"
+                                            onConfirm={this.removeSet}
+                                            // onCancel={cancel}
+                                            okText="Đồng ý"
+                                            cancelText="Hủy"
+                                        >
+                                            <DeleteOutlined key="delete" />
+                                        </Popconfirm>
                                     </Tooltip>,
                                 ]}
                             >
@@ -164,6 +183,30 @@ class FolderContent extends Component {
         }
 
     }
+
+    pushRef(link, id) {
+        this.props.history.push({
+            pathname: link,
+            state: { id: id }
+        })
+    }
+
+    removeSet = async () => {
+        try {
+
+        } catch (e) {
+            reactotron.log("remove set err", e)
+        }
+    }
+
+    removeFolder = async () => {
+        try {
+
+        } catch (e) {
+
+        }
+    }
+
 }
 
 export default withRouter(FolderContent);

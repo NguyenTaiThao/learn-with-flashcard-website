@@ -9,7 +9,8 @@ const ROUTER = {
     RECENT_ACT:"/recentActivities",
     SET:"/set",
     LEARN:"/learn",
-    FOLDER_CONTENT:"/folder-content"
+    FOLDER_CONTENT:"/folder-content",
+    SEARCH:"/search"
   };
 
 export { 

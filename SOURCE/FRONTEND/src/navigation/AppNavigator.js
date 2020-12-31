@@ -22,6 +22,7 @@ import LearnScreen from "@screens/Learn"
 import FolderScreen from "@screens/Folder"
 import FolderCreateScreen from "@screens/CreateFolder"
 import FolderContentScreen from "@screens/FolderContent"
+import SearchScreen from "@screens/Search"
 
 export class AppNavigator extends Component {
 
@@ -58,6 +59,7 @@ class MainNavigator extends Component {
                         <PrivateRoute path={ROUTER.FOLDER_CONTENT} exact Component={FolderContentScreen} screen="folder"/>
                         <PrivateRoute path={ROUTER.FOLDER_CREATE} exact Component={FolderCreateScreen}/>
                         <PrivateRoute path={ROUTER.RECENT_ACT} exact Component={FolderScreen} screen="recentActivities"/>
+                        <PrivateRoute path={ROUTER.SEARCH} exact Component={SearchScreen}/>
                     </Switch>
                 } />
             </>
