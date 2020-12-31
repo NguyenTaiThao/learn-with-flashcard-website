@@ -137,7 +137,6 @@ class FolderController extends Controller
         $token = $request->header('token');
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
-            dd("123");
             return $this->tokenNotExist();
         }else{
             try{
@@ -175,7 +174,7 @@ class FolderController extends Controller
                         'status' => 0,
                         'msg' => 'Folder does not exist!',
                     ];
-                    return response()->json($returnData, 400);
+                    return response()->json($returnData, 200);
                 }else{
                     $returnData = [
                         'status' => 1,

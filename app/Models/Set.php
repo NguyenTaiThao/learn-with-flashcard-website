@@ -30,7 +30,7 @@ class Set extends Model
     public function completedPercent($id)
     {
         $set = $this->find($id);
-        return round(count($set->cards()->where('remember', 1)->get()) / count($set->cards) *100);
+        return round(count($set->cards()->where('remember', 1)->get()) / $set->number_of_cards *100);
     }
 
     public function recentSets($user_id){
@@ -40,9 +40,6 @@ class Set extends Model
                     ->limit(5)
                     ->with('cards')
                     ->get('sets.*');
-        foreach ($sets as $key => $value) {
-            $value->number_of_cards = count($value->cards);
-        }
         return $sets;
     }
 
@@ -51,9 +48,6 @@ class Set extends Model
                     ->where('folders.user_id', $user_id)
                     ->whereBetween('sets.created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
                     ->get('sets.*');
-        foreach ($sets as $key => $value) {
-            $value->number_of_cards = count($value->cards);
-        }
         $data['this_week'] = $sets;
         for($month = 1; $month <= 12; $month++){
             $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
@@ -61,9 +55,6 @@ class Set extends Model
                         ->whereYear('sets.created_at', Carbon::now()->year)
                         ->whereMonth('sets.created_at', $month)
                         ->get('sets.*');
-            foreach ($sets as $key => $value) {
-                $value->number_of_cards = count($value->cards);
-            }
             $data[$month] = $sets;
         }
         return $data;
@@ -72,7 +63,6 @@ class Set extends Model
     public function setDetail($id)
     {
         $set = $this->where('id',$id)->with('cards')->first();
-        $set->total_cards = count($set->cards);
         $set->remembered_cards = count($set->cards()->where('remember', 1)->get());
         return $set;
     }
@@ -107,5 +97,19 @@ class Set extends Model
         }else{
             return $data;
         }
+    }
+
+    public function removeCard($set_id, $card_received)
+    {
+        $set = $this->where('id',$set_id)->first();
+        $deleted = 0;
+        foreach ($set->cards as $card) {
+            if(!in_array($card->id, $card_received)){
+                $card->delete();
+                $deleted++;
+            }
+        }
+        $set->number_of_cards = count($set->cards) - $deleted;
+        $set->save();
     }
 }

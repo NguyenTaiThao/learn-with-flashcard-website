@@ -62,6 +62,7 @@ class SetController extends Controller
                 }
                 $set->save();
                 $set_id = $set->id;
+                $card_received = [];
                 foreach ($request->cards as $key => $value) {
                     if ($value['id'] == 0) { // thêm mới thẻ
                         $card = new Card;
@@ -73,7 +74,9 @@ class SetController extends Controller
                     $card->remember = $value['remember'];
                     $card->set_id = $set_id;
                     $card->save();
+                    array_push($card_received, $card->id);
                 }
+                $this->set_model->removeCard($set->id, $card_received);
                 $set->completed = $this->set_model->completedPercent($set->id);
                 $set->save();
                 $returnData = [
@@ -185,4 +188,6 @@ class SetController extends Controller
             }
         }
     }
+
+
 }

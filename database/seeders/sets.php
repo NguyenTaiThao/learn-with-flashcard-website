@@ -15,12 +15,12 @@ class sets extends Seeder
     public function run()
     {
         DB::table('sets')->insert([
-            ['id'=>1, 'title'=>'title 1', 'price'=>100, 'folder_id'=>1],
-            ['id'=>2, 'title'=>'title 2', 'price'=>200, 'folder_id'=>2],
-            ['id'=>3, 'title'=>'title 3', 'price'=>300, 'folder_id'=>3],
-            ['id'=>4, 'title'=>'title 4', 'price'=>400, 'folder_id'=>6],
-            ['id'=>5, 'title'=>'title 5', 'price'=>500, 'folder_id'=>3],
-            ['id'=>6, 'title'=>'title 6', 'price'=>600, 'folder_id'=>2],
+            ['id'=>1, 'title'=>'title 1', 'price'=>100, 'folder_id'=>1, 'number_of_cards' => 8],
+            ['id'=>2, 'title'=>'title 2', 'price'=>200, 'folder_id'=>2, 'number_of_cards' => 2],
+            ['id'=>3, 'title'=>'title 3', 'price'=>300, 'folder_id'=>3, 'number_of_cards' => 1],
+            ['id'=>4, 'title'=>'title 4', 'price'=>400, 'folder_id'=>6, 'number_of_cards' => 1],
+            ['id'=>5, 'title'=>'title 5', 'price'=>500, 'folder_id'=>3, 'number_of_cards' => 0],
+            ['id'=>6, 'title'=>'title 6', 'price'=>600, 'folder_id'=>2, 'number_of_cards' => 0],
         ]);
     }
 }

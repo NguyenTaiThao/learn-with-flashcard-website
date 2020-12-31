@@ -29,6 +29,11 @@ class Folder extends Model
     {
         $folder = $this->where('id',$id)->with('sets')->firstOrFail();
         $folder->total_sets = count($folder->sets);
+        $folder->author = $folder->user->name;
+        unset($folder->user);
+        foreach ($folder->sets as $set) {
+            $set->number_of_cards = count($set->cards);
+        }
         return $folder;
     }
 }
