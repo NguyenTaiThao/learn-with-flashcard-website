@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { ROUTER } from '../constants/Constant';
 import { Row, Col, Button } from "react-bootstrap"
-import reactotron from '../ReactotronConfig';
+import reactotron from 'reactotron-react-js';
 import CanvasJSReact from '@assets/canvasjs-3.2.5/canvasjs.react';
 import "@styles/UserHome.css"
-import { Skeleton, Switch, Card, Avatar } from 'antd';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import { Skeleton, Tooltip, Card, Avatar } from 'antd';
+import { EditOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { withRouter } from "react-router-dom"
 import { connect } from "react-redux"
+import { requestRecentSets } from "@constants/Api"
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class UserHome extends Component {
@@ -15,13 +17,36 @@ class UserHome extends Component {
         super(props);
         this.state = {
             loading: false,
+            data: []
         }
     }
+
+    componentDidMount() {
+        this.getData()
+    }
+
+    getData = async () => {
+        try {
+            this.setState({
+                loading: true
+            })
+            const res = await requestRecentSets({ page: 1 });
+            this.setState({
+                loading: false,
+                data: res.data
+            })
+        } catch (e) {
+            reactotron.log("user home err", e)
+        }
+    }
+
     render() {
+        const { loading, data } = this.state;
+
         const options = {
             animationEnabled: true,
             subtitles: [{
-                text: "Hoàn thành 15%",
+                text: "Hoàn thành " + data[0]?.completed + "%",
                 verticalAlign: "center",
                 fontSize: 14,
                 dockInsidePlotArea: false
@@ -33,13 +58,19 @@ class UserHome extends Component {
                 showInLegend: true,
                 yValueFormatString: "#,###'%'",
                 dataPoints: [
-                    { name: "Hoàn thành", y: 5, color: "green" },
-                    { name: "Chưa hoàn thành", y: 31, color: "#f0f0f0" },
+                    {
+                        name: "Hoàn thành",
+                        y: data[0]?.completed,
+                        color: "green"
+                    },
+                    {
+                        name: "Chưa hoàn thành",
+                        y: (1 - data[0]?.completed / 100) * 100,
+                        color: "#f0f0f0"
+                    },
                 ]
             }]
         }
-
-        const { loading } = this.state;
 
         return (
             <>
@@ -51,7 +82,7 @@ class UserHome extends Component {
                             </Col>
                             <Col md={9} className="d-flex flex-column justify-content-center">
                                 <Row>
-                                    <span className="title">IT日本語②ー総合</span>
+                                    <span className="title">{data && data[0]?.title}</span>
                                 </Row>
                                 <Row>
                                     <span className="banner">Tiếp tục luyện tập với chế độ Học và cải thiện kiến thức của bạn.</span>
@@ -82,81 +113,84 @@ class UserHome extends Component {
                         </Row>
 
                         <Row className="justify-content-between">
-                            <Card
-                                style={{ width: 400, marginTop: 16 }}
-                                actions={[
-                                    <SettingOutlined key="setting" />,
-                                    <EditOutlined key="edit" />,
-                                    <EllipsisOutlined key="ellipsis" />,
-                                ]}
-                            >
-                                <Skeleton loading={loading} avatar active>
-                                    <Card.Meta
-                                        avatar={
-                                            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                        }
-                                        title="IT midterm"
-                                        description="99 thuật ngữ"
-                                    />
-                                </Skeleton>
-                            </Card>
+                            {!loading ? data && data?.filter((e1, i1) => i1 != 0)?.map((e, index) =>
+                                <Card
+                                    style={{ width: 400, marginTop: 16 }}
+                                    actions={[
+                                        <Tooltip
+                                            placement="bottom"
+                                            title="Học"
+                                        >
+                                            <BookOutlined key="learn" />
+                                        </Tooltip>,
+                                        <Tooltip
+                                            placement="bottom"
+                                            title="Chỉnh sửa"
+                                        >
+                                            <EditOutlined key="edit" />
+                                        </Tooltip>,
+                                        <Tooltip
+                                            placement="bottom"
+                                            title="Xóa"
+                                        >
+                                            <DeleteOutlined key="delete" />
+                                        </Tooltip>,
+                                    ]}
+                                >
+                                    <Skeleton loading={loading} avatar active>
+                                        <Card.Meta
+                                            // avatar={
+                                            //     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                                            // }
+                                            title={e && e?.title}
+                                            description={`${e && e?.cards.length} thuật ngữ`}
+                                        />
+                                    </Skeleton>
+                                </Card>
+                            )
+                                :
+                                <>
+                                    {[1, 2, 3, 4].map(e =>
+                                        <Card
+                                            style={{ width: 400, marginTop: 16 }}
+                                            actions={[
+                                                <Tooltip
+                                                    placement="bottom"
+                                                    title="Học"
+                                                >
+                                                    <BookOutlined key="learn" />
+                                                </Tooltip>,
+                                                <Tooltip
+                                                    placement="bottom"
+                                                    title="Chỉnh sửa"
+                                                >
+                                                    <EditOutlined key="edit" />
+                                                </Tooltip>,
+                                                <Tooltip
+                                                    placement="bottom"
+                                                    title="Xóa"
+                                                >
+                                                    <DeleteOutlined key="delete" />
+                                                </Tooltip>,
+                                            ]}
+                                        >
+                                            <Skeleton loading={loading} avatar active>
+                                                <Card.Meta
+                                                // avatar={
+                                                //     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                                                // }
+                                                // title={e && e?.title}
+                                                // description={`${e && e?.cards.length} thuật ngữ`}
+                                                />
+                                            </Skeleton>
+                                        </Card>
+                                    )}
 
-                            <Card
-                                style={{ width: 400, marginTop: 16 }}
-                                actions={[
-                                    <SettingOutlined key="setting" />,
-                                    <EditOutlined key="edit" />,
-                                    <EllipsisOutlined key="ellipsis" />,
-                                ]}
-                            >
-                                <Skeleton loading={loading} avatar active>
-                                    <Card.Meta
-                                        avatar={
-                                            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                        }
-                                        title="IT midterm"
-                                        description="99 thuật ngữ"
-                                    />
-                                </Skeleton>
-                            </Card>
+                                </>
+                            }
 
-                            <Card
-                                style={{ width: 400, marginTop: 16 }}
-                                actions={[
-                                    <SettingOutlined key="setting" />,
-                                    <EditOutlined key="edit" />,
-                                    <EllipsisOutlined key="ellipsis" />,
-                                ]}
-                            >
-                                <Skeleton loading={loading} avatar active>
-                                    <Card.Meta
-                                        avatar={
-                                            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                        }
-                                        title="IT midterm"
-                                        description="99 thuật ngữ"
-                                    />
-                                </Skeleton>
-                            </Card>
 
-                            <Card
-                                style={{ width: 400, marginTop: 16 }}
-                                actions={[
-                                    <SettingOutlined key="setting" />,
-                                    <EditOutlined key="edit" />,
-                                    <EllipsisOutlined key="ellipsis" />,
-                                ]}
-                            >
-                                <Skeleton loading={loading} avatar active>
-                                    <Card.Meta
-                                        avatar={
-                                            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                        }
-                                        title="IT nihongo"
-                                        description="133 thuật ngữ"
-                                    />
-                                </Skeleton>
-                            </Card>
+
                         </Row>
                     </Col>
                 </Row>

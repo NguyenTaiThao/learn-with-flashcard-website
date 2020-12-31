@@ -1,44 +1,72 @@
 import React, { Component } from 'react';
-import { Row, Col, Button } from "react-bootstrap"
+import { Row, Col } from "react-bootstrap"
+import { Button } from "antd"
 import { TextField, MenuItem, Divider } from "@material-ui/core/"
 import { withRouter, Link } from "react-router-dom"
 import "@styles/CreateSet.css"
+import reactotron from 'src/ReactotronConfig';
+import { requestCreateSet } from "@constants/Api"
+import NotifyContext from "@context/NotifyContext"
 
+
+const defaultState = {
+    name: "",
+    discription: "",
+    price: 0,
+    newSet: [
+        {
+            id: 0,
+            front_side: "",
+            back_side: "",
+            remember: 0
+        },
+        {
+            id: 0,
+            front_side: "",
+            back_side: "",
+            remember: 0
+        },
+        {
+            id: 0,
+            front_side: "",
+            back_side: "",
+            remember: 0
+        },
+        {
+            id: 0,
+            front_side: "",
+            back_side: "",
+            remember: 0
+        },
+
+    ],
+    loading: false
+}
 class CreateSet extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            newSet: [
-                {
-                    title: "english",
-                    meaning: "Tiếng Anh"
-                },
-                {
-                    title: "english",
-                    meaning: "Tiếng Anh"
-                },
-                {
-                    title: "english",
-                    meaning: "Tiếng Anh"
-                },
-                {
-                    title: "english",
-                    meaning: "Tiếng Anh"
-                }
-            ],
-            sets: [1, 2, 3, 4],
-
+            ...defaultState
         }
     }
 
+    static contextType = NotifyContext
+
     render() {
-        const { sets } = this.state
+        const { newSet, name, discription, price } = this.state
         return (
             <>
                 <Row className="justify-content-between px-4 py-4 bg-white pt-5 create-set-header align-items-center">
                     <b className="title">Tạo học phần mới</b>
-                    <Button className="typical-btn create-btn">Tạo</Button>
+                    <Button
+                        className="typical-btn create-btn "
+                        type="primary"
+                        onClick={() => this.createSet()}
+                        loading={this.state.loading}
+                    >
+                        <span>Tạo</span>
+                    </Button>
                 </Row>
 
                 <Row className="bg-white">
@@ -46,12 +74,24 @@ class CreateSet extends Component {
                         <form noValidate autoComplete="off" className="w-100">
                             <Row>
                                 <Col md={6}>
-                                    <TextField id="title-set" label="Tiêu đề của Set" className="w-100 py-3" />
+                                    <TextField
+                                        id="title-set"
+                                        label="Tiêu đề của Set"
+                                        className="w-100 py-3"
+                                        value={name}
+                                        onChange={(e) => this.handleChangeSet("name", e.target.value)}
+                                    />
                                 </Col>
                             </Row>
                             <Row>
                                 <Col md={6}>
-                                    <TextField id="discription-set" label="Mô tả" className="w-100 py-3" />
+                                    <TextField
+                                        id="discription-set"
+                                        label="Mô tả"
+                                        className="w-100 py-3"
+                                        value={discription}
+                                        onChange={(e) => this.handleChangeSet("discription", e.target.value)}
+                                    />
                                 </Col>
                             </Row>
                         </form>
@@ -84,22 +124,19 @@ class CreateSet extends Component {
                                 </Row>
                             </Col>
                             <Col md={4}>
-                                <Row>
-                                    <b className="">Chỉ tôi có quyền sửa</b>
-                                </Row>
-                                <Row>
+                                <Row className="align-items-end h-100">
                                     <TextField
-                                        select
-                                        value={1}
+                                        id="outlined-number"
+                                        type="number"
+                                        label="Giá tiền"
+                                        value={price}
+                                        onChange={(e) => this.handleChangeSet("price", e.target.value)}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        variant="outlined"
                                         className="w-100"
-                                    >
-                                        <MenuItem key={1} value={1} className="typical-text">
-                                            Chỉ mình tôi
-                                            </MenuItem>
-                                        <MenuItem key={2} value={2} className="typical-text">
-                                            Mọi người
-                                            </MenuItem>
-                                    </TextField>
+                                    />
                                 </Row>
                             </Col>
                             <Col>
@@ -109,7 +146,7 @@ class CreateSet extends Component {
                     </Col>
                 </Row>
 
-                {sets.map((element, index) =>
+                {newSet.length > 0 && newSet.map((element, index) =>
                     <Row className="new-div mt-4 mx-md-5 py-3">
                         <Col className="px-0">
                             <Row className="align-items-center px-3 pb-2">
@@ -128,10 +165,22 @@ class CreateSet extends Component {
                             <Divider />
                             <Row className="pt-3">
                                 <Col md={6}>
-                                    <TextField id="label-set-1" label="Thuật ngữ" className="w-100 py-3" />
+                                    <TextField
+                                        id={`label-set-${index}`}
+                                        label="Thuật ngữ"
+                                        className="w-100 py-3"
+                                        value={element.front_side}
+                                        onChange={(e) => this.handleChangeCard(index, "front_side", e.target.value)}
+                                    />
                                 </Col>
                                 <Col md={6}>
-                                    <TextField id="meaning-set-1" label="Ý nghĩa của thuật ngữ" className="w-100 py-3" />
+                                    <TextField
+                                        id={`back_side-set-${index}`}
+                                        label="Ý nghĩa của thuật ngữ"
+                                        className="w-100 py-3"
+                                        value={element.back_side}
+                                        onChange={(e) => this.handleChangeCard(index, "back_side", e.target.value)}
+                                    />
                                 </Col>
                             </Row>
                         </Col>
@@ -148,17 +197,59 @@ class CreateSet extends Component {
         )
     }
 
+    async createSet() {
+        const { name, discription, price, newSet } = this.state
+        try {
+            this.setState({
+                loading: true
+            })
+            let data = newSet.filter(e => e.front_side || e.back_side)
+            const res = await requestCreateSet({
+                "id": 0,
+                "title": name,
+                "price": price,
+                "folder_id": 0,
+                "cards": [...newSet]
+            })
+            this.setState({
+                ...defaultState
+            })
+            this.context("success", "Thành công", "Thêm mới học phần thành công")
+        } catch (e) {
+            reactotron.log(e)
+            this.setState({
+                loading: false
+            })
+            this.context("error", "Thất bại", "Tạo học phần thất bại.")
+        }
+    }
+
+
+    handleChangeSet(field, value) {
+        this.setState({
+            [field]: value
+        })
+    }
+
+    handleChangeCard(index, field, value) {
+        let newSet = this.state.newSet.map((e, i) => i === index ? { ...e, [field]: value } : e)
+        this.setState({
+            newSet: [...newSet]
+        })
+
+        reactotron.log(this.state)
+    }
+
     addNewCard() {
         this.setState({
-            sets: [...this.state.sets, this.state.sets.length]
+            newSet: [...this.state.newSet, { id: 0, front_side: "", back_side: "", remember: 0 }]
         })
     }
 
     removeCard(index) {
-        let oldCard = [...this.state.sets]
-        oldCard.splice(index, 1)
+        let newSet = this.state.newSet.filter((e, i) => index != i)
         this.setState({
-            sets: [...oldCard]
+            newSet: [...newSet]
         })
     }
 }

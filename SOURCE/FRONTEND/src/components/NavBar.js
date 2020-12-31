@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import '@styles/NavBar.css'
 import { ROUTER } from "@constants/Constant"
 import Divider from '@material-ui/core/Divider';
-import { Menu } from 'antd';
+import { Menu, Skeleton } from 'antd';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -12,8 +12,11 @@ import {
     FolderOutlined,
     UsergroupAddOutlined,
 } from '@ant-design/icons';
-
+import { getFolders } from "@src/redux/actions";
+import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
+import reactotron from 'reactotron-react-js';
+import {Row, Col} from "react-bootstrap"
 
 const { SubMenu } = Menu;
 const drawerWidth = 256;
@@ -24,6 +27,10 @@ class NavBar extends Component {
         this.state = {
             collapsed: false,
         }
+    }
+
+    componentDidMount() {
+        this.props.getFolders({ page: 1 })
     }
 
     toggleCollapsed = () => {
@@ -79,7 +86,7 @@ class NavBar extends Component {
                 icon={<BarChartOutlined style={{ fontSize: "20px" }} />}
                 onClick={() => this.props.history.push(ROUTER.PROGRESS)}
             >
-                <b>Tiến độ</b>
+                <b>Thống kê</b>
             </Menu.Item>
 
             <Menu.Item
@@ -103,27 +110,35 @@ class NavBar extends Component {
                 >
                     Tất cả
                 </Menu.Item>
+                {this.props.folderState?.isLoading && <>
+                    <Row className="justify-content-center">
+                        <Skeleton.Input style={{ width: 200 }} active={true} size="default" className="pb-2" />
+                        <Skeleton.Input style={{ width: 200 }} active={true} size="default" className="pb-2" />
+                        <Skeleton.Input style={{ width: 200 }} active={true} size="default" className="pb-2" />
+                        <Skeleton.Input style={{ width: 200 }} active={true} size="default" className="pb-2" />
+                    </Row>
+                </>
+                }
+                {this.props.folderState?.data?.folders?.length > 0 && this.props.folderState?.data?.folders.map((e, index) => {
+                    return (
+                        <Menu.Item
+                            key={6 + index}
+                            onClick={() => this.pushRef(ROUTER.FOLDER_CONTENT, e.id)}
+                        >
+                            <span>{e.name}</span>
+                        </Menu.Item>
+                    )
+                }
+                )}
                 <Menu.Item
-                    key="6"
-                    onClick={() => this.props.history.push(ROUTER.FOLDER_CONTENT)}
-                >
-                    Thư mục 1
-                </Menu.Item>
-                <Menu.Item
-                    key="7"
-                    onClick={() => this.props.history.push(ROUTER.FOLDER_CONTENT)}
-                >
-                    Thư mục 2
-                </Menu.Item>
-                <Menu.Item
-                    key="8"
+                    key={6 + this.props.folderState?.data?.folders?.length}
                     onClick={() => this.props.history.push(ROUTER.FOLDER_CREATE)}
                 >
                     <span className="text-info">Thêm thư mục</span>
                 </Menu.Item>
             </SubMenu>
 
-            <SubMenu
+            {/* <SubMenu
                 key="sub2"
                 icon={<UsergroupAddOutlined style={{ fontSize: "20px" }} />}
                 title={<b>Lớp học</b>}
@@ -133,7 +148,7 @@ class NavBar extends Component {
                 <Menu.Item key="11">
                     <span className="text-info">Tham gia hoặc tạo lớp</span>
                 </Menu.Item>
-            </SubMenu>
+            </SubMenu> */}
 
             <Divider />
         </Menu>
@@ -144,6 +159,21 @@ class NavBar extends Component {
     activeMenu = () => {
         var pathName = "/" + window.location.pathname.split("/")[1];
     }
+
+    pushRef(link, id) {
+        this.props.history.push({
+            pathname: link,
+            state: { id: id }
+        })
+    }
 }
 
-export default withRouter(NavBar)
+const mapStateToProps = (state) => ({
+    folderState: state.folderReducer
+})
+
+const mapDispatchToProps = {
+    getFolders
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar))

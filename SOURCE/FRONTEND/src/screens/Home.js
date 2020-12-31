@@ -8,7 +8,8 @@ import {
 } from 'react-bootstrap'
 import CarouselBootstrap from 'react-bootstrap/Carousel'
 import "@styles/Home.css"
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
+import {ROUTER} from "@constants/Constant"
 import { Carousel, Select } from "antd";
 import Divider from '@material-ui/core/Divider';
 import {
@@ -17,6 +18,7 @@ import {
     TwitterOutlined,
     InstagramOutlined
 } from '@ant-design/icons';
+import Cookie from "js-cookie"
 class HomeScreen extends Component {
     constructor(props) {
         super(props)
@@ -26,18 +28,26 @@ class HomeScreen extends Component {
     }
 
     render() {
-        return (
-            <>
-                <div className="wrapper">
+        const check = Cookie.get("SESSION_ID") ? true : false
 
-                    {this.renderPage1()}
+        if (check) {
+            return(
+                <Redirect to={ROUTER.USER_HOME}/>
+            )
+        } else {
+            return (
+                <>
+                    <div className="wrapper">
 
-                    {this.renderPage2()}
+                        {this.renderPage1()}
 
-                    {this.renderFooter()}
-                </div>
-            </>
-        )
+                        {this.renderPage2()}
+
+                        {this.renderFooter()}
+                    </div>
+                </>
+            )
+        }
     }
 
     renderPage1() {

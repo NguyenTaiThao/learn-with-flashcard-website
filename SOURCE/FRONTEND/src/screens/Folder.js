@@ -4,7 +4,7 @@ import { Avatar, Radio, Divider, Skeleton, Result, Button } from 'antd'
 import { Link, withRouter } from "react-router-dom"
 import "@styles/Folder.css"
 import { ROUTER } from "@constants/Constant"
-import { requestFolders } from "@constants/Api"
+import { requestFolders, requestRecentSets, requestRecentAct, requestLearn } from "@constants/Api"
 import reactotron from 'reactotron-react-js';
 import { connect } from 'react-redux'
 class Folder extends Component {
@@ -13,26 +13,72 @@ class Folder extends Component {
         super(props)
         this.state = {
             filter: this.props.screen,
-            recentActivities: [1, 2, 3, 4, 5],
+            recentActivities: [],
             learned: [1, 2, 3, 4, 5],
-            made: [1, 2, 3, 4, 5],
+            made: [],
             folder: [],
             loading: false
         }
     }
 
     componentDidMount() {
-        this.getFolder()
+        if(this.props.folderState?.data?.folders?.length > 0){
+            this.setState({
+                folder:this.props.folderState?.data?.folders
+            })
+        }
+        this.getRecentSets()
+        this.getRecentAct()
+        this.getLearn()
     }
 
-    async getFolder() {
+    UNSAFE_componentWillReceiveProps(nextProps){
+        reactotron.log("next", nextProps)
+        if(nextProps.folderState?.data?.folders?.length > 0){
+            this.setState({
+                folder:[...nextProps.folderState?.data?.folders]
+            })
+        }
+    }
+
+    async getRecentSets() {
         try {
             this.setState({
                 loading: true
             })
-            let res = await requestFolders();
+            let res = await requestRecentSets({page:1});
             this.setState({
-                folder: res.data,
+                made: [...res?.data],
+                loading: false
+            })
+        } catch (e) {
+            this.setState({ loading: false })
+        }
+    }
+
+    async getRecentAct() {
+        try {
+            this.setState({
+                loading: true
+            })
+            let res = await requestRecentAct({page:1});
+            this.setState({
+                recentActivities: [...res?.data],
+                loading: false
+            })
+        } catch (e) {
+            this.setState({ loading: false })
+        }
+    }
+
+    async getLearn() {
+        try {
+            this.setState({
+                loading: true
+            })
+            let res = await requestLearn({page:1});
+            this.setState({
+                learned: [...res?.data],
                 loading: false
             })
         } catch (e) {
@@ -121,10 +167,10 @@ class Folder extends Component {
                 return (
                     <>
                         <Result
-                            title="Bạn chưa sở hữu thư mục nào"
+                            title="Danh sách rỗng"
                             extra={
                                 <Button type="primary" key="console">
-                                    Tạo thư mục mới
+                                    Tạo mới
                                 </Button>
                             }
                         />,
@@ -152,11 +198,11 @@ class Folder extends Component {
             return (
                 <>
                     <Row
-                        className="float-div folder-element py-md-2 mt-3"
-                        onClick={() => this.pushRef(ROUTER.FOLDER_CONTENT)}
+                        className="float-div folder-element py-md-2 mt-3 cursor"
+                        onClick={() => this.pushRef(ROUTER.FOLDER_CONTENT, ele.id)}
                     >
                         <Col md={12}>
-                            <span className="info">2 thuật ngữ</span>
+                            <span className="info">{ele && ele?.number_of_sets} học phần</span>
                         </Col>
                         <Col md={12}>
                             <i class="fal fa-folder element-name-icon"></i>
@@ -169,7 +215,7 @@ class Folder extends Component {
             return (
                 <>
                     <Row className="float-div folder-element py-md-2 mt-3 cursor"
-                        onClick={() => this.pushRef(ROUTER.FOLDER_CONTENT)}
+                        onClick={() => this.pushRef(ROUTER.LEARN, ele.id)}
                     >
                         <Col md={12}>
                             <span className="info">2 thuật ngữ</span>
@@ -185,14 +231,14 @@ class Folder extends Component {
             return (
                 <>
                     <Row className="float-div folder-element py-md-2 mt-3 cursor"
-                        onClick={() => this.pushRef(ROUTER.LEARN)}
+                        onClick={() => this.pushRef(ROUTER.LEARN, ele.id)}
                     >
                         <Col md={12}>
-                            <span className="info">2 thuật ngữ</span>
+                            <span className="info">{ele && ele?.number_of_cards} thuật ngữ</span>
                         </Col>
                         <Col md={12}>
                             <i class="fal fa-bookmark element-name-icon"></i>
-                            <span className="element-name">Bài 1</span>
+                            <span className="element-name">{ele && ele?.title}</span>
                         </Col>
                     </Row>
                 </>
@@ -201,14 +247,14 @@ class Folder extends Component {
             return (
                 <>
                     <Row className="float-div folder-element py-md-2 mt-3 cursor"
-                        onClick={() => this.pushRef(ROUTER.LEARN)}
+                        onClick={() => this.pushRef(ROUTER.LEARN, ele.id)}
                     >
                         <Col md={12}>
-                            <span className="info">2 thuật ngữ</span>
+                            <span className="info">{ele && ele?.number_of_cards} thuật ngữ</span>
                         </Col>
                         <Col md={12}>
                             <i class="far fa-check element-name-icon"></i>
-                            <span className="element-name">Learned 1</span>
+                            <span className="element-name">{ele && ele?.title}</span>
                         </Col>
                     </Row>
                 </>
@@ -217,13 +263,17 @@ class Folder extends Component {
 
     }
 
-    pushRef(link) {
-        this.props.history.push(link)
+    pushRef(link, id) {
+        this.props.history.push({
+            pathname: link,
+            state: { id: id }
+        })
     }
 }
 
 const mapStateToProps = (state) => ({
-    userState: state.userReducer
+    userState: state.userReducer,
+    folderState: state.folderReducer,
 })
 
 const mapDispatchToProps = {
