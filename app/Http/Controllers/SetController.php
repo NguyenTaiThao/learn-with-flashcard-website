@@ -141,7 +141,7 @@ class SetController extends Controller
                         'status' => 0,
                         'msg' => 'This Set does not exist!'
                     ];
-                    return response()->json($returnData, 200);
+                    return response()->json($returnData, 400);
                 }else{
                     $returnData = [
                         'status' => 1,
