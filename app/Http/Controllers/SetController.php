@@ -67,7 +67,6 @@ class SetController extends Controller
                     if ($value['id'] == 0) { // thêm mới thẻ
                         $card = new Card;
                     } else { //update thẻ
-                        array_push($card_received, $value['id']);
                         $card = $this->card_model::find($value['id']);
                     }
                     $card->front_side = $value['front_side'];
@@ -75,6 +74,7 @@ class SetController extends Controller
                     $card->remember = $value['remember'];
                     $card->set_id = $set_id;
                     $card->save();
+                    array_push($card_received, $card->id);
                 }
                 $this->set_model->removeCard($set->id, $card_received);
                 $set->completed = $this->set_model->completedPercent($set->id);
@@ -188,4 +188,6 @@ class SetController extends Controller
             }
         }
     }
+
+
 }

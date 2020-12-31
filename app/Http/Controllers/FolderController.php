@@ -137,7 +137,6 @@ class FolderController extends Controller
         $token = $request->header('token');
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
-            dd("123");
             return $this->tokenNotExist();
         }else{
             try{

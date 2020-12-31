@@ -18,8 +18,10 @@ class CreateSetsTable extends Migration
             $table->string('title')->nullable();
             $table->unsignedDouble('price')->default(-1);
             $table->unsignedBigInteger('folder_id');
+            $table->unsignedInteger('number_of_cards')->default(0);
             $table->unsignedInteger('completed')->default(0);
             $table->unsignedTinyInteger('is_purchased')->default(0);
+            $table->unsignedInteger('bought_times')->default(0);
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
             $table->timestamps();
         });
