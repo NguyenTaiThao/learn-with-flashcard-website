@@ -272,6 +272,10 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
+                foreach ($sets as $set) {
+                    $set->author = $set->folder->user->name;
+                    unset($set->folder);
+                }
                 $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                 $data['paginate'] = $paginate;
                 $data['sets'] = $sets;
