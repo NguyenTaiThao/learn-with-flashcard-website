@@ -53,7 +53,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Bill', 'user_id', 'id');
     }
 
-
     public function listFolders($current_page, $folders_per_page, $default_folder)
     {
         $offset = ($current_page - 1) * $folders_per_page;
@@ -71,4 +70,5 @@ class User extends Authenticatable
         $data['folders'] = $folders;
         return $data;
     }
+    
 }

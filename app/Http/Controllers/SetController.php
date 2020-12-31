@@ -251,5 +251,62 @@ class SetController extends Controller
         }
     }
 
+    public function allSets(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->allSets($request->current_page, $this->sets_per_page, $user->id);
+                if(count($data['sets']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ sets để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function noFolderSets(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->noFolderSets($request->current_page, $this->sets_per_page, $user->id);
+                if(count($data['sets']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ sets để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                $this->internalServerError($e);
+            }
+        }
+    }
 
 }
