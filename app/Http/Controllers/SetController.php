@@ -79,10 +79,11 @@ class SetController extends Controller
                 $this->set_model->removeCard($set->id, $card_received);
                 $set->completed = $this->set_model->completedPercent($set->id);
                 $set->save();
+                $set_id = $set->id;
                 $returnData = [
                     'status' => 1,
                     'msg' => $request->id == 0 ? 'Create Set Successfully' : 'Update Set Successfully',
-                    'data' => $set
+                    'data' => $this->set_model->where('id',$set_id)->firstOrFail()
                 ];
                 return response()->json($returnData, 200);
             }catch(Exception $e){
@@ -188,6 +189,8 @@ class SetController extends Controller
             }
         }
     }
+
+    
 
 
 }

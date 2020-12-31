@@ -12,6 +12,16 @@ class Set extends Model
     use HasFactory;
     protected $table = "sets";
 
+    protected $fillable = [
+        'title',
+        'price',
+        'folder_id',
+        'number_of_cards',
+        'completed',
+        'is_purchased',
+        'bought_times'
+    ];
+
     public function folder()
     {
         return $this->belongsTo('App\Models\Folder', 'folder_id', 'id');
@@ -111,5 +121,14 @@ class Set extends Model
         }
         $set->number_of_cards = count($set->cards) - $deleted;
         $set->save();
+    }
+
+    public function completedSet($user_id)
+    {
+        $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
+                    ->where([['folders.user_id', "=", $user_id], ['sets.completed', "=", 100]])
+                    ->orderBy('sets.updated_at', 'desc')
+                    ->get('sets.*');
+        return $sets;
     }
 }

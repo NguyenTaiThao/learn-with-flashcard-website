@@ -211,4 +211,25 @@ class UserController extends Controller
             return $this->internalServerError($e);
         }
     }
+
+    public function completedSet(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $sets = $this->set_model->completedSet($user->id);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Lấy những Sets đã học thành công!',
+                    'data' => $sets
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                $this->internalServerError($e);
+            }
+        }
+    }
 }
