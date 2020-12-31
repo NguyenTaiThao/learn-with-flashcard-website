@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\User;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 
 class Set extends Model
@@ -217,5 +218,77 @@ class Set extends Model
         $data['paginate'] = $paginate;
         $data['sets'] = $sets;
         return $data;
+    }
+
+
+
+    public function countSetWithPriceAndName($price, $keyword)
+    {
+        if($price == 0){
+            $sets = $this->where([['price', 0],['title', 'LIKE', '%'.$keyword.'%']])->get();
+            return count($sets);
+        }else if($price == -1){
+            $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])->get();
+            return count($sets);
+        }else if($price == -2){
+            $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')->get();
+            return count($sets);
+        }
+    }
+
+    public function search($current_page, $sets_per_page, $keyword, $price, $type)
+    {
+        $offset = ($current_page - 1) * $sets_per_page;
+        if ($type == 1) { //tìm học phần
+            //price: 0 => free
+            //price: -1 => no free
+            //price: -2 => all
+            if ($price == 0) { //FREE
+                $sets = $this->where([['price', 0],['title', 'LIKE', '%'.$keyword.'%']])
+                            ->orderBy('sets.updated_at', 'desc')
+                            ->with('cards')
+                            ->limit($sets_per_page)
+                            ->offset($offset)
+                            ->get('sets.*');
+                $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
+                $data['paginate'] = $paginate;
+                $data['sets'] = $sets;
+                return $data;
+            } elseif ($price == -1) { //NO FREE
+                $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])
+                            ->orderBy('sets.updated_at', 'desc')
+                            ->with('cards')
+                            ->limit($sets_per_page)
+                            ->offset($offset)
+                            ->get('sets.*');
+                $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
+                $data['paginate'] = $paginate;
+                $data['sets'] = $sets;
+                return $data;
+            } else {
+                $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
+                            ->orderBy('sets.updated_at', 'desc')
+                            ->with('cards')
+                            ->limit($sets_per_page)
+                            ->offset($offset)
+                            ->get('sets.*');
+                $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
+                $data['paginate'] = $paginate;
+                $data['sets'] = $sets;
+                return $data;
+            }
+        }else{ //tìm người dùng
+            $users = User::where('name', 'LIKE', '%'.$keyword.'%')
+                        ->limit($sets_per_page)
+                        ->offset($offset)
+                        ->get();
+            foreach ($users as $user) {
+                $user->sets = $this->recentSets($user->id);
+            }
+            $paginate = $this->paginate(User::countUserWithName($keyword), $current_page, $sets_per_page);
+            $data['paginate'] = $paginate;
+            $data['users'] = $users;
+            return $data;
+        }
     }
 }

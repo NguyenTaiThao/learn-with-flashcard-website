@@ -70,4 +70,5 @@ Route::get('/multipleChoiceGame', [SetController::class, 'multipleChoiceGame']);
 
 Route::get('send-mail', [MailController::class, 'sendEmail']);
 Route::get('getWeather', [GetWeatherController::class, 'getWeather']);
+Route::get('search', [SetController::class, 'search']);
 

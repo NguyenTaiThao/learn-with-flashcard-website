@@ -70,5 +70,10 @@ class User extends Authenticatable
         $data['folders'] = $folders;
         return $data;
     }
-    
+
+    public static function countUserWithName($keyword)
+    {
+        $users = User::where('name', 'LIKE', '%'.$keyword.'%')->get();
+        return count($users);
+    }
 }
