@@ -66,11 +66,7 @@ class User extends Authenticatable
         foreach ($folders as $key => $value) {
             $value->number_of_sets = count($value->sets);
         }
-        $paginate = [
-            'total_folders' => count($this->folders->all()),
-            'current_page' => $current_page,
-            'folders_per_page' => $folders_per_page
-        ];
+        $paginate = $this->paginate(count($this->folders->all()), $current_page, $folders_per_page);
         $data['paginate'] = $paginate;
         $data['folders'] = $folders;
         return $data;

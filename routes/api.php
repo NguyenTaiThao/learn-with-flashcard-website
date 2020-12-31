@@ -33,7 +33,6 @@ Route::get('/test', [FolderController::class, 'test']);
 
 Route::group(['prefix' => 'user'], function(){
     Route::get('/info', [UserController::class, 'userInfo']);
-    Route::get('/completed', [UserController::class, 'completedSet']);
 });
 
 Route::group(['prefix' => 'folder'], function () {
@@ -46,6 +45,7 @@ Route::group(['prefix' => 'set'], function () {
     Route::post('/add', [SetController::class, 'addSet']);
     Route::post('/edit/{id}', [SetController::class, 'editSet']);
     Route::post('/delete/{id}', [SetController::class, 'deleteSet']);
+    Route::get('/completed', [SetController::class, 'completedSet']);
 });
 
 Route::group(['prefix' => 'card'], function () {

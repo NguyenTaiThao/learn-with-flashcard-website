@@ -11,6 +11,9 @@ use Exception;
 
 class SetController extends Controller
 {
+
+    protected $sets_per_page = 6;
+
     public function deleteSet(Request $request)
     {
         $token = $request->header("token");
@@ -190,7 +193,35 @@ class SetController extends Controller
         }
     }
 
-    
+    public function completedSet(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->completedSet($request->current_page, $this->sets_per_page, $user->id);
+                if(count($data['sets']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ sets để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                $this->internalServerError($e);
+            }
+        }
+    }
 
 
 }

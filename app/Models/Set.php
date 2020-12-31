@@ -123,12 +123,28 @@ class Set extends Model
         $set->save();
     }
 
-    public function completedSet($user_id)
+    public function allCompletedSet($user_id)
     {
         $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
                     ->where([['folders.user_id', "=", $user_id], ['sets.completed', "=", 100]])
                     ->orderBy('sets.updated_at', 'desc')
                     ->get('sets.*');
-        return $sets;
+        return count($sets);
+    }
+
+
+    public function completedSet($current_page, $sets_per_page, $user_id)
+    {
+        $offset = ($current_page - 1) * $sets_per_page;
+        $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
+                    ->where([['folders.user_id', "=", $user_id], ['sets.completed', "=", 100]])
+                    ->orderBy('sets.updated_at', 'desc')
+                    ->limit($sets_per_page)
+                    ->offset($offset)
+                    ->get('sets.*');
+        $paginate = $this->paginate($this->allCompletedSet($user_id), $current_page, $sets_per_page);
+        $data['paginate'] = $paginate;
+        $data['sets'] = $sets;
+        return $data;
     }
 }
