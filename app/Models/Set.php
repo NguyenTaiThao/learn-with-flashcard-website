@@ -108,4 +108,14 @@ class Set extends Model
             return $data;
         }
     }
+
+    public function removeCard($set_id, $card_received)
+    {
+        $set = $this->where('id',$set_id)->first();
+        foreach ($set->cards as $card) {
+            if(!in_array($card->id, $card_received)){
+                $card->delete();
+            }
+        }
+    }
 }
