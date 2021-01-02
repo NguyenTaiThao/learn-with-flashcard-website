@@ -32,6 +32,7 @@ export class AppNavigator extends Component {
                 <Header />
                 <Switch>
                     <Route path="/" exact component={HomeScreen} />
+                    <Route path={ROUTER.SEARCH} component={SearchScreen}/>
                     <PrivateRoute Component={MainNavigator} />
                 </Switch>
             </Router>
@@ -59,7 +60,6 @@ class MainNavigator extends Component {
                         <PrivateRoute path={ROUTER.FOLDER_CONTENT} exact Component={FolderContentScreen} screen="folder"/>
                         <PrivateRoute path={ROUTER.FOLDER_CREATE} exact Component={FolderCreateScreen}/>
                         <PrivateRoute path={ROUTER.RECENT_ACT} exact Component={FolderScreen} screen="recentActivities"/>
-                        <PrivateRoute path={ROUTER.SEARCH} exact Component={SearchScreen}/>
                     </Switch>
                 } />
             </>

@@ -92,7 +92,7 @@ export const requestRecentSets = (payload) => {
 }
 
 export const requestLearn = (payload) => {
-  return handleResult(getAxios.get(`recentSets`, { ...payload }))
+  return handleResult(getAxios.get(`set/completed`, { ...payload }))
 }
 
 export const requestCreateSet = (payload) => {

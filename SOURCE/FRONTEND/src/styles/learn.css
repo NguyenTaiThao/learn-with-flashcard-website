@@ -1,7 +1,8 @@
-.hide, .learn{
+.learn .card-item {
     overflow-x: hidden;
     overflow-y: hidden;
 }
+
 
 .learn .card-front {
     font-size: 30px;
@@ -30,4 +31,12 @@
 
 .learn .title-icon {
     color: rgb(72 92 180);
+}
+
+.learn .remember-icon {
+    font-size: 45px;
+}
+
+.select-type {
+    color: #3CCFCF;
 }
