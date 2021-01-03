@@ -3,11 +3,15 @@ import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import { Row, Col } from "react-bootstrap"
 import "@styles/learn.css"
 import { Divider, Fab, Slide, Tooltip } from "@material-ui/core"
-import { Progress, Button, Select } from 'antd';
+import { Progress, Button, Select, Result, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { withRouter, Redirect } from "react-router-dom"
 import { ROUTER } from "@constants/Constant"
 import { requestSetDetail } from "@constants/Api"
+import _ from "lodash"
 import reactotron from "reactotron-react-js"
+import NotifyContext from "@context/NotifyContext"
+
 class Learn extends Component {
 
     constructor(props) {
@@ -17,9 +21,12 @@ class Learn extends Component {
             cardStatus: [],
             currentCard: 0,
             data: null,
+            autoLearn: null,
         }
         this.flippy = []
     }
+
+    static contextType = NotifyContext
 
     componentDidMount() {
         this.getDetail()
@@ -37,7 +44,6 @@ class Learn extends Component {
     }
 
     navFunc = (event) => {
-
         // right arrow
         if (event.keyCode === 39) {
             this.forwardCard()
@@ -112,21 +118,32 @@ class Learn extends Component {
                             </Row>
 
                             <Row className="px-2 pt-5">
-                                <Button block className="my-2">
-                                    <span className="typical-text">
-                                        Bắt đầu
-                                </span>
+                                <Tooltip placement="bottom" title="Chế độ auto learn">
+                                    <Button
+                                        block
+                                        className="my-2"
+                                        onClick={() => this.autoLearn()}
+                                    >
+                                        <span className="typical-text">
+                                            {this.state.autoLearn ? "Dừng lại" : "Bắt đầu"}
+                                        </span>
+                                    </Button>
+                                </Tooltip>
+
+                                <Button
+                                    block
+                                    className="my-2"
+                                    onClick={() => this.shuffleCard()}
+                                >
+                                    <span className="typical-text">Xáo trộn thẻ</span>
                                 </Button>
-                                <Button block className="my-2">
-                                    <span className="typical-text">
-                                        Xáo trộn thẻ
+                                <Tooltip placement="bottom" title="Cùng chơi game để học thuộc thuật ngữ">
+                                    <Button block className="my-2">
+                                        <span className="typical-text">
+                                            Chơi game
                                 </span>
-                                </Button>
-                                <Button block className="my-2">
-                                    <span className="typical-text">
-                                        Chơi game
-                                </span>
-                                </Button>
+                                    </Button>
+                                </Tooltip>
                             </Row>
                         </Col>
 
@@ -137,6 +154,7 @@ class Learn extends Component {
                                     defaultValue="all"
                                     style={{ background: "white" }}
                                     bordered={false}
+                                    onChange={(value) => this.setState({ filter: value })}
                                 >
                                     <Select.Option value="all">
                                         <b className="select-type">Tất cả thẻ</b>
@@ -151,7 +169,7 @@ class Learn extends Component {
                             </Row>
 
                             <Row className="">
-                                {this.state.sets.map((ele, index) =>
+                                {this.filterCard().length > 0 ? this.filterCard().map((ele, index) =>
                                     <Slide
                                         direction="down"
                                         in={this.state.currentCard === index}
@@ -216,7 +234,31 @@ class Learn extends Component {
                                             </BackSide>
                                         </Flippy>
                                     </Slide>
-                                )}
+                                ) :
+                                    <Flippy
+                                        style={{ width: '100%', height: '450px' }} /// these are optional style, it is not necessary
+                                        flipOnHover={false} // default false
+                                        flipOnClick={false} // default false
+                                    >
+                                        <FrontSide
+                                            style={{
+                                                backgroundColor: '#fff',
+                                            }}
+                                            className="d-flex flex-column align-items-center justify-content-center px-0"
+                                        >
+                                            <Row>
+                                                {this.state.loading ?
+                                                    <Spin
+                                                        size="large"
+                                                        indicator={<LoadingOutlined style={{ fontSize: "50px" }} spin />}
+                                                    />
+                                                    :
+                                                    this.renderEmpty()
+                                                }
+                                            </Row>
+                                        </FrontSide>
+                                    </Flippy>
+                                }
                             </Row>
                             <Row className="navi-btn justify-content-center">
                                 <Col md={5}
@@ -264,6 +306,83 @@ class Learn extends Component {
             )
         }
     }
+
+    filterCard() {
+        let value = this.state.filter
+        if (value === "learning") {
+            return this.state.sets.filter((e) => e.remember === 0)
+        } else if (value === "learned") {
+            return this.state.sets.filter((e) => e.remember === 1)
+        } else {
+            return this.state.sets
+        }
+    }
+
+    shuffleCard = () => {
+        const backup = [...this.state.sets]
+        this.setState({
+            loading: true,
+            sets: [],
+        })
+        setTimeout(() => {
+            this.setState({
+                sets: _.shuffle(backup),
+                loading: false,
+            })
+            this.context("success", "Thành công", "Tráo danh sách thẻ thành công")
+        }, 1000)
+
+    }
+
+    autoLearn = () => {
+        if (!this.state.autoLearn) {
+            this.setState({
+                currentCard: 0
+            })
+
+            setTimeout(() => this.flippy[this.state.currentCard].toggle(), 3000)
+
+            let id = setInterval(() => {
+                setTimeout(() => this.flippy[this.state.currentCard].toggle(), 3000)
+                this.forwardCard()
+            }, 6000);
+
+            this.setState({
+                autoLearn: id,
+            })
+        } else {
+            clearInterval(this.state.autoLearn)
+
+            this.setState({
+                autoLearn: null
+            })
+        }
+    }
+
+    renderEmpty() {
+        let filter = this.state.filter
+        if (filter == "all") {
+            return (
+                <span className="card-front">
+                    <Result
+                        title="Danh sách rỗng"
+                    />
+                </span>
+            )
+        } else if (filter == "learning") {
+            return (
+                <span className="card-front">
+                    <Result
+                        status="success"
+                        title="Bạn đã học thuộc hết học phần này"
+                    />
+                </span>
+            )
+        }
+
+
+    }
+
     forwardCard() {
         if (this.state.currentCard == (this.state.sets.length - 1)) {
             this.setState({

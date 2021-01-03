@@ -173,7 +173,7 @@ class Folder extends Component {
                                     Tạo mới
                                 </Button>
                             }
-                        />,
+                        />
                     </>
                 )
             }
