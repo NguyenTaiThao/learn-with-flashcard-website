@@ -43,39 +43,6 @@ class Learn extends Component {
         document.removeEventListener("keydown", this.navFunc, false);
     }
 
-    navFunc = (event) => {
-        // right arrow
-        if (event.keyCode === 39) {
-            this.forwardCard()
-        }
-
-        // left arrow
-        if (event.keyCode === 37) {
-            this.backCard()
-        }
-
-        // space
-        if (event.keyCode === 32) {
-            this.flippy[this.state.currentCard].toggle()
-        }
-    }
-
-    async getDetail() {
-        try {
-            this.setState({
-                loading: true,
-            })
-            const res = await requestSetDetail({ id: this.props.location?.state?.id })
-            this.setState({
-                loading: false,
-                sets: [...res?.data?.cards],
-                data: res.data
-            })
-        } catch (e) {
-
-        }
-    }
-
     render() {
         const id = this.props.location?.state?.id
         const { data, sets } = this.state
@@ -195,9 +162,10 @@ class Learn extends Component {
                                                 className="d-flex flex-column align-items-center justify-content-center px-0"
                                             >
                                                 <Row className="fixed-top justify-content-end">
-                                                    <Tooltip placement="bottom" title="Đã thuộc thẻ này">
+                                                    <Tooltip placement="bottom" title={ele?.remember ? "Bạn đã thuộc thẻ này" : "Bạn vẫn chưa thuộc thẻ này"}>
                                                         <i
-                                                            className="fad fa-bookmark remember-icon mr-2 text-success cursor"
+                                                            className={`fad fa-bookmark remember-icon mr-2 
+                                                                        ${ele?.remember ? "text-success" : "text-secondary"} cursor`}
                                                         ></i>
                                                     </Tooltip>
                                                 </Row>
@@ -218,9 +186,10 @@ class Learn extends Component {
                                                 <Row className="fixed-top">
                                                     <Tooltip
                                                         placement="bottom"
-                                                        title="Đã thuộc thẻ này"
+                                                        title={ele?.remember ? "Bạn đã thuộc thẻ này" : "Bạn vẫn chưa thuộc thẻ này"}
                                                     >
-                                                        <i className="fad fa-bookmark remember-icon ml-2 text-success cursor"></i>
+                                                        <i className={`fad fa-bookmark remember-icon ml-2 
+                                                            ${ele?.remember ? "text-success" : "text-secondary"} cursor`}></i>
                                                     </Tooltip>
                                                 </Row>
                                                 <Row>
@@ -381,6 +350,39 @@ class Learn extends Component {
         }
 
 
+    }
+
+    navFunc = (event) => {
+        // right arrow
+        if (event.keyCode === 39) {
+            this.forwardCard()
+        }
+
+        // left arrow
+        if (event.keyCode === 37) {
+            this.backCard()
+        }
+
+        // space
+        if (event.keyCode === 32) {
+            this.flippy[this.state.currentCard].toggle()
+        }
+    }
+
+    async getDetail() {
+        try {
+            this.setState({
+                loading: true,
+            })
+            const res = await requestSetDetail({ id: this.props.location?.state?.id })
+            this.setState({
+                loading: false,
+                sets: [...res?.data?.cards],
+                data: res.data
+            })
+        } catch (e) {
+
+        }
     }
 
     forwardCard() {

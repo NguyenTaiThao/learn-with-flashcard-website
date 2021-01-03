@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import "@styles/Header.css"
 import { Col, Row, Button } from 'react-bootstrap'
-import { Modal, Form, Input, Checkbox, Avatar } from 'antd'
+import { Modal, Form, Input, Checkbox, Avatar, Badge } from 'antd'
 import {
     UserOutlined,
     LockOutlined,
@@ -11,6 +11,7 @@ import {
     SearchOutlined,
     FolderAddOutlined,
     CloseCircleOutlined,
+    ShoppingCartOutlined,
 } from '@ant-design/icons'
 import { Link, withRouter } from "react-router-dom"
 import "animate.css"
@@ -20,7 +21,6 @@ import { ROUTER } from "@constants/Constant"
 import { requestRegister, requestLogin, requestLogout } from "@constants/Api"
 import { connect } from "react-redux";
 import { getUserInfo } from "@src/redux/actions";
-import { notification } from "antd"
 import reactotron from "reactotron-react-js"
 import NotifyContext from "@context/NotifyContext"
 import _ from "lodash"
@@ -58,36 +58,6 @@ class Header extends Component {
         if (Cookie.get("SESSION_ID")) {
             this.props.getUserInfo()
         }
-    }
-
-    handleShow(modal, visible) {
-        this.setState({
-            [modal]: visible
-        })
-    }
-
-    onChangeSearch = (value) => {
-        this.setState({
-            searchBox: value
-        })
-    }
-
-    onChangeRegister = (field, value) => {
-        this.setState({
-            registerForm: {
-                ...this.state.registerForm,
-                [field]: value
-            }
-        })
-    }
-
-    onChangeLogin = (field, value) => {
-        this.setState({
-            loginForm: {
-                ...this.state.loginForm,
-                [field]: value
-            }
-        })
     }
 
     render() {
@@ -154,13 +124,6 @@ class Header extends Component {
         )
     }
 
-    handlePopover = (e) => {
-        this.setState({
-            popover: !this.state.popover,
-            anchorEl: e?.currentTarget || null,
-        })
-    }
-
     renderAuthenButton() {
         if (Cookie.get("SESSION_ID")) {
             const info = this.props.userState.data
@@ -168,6 +131,18 @@ class Header extends Component {
             return (
                 <Col md={7} className="button">
                     <Row className="align-items-center justify-content-center justify-content-md-end">
+                        <IconButton className="mr-1">
+                            <Badge
+                                color="green"
+                            >
+                                <ShoppingCartOutlined
+                                    style={{
+                                        fontSize: "25px",
+                                        color: "white"
+                                    }}
+                                />
+                            </Badge>
+                        </IconButton>
                         <IconButton
                             className="avatar-button"
                         >
@@ -324,14 +299,51 @@ class Header extends Component {
         )
     }
 
+    handlePopover = (e) => {
+        this.setState({
+            popover: !this.state.popover,
+            anchorEl: e?.currentTarget || null,
+        })
+    }
+
+    handleShow(modal, visible) {
+        this.setState({
+            [modal]: visible
+        })
+    }
+
+    onChangeSearch = (value) => {
+        this.setState({
+            searchBox: value
+        })
+    }
+
+    onChangeRegister = (field, value) => {
+        this.setState({
+            registerForm: {
+                ...this.state.registerForm,
+                [field]: value
+            }
+        })
+    }
+
+    onChangeLogin = (field, value) => {
+        this.setState({
+            loginForm: {
+                ...this.state.loginForm,
+                [field]: value
+            }
+        })
+    }
+
     handleLogout = async () => {
         this.setState({
             popover: false,
             anchorEl: null,
-            loading:true
+            loading: true
         })
         await requestLogout()
-        this.setState({loading:false})
+        this.setState({ loading: false })
         Cookie.remove("SESSION_ID")
         this.props.history.push("/")
         this.context("success", "Thành công", "Đăng xuất thành công.")
