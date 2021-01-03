@@ -17,7 +17,7 @@ class CreateSetsTable extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->string('description')->nullable();
-            $table->unsignedDouble('price')->default(-1);
+            $table->double('price')->default(-1);
             $table->unsignedBigInteger('folder_id');
             $table->unsignedInteger('number_of_cards')->default(0);
             $table->unsignedInteger('completed')->default(0);
