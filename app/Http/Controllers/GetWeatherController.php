@@ -28,13 +28,13 @@ class GetWeatherController extends Controller
     }
 
 
-    
+
 
     public function getWeather()
     {
         try{
             //API lấy tọa độ qua IP
-            $url = "http://api.ipstack.com/219.100.37.239?access_key=bae41731f0d012e8b97e42d59cac770e";
+            $url = "http://api.ipstack.com/103.88.112.136?access_key=bae41731f0d012e8b97e42d59cac770e";
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

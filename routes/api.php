@@ -37,7 +37,7 @@ Route::group(['prefix' => 'user'], function(){
 
 Route::group(['prefix' => 'folder'], function () {
     Route::post('/add', [FolderController::class, 'addFolder']);
-    Route::post('/edit/{id}', [FolderController::class, 'editFolder']);
+    Route::post('/edit', [FolderController::class, 'editFolder']);
     Route::post('/delete', [FolderController::class, 'deleteFolder']);
 });
 
@@ -45,6 +45,10 @@ Route::group(['prefix' => 'set'], function () {
     Route::post('/add', [SetController::class, 'addSet']);
     Route::post('/edit/{id}', [SetController::class, 'editSet']);
     Route::post('/delete/{id}', [SetController::class, 'deleteSet']);
+    Route::get('/completed', [SetController::class, 'completedSets']);
+    Route::get('/created', [SetController::class, 'createdSets']);
+    Route::get('/all', [SetController::class, 'allSets']);
+    Route::get('/no-folder', [SetController::class, 'noFolderSets']);
 });
 
 Route::group(['prefix' => 'card'], function () {
@@ -66,4 +70,5 @@ Route::get('/multipleChoiceGame', [SetController::class, 'multipleChoiceGame']);
 
 Route::get('send-mail', [MailController::class, 'sendEmail']);
 Route::get('getWeather', [GetWeatherController::class, 'getWeather']);
+Route::get('search', [SetController::class, 'search']);
 

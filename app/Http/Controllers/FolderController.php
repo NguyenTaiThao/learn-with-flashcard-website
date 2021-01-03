@@ -99,7 +99,7 @@ class FolderController extends Controller
 
     public function listFolders(Request $request)
     {
-        $token = $request->header("token");
+        $token = $request->header('token');
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
             return $this->tokenNotExist();

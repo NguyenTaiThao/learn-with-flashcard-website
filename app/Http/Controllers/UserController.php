@@ -17,18 +17,6 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 
-    protected $user_model;
-    protected $set_model;
-    protected $folder_model;
-
-    public function __construct(User $user, Set $set, Folder $folder)
-    {
-        $this->user_model = $user;
-        $this->set_model = $set;
-        $this->folder_model = $set;
-    }
-
-
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(),[
@@ -211,4 +199,5 @@ class UserController extends Controller
             return $this->internalServerError($e);
         }
     }
+
 }

@@ -16,7 +16,8 @@ class CreateSetsTable extends Migration
         Schema::create('sets', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->unsignedDouble('price')->default(-1);
+            $table->string('description')->nullable();
+            $table->double('price')->default(-1);
             $table->unsignedBigInteger('folder_id');
             $table->unsignedInteger('number_of_cards')->default(0);
             $table->unsignedInteger('completed')->default(0);

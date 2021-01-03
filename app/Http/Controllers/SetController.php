@@ -11,6 +11,9 @@ use Exception;
 
 class SetController extends Controller
 {
+
+    protected $sets_per_page = 6;
+
     public function deleteSet(Request $request)
     {
         $token = $request->header("token");
@@ -76,13 +79,15 @@ class SetController extends Controller
                     $card->save();
                     array_push($card_received, $card->id);
                 }
+                //dd($card_received);
                 $this->set_model->removeCard($set->id, $card_received);
                 $set->completed = $this->set_model->completedPercent($set->id);
                 $set->save();
+                $set_id = $set->id;
                 $returnData = [
                     'status' => 1,
                     'msg' => $request->id == 0 ? 'Create Set Successfully' : 'Update Set Successfully',
-                    'data' => $set
+                    'data' => $this->set_model->where('id',$set_id)->firstOrFail()
                 ];
                 return response()->json($returnData, 200);
             }catch(Exception $e){
@@ -189,5 +194,137 @@ class SetController extends Controller
         }
     }
 
+    public function completedSets(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->completedSets($request->current_page, $this->sets_per_page, $user->id);
+                if(count($data['sets']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ sets để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function createdSets(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->createdSets($request->current_page, $this->sets_per_page, $user->id);
+                if(count($data['sets']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ sets để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function allSets(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->allSets($request->current_page, $this->sets_per_page, $user->id);
+                if(count($data['sets']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ sets để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function noFolderSets(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->noFolderSets($request->current_page, $this->sets_per_page, $user->id);
+                if(count($data['sets']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ sets để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function search(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $this->sets_per_page = 3;
+                return $this->set_model->search($request->current_page, $this->sets_per_page, $request->keyword, $request->price, $request->type);
+
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
+        }
+    }
 
 }
