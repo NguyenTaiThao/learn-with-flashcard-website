@@ -48,7 +48,7 @@ class Folder extends Component {
             })
             let res = await requestRecentSets({page:1});
             this.setState({
-                made: [...res?.data],
+                recentActivities: [...res?.data],
                 loading: false
             })
         } catch (e) {
