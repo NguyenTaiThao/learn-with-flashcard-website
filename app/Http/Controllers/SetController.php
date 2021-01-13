@@ -202,24 +202,21 @@ class SetController extends Controller
             return $this->tokenNotExist();
         }else{
             try {
-                return [
-                    "123"
+                $data = $this->set_model->completedSets($request->current_page, $this->sets_per_page, $user->id);
+                if(count($data['sets']) == 0){
+                    $returnData = [
+                        'status' => 0,
+                        'msg' => "Không có đủ sets để fill vào trang này",
+                        'data' => $data['paginate']
+                    ];
+                    return response()->json($returnData, 500);
+                }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
                 ];
-                // $data = $this->set_model->completedSets($request->current_page, $this->sets_per_page, $user->id);
-                // if(count($data['sets']) == 0){
-                //     $returnData = [
-                //         'status' => 0,
-                //         'msg' => "Không có đủ sets để fill vào trang này",
-                //         'data' => $data['paginate']
-                //     ];
-                //     return response()->json($returnData, 500);
-                // }
-                // $returnData = [
-                //     'status' => 1,
-                //     'msg' => "Thành công",
-                //     'data' => $data
-                // ];
-                //return response()->json($returnData, 200);
+                return response()->json($returnData, 200);
             } catch (Exception $e) {
                 $this->internalServerError($e);
             }

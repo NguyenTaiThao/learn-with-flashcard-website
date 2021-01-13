@@ -92,6 +92,7 @@ class Set extends Model
         if ($data['number_of_questions'] >= 4) {
             $questions = [];
             foreach ($questions as $key => $value) {
+                $question = [];
                 $question['question'] = $value;
                 $question['CORRECT ANSWER'] = $multiple_choice[$key];
                 $numbers = range(0, count($questions)-1);
