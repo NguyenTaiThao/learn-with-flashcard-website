@@ -5,8 +5,8 @@ const Reactotron = process.env.NODE_ENV !== "production" && require("reactotron-
 
 function createAxios() {
   var axiosInstant = axios.create();
-  axiosInstant.defaults.baseURL = "https://flashcard-web-project.herokuapp.com/api/";
-  // axiosInstant.defaults.baseURL = "http://127.0.0.1:8000/api/";
+  // axiosInstant.defaults.baseURL = "https://flashcard-web-project.herokuapp.com/api/";
+  axiosInstant.defaults.baseURL = "http://127.0.0.1:8000/api/";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 
@@ -43,7 +43,18 @@ function handleResult(api) {
       }
       return Promise.resolve(res.data);
     }
-  }).catch((e) => Reactotron.log("API err",e))
+  }).catch((e) => {
+    if(e.message){
+      Reactotron.log("suc", e)
+      return Promise.reject({
+        ...e,
+        msg:e.message
+      })
+    }else{
+      Reactotron.log("null", e)
+      return Promise.reject(e)
+    }
+  })
 }
 
 
@@ -92,7 +103,7 @@ export const requestRecentSets = (payload) => {
 }
 
 export const requestLearn = (payload) => {
-  return handleResult(getAxios.get(`recentSets`, { ...payload }))
+  return handleResult(getAxios.get(`set/completed`, { ...payload }))
 }
 
 export const requestCreateSet = (payload) => {
@@ -105,4 +116,16 @@ export const requestRecentAct = (payload) => {
 
 export const requestSetDetail = (payload) => {
   return handleResult(getAxios.get(`setDetail?id=${payload.id}`))
+}
+
+export const requestRemoveSet = (payload) => {
+  return handleResult(getAxios.get(`setDetail`,payload))
+}
+
+export const requestRemoveFolder = (payload) => {
+  return handleResult(getAxios.get(`folder/delete`,payload))
+}
+
+export const requestSetToFolder = (payload) => {
+  return handleResult(getAxios.get(`setToFolder`,payload))
 }

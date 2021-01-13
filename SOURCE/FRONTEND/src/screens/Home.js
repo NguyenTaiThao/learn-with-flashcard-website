@@ -37,7 +37,7 @@ class HomeScreen extends Component {
         } else {
             return (
                 <>
-                    <div className="wrapper">
+                    <div className="wrap">
 
                         {this.renderPage1()}
 

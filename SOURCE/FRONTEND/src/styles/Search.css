@@ -1,0 +1,66 @@
+.search{
+    background: #f6f7fb;
+}
+
+.search .search-keyword{
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.search .option-radio{
+    height:55px !important; 
+    width:55px !important; 
+    vertical-align: middle;
+}
+
+.search .filter-label{
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.search .filter-group{
+    margin-bottom: 20px;
+    margin-left: 30px;
+}
+
+.search .radio-btn-div{
+   margin-bottom: 0px !important; 
+}
+
+.search .MuiRadio-colorSecondary.Mui-checked{
+    color: orange !important;
+}
+
+.search .item {
+    border-bottom: 5px solid #fff;
+    background: #fff;
+    border-radius: 4px;
+    padding: 20px 10px;
+    -webkit-box-shadow: -1px 0px 30px -10px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: -1px 0px 30px -10px rgba(0, 0, 0, 0.25);
+    box-shadow: -1px 0px 30px -10px rgba(0, 0, 0, 0.25);
+}
+
+.search .item:hover{
+    border-bottom: 5px solid orange;
+
+}
+
+.search .item .count {
+    font-weight: 500;
+}
+
+.search .item .owner{
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.search .item .title{
+    font-size: 23px;
+    font-weight: 650;
+}
+
+.search .item .ant-card-grid{
+    padding:0px;
+}
