@@ -90,7 +90,7 @@ class Set extends Model
         }
         $data['number_of_questions'] = count($set->cards);
         if ($data['number_of_questions'] >= 4) {
-            $question = [];
+            $questions = [];
             foreach ($questions as $key => $value) {
                 $question['question'] = $value;
                 $question['CORRECT ANSWER'] = $multiple_choice[$key];
@@ -104,8 +104,9 @@ class Set extends Model
                 $question['answer 2'] = $multiple_choice[$random_numbers[1]];
                 $question['answer 3'] = $multiple_choice[$random_numbers[2]];
                 $question['answer 4'] = $multiple_choice[$random_numbers[3]];
+                array_push($questions, $question);
             }
-            $data['questions'] = $question;
+            $data['questions'] = $questions;
             return $data;
         }else{
             return $data;
