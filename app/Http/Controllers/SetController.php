@@ -186,7 +186,7 @@ class SetController extends Controller
                         'msg' => 'Tạo game Trắc ngiệm thành công!',
                         'data' => $set
                     ];
-                    return response()->json($returnData, 200);
+                    return $returnData;//response()->json($returnData, 200);
                 }
             }catch(Exception $e){
                 $this->internalServerError($e);
