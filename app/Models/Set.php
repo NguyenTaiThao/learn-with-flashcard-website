@@ -12,7 +12,7 @@ class Set extends Model
 {
     use HasFactory;
     protected $table = "sets";
-
+    protected $primaryKey = 'id';
     protected $fillable = [
         'title',
         'price',
