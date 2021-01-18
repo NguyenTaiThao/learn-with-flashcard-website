@@ -53,7 +53,7 @@ Route::group(['prefix' => 'set'], function () {
 
 Route::group(['prefix' => 'card'], function () {
     Route::post('/add', [CardController::class, 'addCard']);
-    Route::post('/edit/{id}', [CardController::class, 'editCard']);
+    //Route::post('/update', [CardController::class, 'updateCard']);
     Route::post('/delete/{id}', [CardController::class, 'deleteCard']);
 });
 
@@ -72,3 +72,4 @@ Route::get('send-mail', [MailController::class, 'sendEmail']);
 Route::get('getWeather', [GetWeatherController::class, 'getWeather']);
 Route::get('search', [SetController::class, 'search']);
 Route::get('completedSets', [SetController::class, 'completedSets']);
+Route::post('updateCard', [CardController::class, 'updateCard']);
