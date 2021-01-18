@@ -55,6 +55,7 @@ class User extends Authenticatable
 
     public function listFolders($current_page, $folders_per_page, $default_folder)
     {
+        $current_page = intval($current_page);
         $offset = ($current_page - 1) * $folders_per_page;
         $folders = $this->folders()->whereNotIn('id', [$default_folder])
                                     ->orderBy('updated_at', 'DESC')
