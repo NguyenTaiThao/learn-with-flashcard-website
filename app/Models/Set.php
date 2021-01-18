@@ -23,6 +23,16 @@ class Set extends Model
         'bought_times'
     ];
 
+
+    public function paginate($total_items, $current_page, $items_per_page)
+    {
+        return [
+            'total_items' => $total_items ,
+            'current_page' => $current_page ,
+            'items_per_page' => $items_per_page
+        ];
+    }
+
     public function folder()
     {
         return $this->belongsTo('App\Models\Folder', 'folder_id', 'id');
