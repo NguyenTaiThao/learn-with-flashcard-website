@@ -37,6 +37,7 @@ function handleResult(api) {
     if (res.data.code == 403) {
       Cookie.remove("SESSION_ID");
       alert("Phiên đăng nhập hết hạn")
+      window.location.replace("/")
     } else {
       if (res.data.status != 1) {
         return Promise.reject(res.data);
@@ -128,4 +129,8 @@ export const requestRemoveFolder = (payload) => {
 
 export const requestSetToFolder = (payload) => {
   return handleResult(getAxios.get(`setToFolder`,payload))
+}
+
+export const requestGame = (payload) => {
+  return handleResult(getAxios.get(`multipleChoiceGame?id=${payload.id}`,payload))
 }

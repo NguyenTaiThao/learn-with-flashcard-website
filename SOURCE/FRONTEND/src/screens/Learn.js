@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import { Row, Col } from "react-bootstrap"
 import "@styles/learn.css"
-import { Divider, Fab, Slide, Tooltip } from "@material-ui/core"
-import { Progress, Button, Select, Result, Spin } from 'antd';
+import { Divider, Fab, Slide, Tooltip, IconButton } from "@material-ui/core"
+import ButtonMate from "@material-ui/core/Button"
+import { Progress, Button, Select, Result, Spin, Modal, Alert } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { withRouter, Redirect } from "react-router-dom"
-import { ROUTER } from "@constants/Constant"
-import { requestSetDetail } from "@constants/Api"
+import { ROUTER, GAME_TYPE } from "@constants/Constant"
+import { requestSetDetail, requestGame } from "@constants/Api"
 import _ from "lodash"
 import reactotron from "reactotron-react-js"
 import NotifyContext from "@context/NotifyContext"
@@ -22,6 +23,13 @@ class Learn extends Component {
             currentCard: 0,
             data: null,
             autoLearn: null,
+            gameModal: false,
+            gameLoading: false,
+            gameType: null,
+            selectGame: {
+                currentQuestion: 0,
+                point: 0,
+            }
         }
         this.flippy = []
     }
@@ -30,6 +38,7 @@ class Learn extends Component {
 
     componentDidMount() {
         this.getDetail()
+        this.getGameSelect()
         document.addEventListener("keydown", this.navFunc, false);
     }
 
@@ -55,7 +64,7 @@ class Learn extends Component {
                                 className="align-items-baseline py-3"
                             >
                                 <i
-                                    class="far fa-chevron-left pl-4 pr-2 typical-text back-icon"
+                                    className="far fa-chevron-left pl-4 pr-2 typical-text back-icon"
                                     onClick={() => this.props.history.goBack()}
                                 ></i>
                                 <span
@@ -69,7 +78,7 @@ class Learn extends Component {
                             <Divider />
 
                             <Row className="justify-content-center align-items-baseline title py-5">
-                                <i class="fad fa-clipboard pr-2 title-icon"></i>
+                                <i className="fad fa-clipboard pr-2 title-icon"></i>
                                 <span className="title-text">Thẻ ghi nhớ</span>
                             </Row>
 
@@ -89,6 +98,7 @@ class Learn extends Component {
                                     <Button
                                         block
                                         className="my-2"
+                                        disabled={this.state.sets?.length <= 0}
                                         onClick={() => this.autoLearn()}
                                     >
                                         <span className="typical-text">
@@ -99,16 +109,24 @@ class Learn extends Component {
 
                                 <Button
                                     block
+                                    disabled={this.state.sets?.length <= 0}
                                     className="my-2"
                                     onClick={() => this.shuffleCard()}
                                 >
                                     <span className="typical-text">Xáo trộn thẻ</span>
                                 </Button>
                                 <Tooltip placement="bottom" title="Cùng chơi game để học thuộc thuật ngữ">
-                                    <Button block className="my-2">
-                                        <span className="typical-text">
+                                    <Button
+                                        block
+                                        disabled={this.state.sets?.length <= 0}
+                                        className="my-2"
+                                        onClick={() => this.showGame(true)}
+                                    >
+                                        <span
+                                            className="typical-text"
+                                        >
                                             Chơi game
-                                </span>
+                                        </span>
                                     </Button>
                                 </Tooltip>
                             </Row>
@@ -121,7 +139,8 @@ class Learn extends Component {
                                     defaultValue="all"
                                     style={{ background: "white" }}
                                     bordered={false}
-                                    onChange={(value) => this.setState({ filter: value })}
+                                    onChange={(value) => this.handleFilterChange(value)}
+                                    disabled={this.state.sets?.length <= 0}
                                 >
                                     <Select.Option value="all">
                                         <b className="select-type">Tất cả thẻ</b>
@@ -238,8 +257,9 @@ class Learn extends Component {
                                             color="primary"
                                             aria-label="add"
                                             onClick={() => this.backCard()}
+                                            disabled={this.state.sets?.length <= 0}
                                         >
-                                            <i class="far fa-angle-left"></i>
+                                            <i className="far fa-angle-left"></i>
                                         </Fab>
                                     </Tooltip>
 
@@ -248,8 +268,9 @@ class Learn extends Component {
                                             variant="extended"
                                             className="bg-success text-white"
                                             aria-label="remembered"
+                                            disabled={this.state.sets?.length <= 0}
                                         >
-                                            <b><i class="far fa-check"></i> Đã nhớ</b>
+                                            <b><i className="far fa-check"></i> Đã nhớ</b>
                                         </Fab>
                                     </Tooltip>
 
@@ -258,15 +279,16 @@ class Learn extends Component {
                                             color="primary"
                                             aria-label="add"
                                             onClick={() => this.forwardCard()}
+                                            disabled={this.state.sets?.length <= 0}
                                         >
-                                            <i class="far fa-angle-right"></i>
+                                            <i className="far fa-angle-right"></i>
                                         </Fab>
                                     </Tooltip>
                                 </Col>
                             </Row>
                         </Col>
                     </Row>
-
+                    {this.renderGame()}
                 </>
             )
         } else {
@@ -274,10 +296,25 @@ class Learn extends Component {
                 <Redirect to={ROUTER.MADE} />
             )
         }
+
+    }
+
+    handleFilterChange = (value) => {
+        const backup = this.state.sets
+        this.setState({
+            filter: value,
+            loading: true,
+            sets: [],
+        })
+        window.setTimeout(() => this.setState({
+            loading: false,
+            sets: [...backup]
+        }), 100)
     }
 
     filterCard() {
         let value = this.state.filter
+        // this.setState({loading:true})
         if (value === "learning") {
             return this.state.sets.filter((e) => e.remember === 0)
         } else if (value === "learned") {
@@ -347,9 +384,171 @@ class Learn extends Component {
                     />
                 </span>
             )
+        } else if (filter == "learned") {
+            return (
+                <span className="card-front">
+                    <Result
+                        status="warning"
+                        title="Bạn chưa học thuộc thuật ngữ nào trong học phần này"
+                    />
+                </span>
+            )
         }
 
 
+    }
+
+    renderGame() {
+        return (
+            <>
+                <Modal
+                    title="Cùng chơi nào!!!"
+                    centered
+                    keyboard={false}
+                    maskClosable={false}
+                    visible={this.state.gameModal}
+                    onOk={() => this.showGame(false)}
+                    onCancel={() => this.showGame(false)}
+                    width={1000}
+                    footer={null}
+                >
+                    <Row
+                        style={{ height: "400px" }}
+                        className="game-div"
+                    >
+                        {this.renderGameContent()}
+                    </Row>
+                </Modal>
+            </>
+        )
+    }
+
+    renderGameContent() {
+        const { gameType } = this.state
+        if (!gameType) {
+            return (
+                <>
+                    <Col className="d-flex align-items-center justify-content-center flex-column">
+                        <Row>
+                            <span className="select-title mb-3">Chọn game và chiến nào 💪💪</span>
+                        </Row>
+                        <Row>
+                            <ButtonMate
+                                variant="outlined"
+                                color="primary"
+                                size="large"
+                                style={{
+                                    height: "100px",
+                                    width: "230px"
+                                }}
+                                className="mr-1"
+                                onClick={() => this.selectGame(GAME_TYPE.SELECT)}
+                            >
+                                <span>Game trắc nghiệm</span>
+                            </ButtonMate>
+
+                            <ButtonMate
+                                variant="outlined"
+                                color="secondary"
+                                size="large"
+                                style={{
+                                    height: "100px",
+                                    width: "230px"
+                                }}
+                                className="ml-1"
+                                onClick={() => this.selectGame(GAME_TYPE.SELECT)}
+                            >
+                                <span>Game điền ô trống</span>
+                            </ButtonMate>
+                        </Row>
+                    </Col>
+                </>
+            )
+        } else if (gameType == GAME_TYPE.SELECT) {
+            return (
+                <>
+                    {this.renderGameSelect()}
+                </>
+            )
+        } else {
+            return (
+                <>
+
+                </>
+            )
+        }
+    }
+
+    renderGameSelect() {
+        const { selectGame, gameData, gameLoading } = this.state
+        if (gameLoading) {
+            return (
+                <Row className="align-items-center justify-content-center w-100">
+                    <Spin
+                        size="large"
+                        indicator={<LoadingOutlined style={{ fontSize: "50px" }} spin />}
+                    />
+                </Row>
+            )
+        } else {
+            reactotron.log()
+            return (
+                <>
+                    <Col className="multi-choice">
+                        <Row className="justify-content-center mt-3">
+                            <span className="question">{gameData?.questions[selectGame.currentQuestion]?.question}</span>
+                        </Row>
+                        <Row className="mb-3 mt-5">
+                            <Col md={6}>
+                                <Alert message="Môi trường, tài nguyên" type="warning" className="anwser" />
+                            </Col>
+                            <Col md={6}>
+                                <Alert message="Môi trường, tài nguyên" type="info" className="anwser" />
+                            </Col>
+                        </Row>
+                        <Row className="mt-3">
+                            <Col md={6}>
+                                <Alert message="Môi trường, tài nguyên" type="info" className="anwser" />
+                            </Col>
+                            <Col md={6}>
+                                <Alert message="Môi trường, tài nguyên" type="info" className="anwser" />
+                            </Col>
+                        </Row>
+                        <Row className="mt-md-5 justify-content-center">
+                            <IconButton
+                                aria-label="delete"
+                                className="next-btn"
+                                color="primary"
+
+                            >
+                                <i className="fas fa-chevron-double-right"></i>
+                            </IconButton>
+                        </Row>
+                    </Col>
+                </>
+            )
+        }
+    }
+
+    selectGame = (value) => {
+        this.setState({
+            gameLoading: true,
+            gameType: value,
+        })
+
+        window.setTimeout(() => this.setState({
+            gameLoading: false,
+        }), 300)
+
+    }
+
+    showGame = (value) => {
+        if (!value) {
+            this.setState({
+                gameType: null
+            })
+        }
+        this.setState({ gameModal: value })
     }
 
     navFunc = (event) => {
@@ -381,12 +580,31 @@ class Learn extends Component {
                 data: res.data
             })
         } catch (e) {
+            this.setState({
+                loading: false,
+            })
+        }
+    }
 
+    async getGameSelect() {
+        try {
+            this.setState({
+                gameLoading: true
+            })
+            const res = await requestGame({ id: this.props.location?.state?.id })
+            this.setState({
+                gameLoading: false,
+                gameData: res.data
+            })
+        } catch (e) {
+            this.setState({
+                gameLoading: false
+            })
         }
     }
 
     forwardCard() {
-        if (this.state.currentCard == (this.state.sets.length - 1)) {
+        if (this.state.currentCard == (this.filterCard().length - 1)) {
             this.setState({
                 currentCard: 0
             })
@@ -400,7 +618,7 @@ class Learn extends Component {
     backCard() {
         if (this.state.currentCard == 0) {
             this.setState({
-                currentCard: this.state.sets.length - 1
+                currentCard: this.filterCard().length - 1
             })
         } else {
             this.setState({

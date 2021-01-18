@@ -83,11 +83,11 @@ class SearchScreen extends Component {
                                 <Select defaultValue="default" style={{ width: 150 }}>
                                     <Select.Option value="default">Thứ tự mặc định</Select.Option>
                                     <Select.Option value="asc">
-                                        <i class="fas fa-sort-amount-up-alt mr-1"></i>
+                                        <i className="fas fa-sort-amount-up-alt mr-1"></i>
                                         <span>Giá tăng dần</span>
                                     </Select.Option>
                                     <Select.Option value="desc">
-                                        <i class="fas fa-sort-amount-down-alt mr-1"></i>
+                                        <i className="fas fa-sort-amount-down-alt mr-1"></i>
                                         <span>Giá giảm dần</span>
                                     </Select.Option>
                                 </Select>
