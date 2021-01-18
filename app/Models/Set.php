@@ -94,6 +94,42 @@ class Set extends Model
             $question = [];
             foreach ($questions as $key => $value) {
                 $question['question'] = $value;
+                $question['CORRECT_ANSWER'] = $multiple_choice[$key];
+                $numbers = range(0, count($questions)-1);
+                unset($numbers[$key]);
+                shuffle($numbers);
+                $random_numbers = array_slice($numbers, 0, 3);
+                array_push($random_numbers, $key);
+                shuffle($random_numbers);
+                $question['answer_1'] = $multiple_choice[$random_numbers[0]];
+                $question['answer_2'] = $multiple_choice[$random_numbers[1]];
+                $question['answer_3'] = $multiple_choice[$random_numbers[2]];
+                $question['answer_4'] = $multiple_choice[$random_numbers[3]];
+                array_push($data['questions'], $question);
+            }
+            shuffle($data['questions']);
+            return $data;
+        }else{
+            return $data;
+        }
+    }
+
+    public function fillBlankGame($id)
+    {
+        $set = $this->where('id',$id)->with('cards')->first();
+        $questions = [];
+        $multiple_choice = [];
+        $data = [];
+        foreach ($set->cards as $key => $value) {
+            $questions[$key] = $value->front_side;
+            $multiple_choice[$key] = $value->back_side;
+        }
+        $data['number_of_questions'] = count($set->cards);
+        $data['questions'] = [];
+        if ($data['number_of_questions'] >= 4) {
+            $question = [];
+            foreach ($questions as $key => $value) {
+                $question['question'] = $value;
                 $question['CORRECT ANSWER'] = $multiple_choice[$key];
                 $numbers = range(0, count($questions)-1);
                 unset($numbers[$key]);
@@ -105,12 +141,9 @@ class Set extends Model
                 $question['answer_2'] = $multiple_choice[$random_numbers[1]];
                 $question['answer_3'] = $multiple_choice[$random_numbers[2]];
                 $question['answer_4'] = $multiple_choice[$random_numbers[3]];
-                //array_push($data['question'], $question);
-                //$data['questions'] = $question;
                 array_push($data['questions'], $question);
             }
             shuffle($data['questions']);
-            //$data['question'] = $question;
             return $data;
         }else{
             return $data;
