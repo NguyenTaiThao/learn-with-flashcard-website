@@ -227,25 +227,25 @@ class Set extends Model
         return $data;
     }
 
-    public function countNoFolderSets($user_id)
+    public function countNoFolderSets($user_id, $min_folder)
     {
         $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
-                    ->where([['folders.user_id', $user_id], ['sets.folder_id', 1]])
+                    ->where([['folders.user_id', $user_id], ['sets.folder_id', $min_folder]])
                     ->get('sets.*');
         return count($sets);
     }
 
 
-    public function noFolderSets($current_page, $sets_per_page, $user_id)
+    public function noFolderSets($current_page, $sets_per_page, $user_id, $min_folder)
     {
         $offset = ($current_page - 1) * $sets_per_page;
         $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
-                    ->where([['folders.user_id', $user_id], ['sets.folder_id', 1]])
+                    ->where([['folders.user_id', $user_id], ['sets.folder_id', $min_folder]])
                     ->orderBy('sets.updated_at', 'desc')
                     ->limit($sets_per_page)
                     ->offset($offset)
                     ->get('sets.*');
-        $paginate = $this->paginate($this->countNoFolderSets($user_id), $current_page, $sets_per_page);
+        $paginate = $this->paginate($this->countNoFolderSets($user_id, $min_folder), $current_page, $sets_per_page);
         $data['paginate'] = $paginate;
         $data['sets'] = $sets;
         return $data;
