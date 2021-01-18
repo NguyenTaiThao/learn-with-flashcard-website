@@ -20,6 +20,15 @@ class Folder extends Model
         return $this->hasMany('App\Models\Set', 'folder_id', 'id');
     }
 
+    public function paginate($total_items, $current_page, $items_per_page)
+    {
+        return [
+            'total_items' => $total_items ,
+            'current_page' => $current_page ,
+            'items_per_page' => $items_per_page
+        ];
+    }
+
     public function minFolderID($user_id)
     {
         return Folder::where('user_id', $user_id)->min('id');

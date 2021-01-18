@@ -66,6 +66,7 @@ Route::post('/createOrUpdateFolder', [FolderController::class, 'createOrUpdateFo
 Route::get('/setDetail', [SetController::class, 'setDetail']);
 Route::get('/folderDetail', [FolderController::class, 'folderDetail']);
 Route::get('/multipleChoiceGame', [SetController::class, 'multipleChoiceGame']);
+Route::get('/fillBlankGame', [SetController::class, 'fillBlankGame']);
 
 
 Route::get('send-mail', [MailController::class, 'sendEmail']);

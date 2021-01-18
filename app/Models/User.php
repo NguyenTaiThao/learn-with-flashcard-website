@@ -53,8 +53,18 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Bill', 'user_id', 'id');
     }
 
+    public function paginate($total_items, $current_page, $items_per_page)
+    {
+        return [
+            'total_items' => $total_items ,
+            'current_page' => $current_page ,
+            'items_per_page' => $items_per_page
+        ];
+    }
+
     public function listFolders($current_page, $folders_per_page, $default_folder)
     {
+        $current_page = intval($current_page);
         $offset = ($current_page - 1) * $folders_per_page;
         $folders = $this->folders()->whereNotIn('id', [$default_folder])
                                     ->orderBy('updated_at', 'DESC')

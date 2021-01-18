@@ -23,6 +23,16 @@ class Set extends Model
         'bought_times'
     ];
 
+
+    public function paginate($total_items, $current_page, $items_per_page)
+    {
+        return [
+            'total_items' => $total_items ,
+            'current_page' => $current_page ,
+            'items_per_page' => $items_per_page
+        ];
+    }
+
     public function folder()
     {
         return $this->belongsTo('App\Models\Folder', 'folder_id', 'id');
@@ -94,27 +104,40 @@ class Set extends Model
             $question = [];
             foreach ($questions as $key => $value) {
                 $question['question'] = $value;
-                $question['CORRECT ANSWER'] = $multiple_choice[$key];
+                $question['CORRECT_ANSWER'] = $multiple_choice[$key];
                 $numbers = range(0, count($questions)-1);
                 unset($numbers[$key]);
                 shuffle($numbers);
                 $random_numbers = array_slice($numbers, 0, 3);
                 array_push($random_numbers, $key);
                 shuffle($random_numbers);
-                $question['answer 1'] = $multiple_choice[$random_numbers[0]];
-                $question['answer 2'] = $multiple_choice[$random_numbers[1]];
-                $question['answer 3'] = $multiple_choice[$random_numbers[2]];
-                $question['answer 4'] = $multiple_choice[$random_numbers[3]];
-                //array_push($data['question'], $question);
-                //$data['questions'] = $question;
+                $question['answer_1'] = $multiple_choice[$random_numbers[0]];
+                $question['answer_2'] = $multiple_choice[$random_numbers[1]];
+                $question['answer_3'] = $multiple_choice[$random_numbers[2]];
+                $question['answer_4'] = $multiple_choice[$random_numbers[3]];
                 array_push($data['questions'], $question);
             }
-            array_push($data['questions'], $question);
-            //$data['question'] = $question;
+            shuffle($data['questions']);
             return $data;
         }else{
             return $data;
         }
+    }
+
+    public function fillBlankGame($id)
+    {
+        $set = $this->where('id',$id)->with('cards')->first();
+        $data = [];
+        $data['questions'] = [];
+        $question = [];
+        $data['number_of_questions'] = count($set->cards);
+        foreach ($set->cards as $key => $value) {
+            $question['mean'] = $value->back_side;
+            $question['correct_answer'] = $value->front_side;
+            array_push($data['questions'], $question);
+        }
+        shuffle($data['questions']);
+        return $data;
     }
 
     public function removeCard($set_id, $card_received)
@@ -158,6 +181,7 @@ class Set extends Model
                     ->offset($offset)
                     ->get('sets.*');
         $paginate = $this->paginate($this->allCompletedSet($user_id), $current_page, $sets_per_page);
+        dd(123);
         $data['paginate'] = $paginate;
         $data['sets'] = $sets;
         return $data;
@@ -203,25 +227,25 @@ class Set extends Model
         return $data;
     }
 
-    public function countNoFolderSets($user_id)
+    public function countNoFolderSets($user_id, $min_folder)
     {
         $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
-                    ->where([['folders.user_id', $user_id], ['sets.folder_id', 1]])
+                    ->where([['folders.user_id', $user_id], ['sets.folder_id', $min_folder]])
                     ->get('sets.*');
         return count($sets);
     }
 
 
-    public function noFolderSets($current_page, $sets_per_page, $user_id)
+    public function noFolderSets($current_page, $sets_per_page, $user_id, $min_folder)
     {
         $offset = ($current_page - 1) * $sets_per_page;
         $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
-                    ->where([['folders.user_id', $user_id], ['sets.folder_id', 1]])
+                    ->where([['folders.user_id', $user_id], ['sets.folder_id', $min_folder]])
                     ->orderBy('sets.updated_at', 'desc')
                     ->limit($sets_per_page)
                     ->offset($offset)
                     ->get('sets.*');
-        $paginate = $this->paginate($this->countNoFolderSets($user_id), $current_page, $sets_per_page);
+        $paginate = $this->paginate($this->countNoFolderSets($user_id, $min_folder), $current_page, $sets_per_page);
         $data['paginate'] = $paginate;
         $data['sets'] = $sets;
         return $data;

@@ -183,12 +183,33 @@ class SetController extends Controller
                 }else{
                     $returnData = [
                         'status' => 1,
-                        'msg' => 'Tạo game Trắc ngiệm thành công!',
+                        'msg' => 'Tạo game Trắc nghiệm thành công!',
                         'data' => $set
                     ];
                     return response()->json($returnData, 200);
                 }
             }catch(Exception $e){
+                $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function fillBlankGame(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        } else {
+            try {
+                $set = $this->set_model->fillBlankGame($request->id);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => 'Tạo game Điền từ thành công!',
+                    'data' => $set
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
                 $this->internalServerError($e);
             }
         }
@@ -289,7 +310,8 @@ class SetController extends Controller
             return $this->tokenNotExist();
         }else{
             try {
-                $data = $this->set_model->noFolderSets($request->current_page, $this->sets_per_page, $user->id);
+                $min_folder = $this->folder_model->minFolderID($user->id);
+                $data = $this->set_model->noFolderSets($request->current_page, $this->sets_per_page, $user->id, $min_folder);
                 if(count($data['sets']) == 0){
                     $returnData = [
                         'status' => 0,
@@ -303,8 +325,7 @@ class SetController extends Controller
                     'msg' => "Thành công",
                     'data' => $data
                 ];
-                dd($returnData);
-                return $returnData;//response()->json($returnData, 200);
+                return response()->json($returnData, 200);
             } catch (Exception $e) {
                 $this->internalServerError($e);
             }
