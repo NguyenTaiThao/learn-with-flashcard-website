@@ -314,7 +314,6 @@ class Learn extends Component {
 
     filterCard() {
         let value = this.state.filter
-        // this.setState({loading:true})
         if (value === "learning") {
             return this.state.sets.filter((e) => e.remember === 0)
         } else if (value === "learned") {
@@ -500,7 +499,7 @@ class Learn extends Component {
                         </Row>
                         <Row className="mb-3 mt-5">
                             <Col md={6}>
-                                <Alert message="Môi trường, tài nguyên" type="warning" className="anwser" />
+                                <Alert message="Môi trường, tài nguyên" type="info" className="anwser" />
                             </Col>
                             <Col md={6}>
                                 <Alert message="Môi trường, tài nguyên" type="info" className="anwser" />

@@ -16,7 +16,7 @@ class UserHome extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
+            loading: true,
             data: []
         }
     }
@@ -46,7 +46,7 @@ class UserHome extends Component {
         const options = {
             animationEnabled: true,
             subtitles: [{
-                text: "Hoàn thành " + data[0]?.completed + "%",
+                text: this.state.loading ? "Loading" : "Hoàn thành " + data[0]?.completed + "%",
                 verticalAlign: "center",
                 fontSize: 14,
                 dockInsidePlotArea: false
@@ -76,29 +76,53 @@ class UserHome extends Component {
             <>
                 <Row className="w-75 py-4 px-4">
                     <Col>
-                        <Row className="float-div suggested-folder">
-                            <Col md={3}>
-                                <CanvasJSChart options={options} />
-                            </Col>
-                            <Col md={9} className="d-flex flex-column justify-content-center">
-                                <Row>
-                                    <span className="title">{data && data[0]?.title}</span>
-                                </Row>
-                                <Row>
-                                    <span className="banner">Tiếp tục luyện tập với chế độ Học và cải thiện kiến thức của bạn.</span>
-                                </Row>
-                                <Row>
-                                    <Button
-                                        variant="secondary"
-                                        className="typical-btn change-mode mt-3"
-                                        onClick={()=> this.pushRef(ROUTER.LEARN, data[0]?.id)}
-                                    >
-                                        Tiếp tục luyện tập
+                        {(data?.length <= 0 && !this.state.loading) ?
+                            <Row className="float-div suggested-folder">
+                                <Col md={3}>
+                                    <i className="fal fa-medal start-icon"></i>
+                                </Col>
+                                <Col md={9} className="d-flex flex-column justify-content-center">
+                                    <Row>
+                                        <span className="title">Cùng nhau tạo học phần mới</span>
+                                    </Row>
+                                    <Row>
+                                        <span className="banner">Để luyện tập với chế độ Học và cải thiện kiến thức của bạn.</span>
+                                    </Row>
+                                    <Row>
+                                        <Button
+                                            variant="secondary"
+                                            className="typical-btn change-mode mt-3"
+                                            onClick={() => this.pushRef(ROUTER.CREATE_SET)}
+                                        >
+                                            Tạo học phần mới
                                     </Button>
-                                </Row>
-                            </Col>
-                        </Row>
-
+                                    </Row>
+                                </Col>
+                            </Row>
+                            :
+                            <Row className="float-div suggested-folder">
+                                <Col md={3}>
+                                    <CanvasJSChart options={options} />
+                                </Col>
+                                <Col md={9} className="d-flex flex-column justify-content-center">
+                                    <Row>
+                                        <span className="title">{data && data[0]?.title}</span>
+                                    </Row>
+                                    <Row>
+                                        <span className="banner">Tiếp tục luyện tập với chế độ Học và cải thiện kiến thức của bạn.</span>
+                                    </Row>
+                                    <Row>
+                                        <Button
+                                            variant="secondary"
+                                            className="typical-btn change-mode mt-3"
+                                            onClick={() => this.pushRef(ROUTER.LEARN, data[0]?.id)}
+                                        >
+                                            Tiếp tục luyện tập
+                                    </Button>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        }
                         <Row className="mt-4">
                             <Col className="text-left px-0">
                                 <b>Gần đây</b>
@@ -215,9 +239,9 @@ class UserHome extends Component {
     }
 
     removeSet = async () => {
-        try{
-            
-        }catch(e){
+        try {
+
+        } catch (e) {
             reactotron.log("remove set err", e)
         }
     }
