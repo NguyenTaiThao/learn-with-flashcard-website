@@ -101,15 +101,15 @@ class Set extends Model
                 $random_numbers = array_slice($numbers, 0, 3);
                 array_push($random_numbers, $key);
                 shuffle($random_numbers);
-                $question['answer 1'] = $multiple_choice[$random_numbers[0]];
-                $question['answer 2'] = $multiple_choice[$random_numbers[1]];
-                $question['answer 3'] = $multiple_choice[$random_numbers[2]];
-                $question['answer 4'] = $multiple_choice[$random_numbers[3]];
+                $question['answer_1'] = $multiple_choice[$random_numbers[0]];
+                $question['answer_2'] = $multiple_choice[$random_numbers[1]];
+                $question['answer_3'] = $multiple_choice[$random_numbers[2]];
+                $question['answer_4'] = $multiple_choice[$random_numbers[3]];
                 //array_push($data['question'], $question);
                 //$data['questions'] = $question;
                 array_push($data['questions'], $question);
             }
-            array_push($data['questions'], $question);
+            shuffle($data['questions']);
             //$data['question'] = $question;
             return $data;
         }else{
