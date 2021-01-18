@@ -48,7 +48,9 @@
 }
 
 .game-div .multi-choice .question{
-    font-size: 27px;
+    font-size: 35px;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .game-div .multi-choice .anwser{
@@ -66,4 +68,8 @@
 
 .game-div .next-btn{
     border: 1px solid #91d5ff !important;
+}
+
+.game-div .fill-blank #anwser-field{
+    font-size: 30px !important;
 }

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import { Row, Col } from "react-bootstrap"
 import "@styles/learn.css"
-import { Divider, Fab, Slide, Tooltip, IconButton } from "@material-ui/core"
+import { Divider, Fab, Slide, Tooltip, IconButton, TextField } from "@material-ui/core"
 import ButtonMate from "@material-ui/core/Button"
-import { Progress, Button, Select, Result, Spin, Modal, Alert } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Progress, Button, Select, Result, Spin, Modal, Alert, Statistic, Switch } from 'antd';
+import { LoadingOutlined, SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import { withRouter, Redirect } from "react-router-dom"
 import { ROUTER, GAME_TYPE } from "@constants/Constant"
 import { requestSetDetail, requestGame } from "@constants/Api"
@@ -13,6 +13,14 @@ import _ from "lodash"
 import reactotron from "reactotron-react-js"
 import NotifyContext from "@context/NotifyContext"
 
+const selectGameDefaultStatus = {
+    currentQuestion: 0,
+    point: 0,
+    selected: "",
+    correct: "",
+    deadline: 0,
+    timeChallenge: false,
+}
 class Learn extends Component {
 
     constructor(props) {
@@ -26,15 +34,20 @@ class Learn extends Component {
             gameModal: false,
             gameLoading: false,
             gameType: null,
-            selectGame: {
+            selectGame: { ...selectGameDefaultStatus },
+            fillGame: {
                 currentQuestion: 0,
                 point: 0,
+                userInput: "",
             }
         }
         this.flippy = []
+
     }
 
     static contextType = NotifyContext
+    TIME_PER_QUES = 10
+    TIME_SHOW = 500
 
     componentDidMount() {
         this.getDetail()
@@ -398,10 +411,38 @@ class Learn extends Component {
     }
 
     renderGame() {
+        const { selectGame } = this.state
         return (
             <>
                 <Modal
-                    title="Cùng chơi nào!!!"
+                    title={!this.state.gameType ? "Cùng chơi nào!!!" :
+                        (this.state.gameType == GAME_TYPE.SELECT ?
+                            <Row className="align-items-center">
+                                <Col xs={2}>
+                                    <Tooltip placement="bottom" title="Tính năng thử thách thời gian">
+                                        <Switch
+                                            checkedChildren="ON"
+                                            unCheckedChildren="OFF"
+                                            value={selectGame.timeChallenge}
+                                            onChange={() => this.switchTimeChallenge(!selectGame.timeChallenge)}
+                                        />
+                                    </Tooltip>
+                                </Col>
+                                <Col xs={8} className="d-flex justify-content-center">
+                                    <Statistic.Countdown
+                                        className="text-center"
+                                        title="Game trắc nghiệm"
+                                        format="HH:mm:ss:SSS"
+                                        value={this.state.selectGame.deadline}
+                                        onFinish={() => this.handleTimeUp()}
+                                        disabled
+                                    />
+                                </Col>
+                            </Row> :
+                            <Row>
+                                <span>Game điền ô trống</span>
+                            </Row>
+                        )}
                     centered
                     keyboard={false}
                     maskClosable={false}
@@ -455,7 +496,7 @@ class Learn extends Component {
                                     width: "230px"
                                 }}
                                 className="ml-1"
-                                onClick={() => this.selectGame(GAME_TYPE.SELECT)}
+                                onClick={() => this.selectGame(GAME_TYPE.FILL)}
                             >
                                 <span>Game điền ô trống</span>
                             </ButtonMate>
@@ -472,7 +513,7 @@ class Learn extends Component {
         } else {
             return (
                 <>
-
+                    {this.renderGameFill()}
                 </>
             )
         }
@@ -490,29 +531,234 @@ class Learn extends Component {
                 </Row>
             )
         } else {
-            reactotron.log()
+
+            if (selectGame.currentQuestion < gameData.number_of_questions) {
+                const { answer_1, answer_2, answer_3, answer_4 } = gameData?.questions[selectGame.currentQuestion]
+                return (
+                    <>
+                        <Col className="multi-choice">
+                            <Row className="justify-content-center mt-3">
+                                <span className="question">{gameData?.questions[selectGame.currentQuestion]?.question}</span>
+                            </Row>
+                            <Row className="mb-3 mt-5">
+                                <Col md={6}>
+                                    <Alert
+                                        message={answer_1}
+                                        type={selectGame.correct == answer_1 ? "success" :
+                                            (selectGame.selected == answer_1 ? "error" : "info")}
+                                        className="anwser"
+                                        onClick={() => this.handleSelectGame(answer_1)}
+                                    />
+                                </Col>
+                                <Col md={6}>
+                                    <Alert
+                                        message={answer_2}
+                                        type={selectGame.correct == answer_2 ? "success" :
+                                            (selectGame.selected == answer_2 ? "error" : "info")}
+                                        className="anwser"
+                                        ref={this.answer2}
+                                        onClick={() => this.handleSelectGame(answer_2)}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="mt-3">
+                                <Col md={6}>
+                                    <Alert
+                                        message={answer_3}
+                                        type={selectGame.correct == answer_3 ? "success" :
+                                            (selectGame.selected == answer_3 ? "error" : "info")}
+                                        className="anwser"
+                                        onClick={() => this.handleSelectGame(answer_3)}
+                                    />
+                                </Col>
+                                <Col md={6}>
+                                    <Alert
+                                        message={answer_4}
+                                        type={selectGame.correct == answer_4 ? "success" :
+                                            (selectGame.selected == answer_4 ? "error" : "info")}
+                                        className="anwser"
+                                        ref={this.answer4}
+                                        onClick={() => this.handleSelectGame(answer_4)}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="mt-md-5 justify-content-center">
+                                <span>{parseInt(selectGame?.currentQuestion) + 1} / {gameData?.number_of_questions}</span>
+                            </Row>
+                        </Col>
+                    </>
+                )
+            } else {
+                const point = this.state?.selectGame?.point
+                const total = this.state.gameData?.number_of_questions
+                if ((point / total) > 0.5) {
+                    return (
+                        <Col className="multi-choice">
+                            <Row className="justify-content-center align-items-center">
+                                <Result
+                                    icon={<SmileOutlined />}
+                                    title={`Tuyệt vời, bạn đã trả lời đúng ${point}/${total} câu hỏi.`}
+                                    extra={
+                                        <>
+                                            <Button
+                                                type="primary"
+                                                onClick={() => this.handleGameOver("again")}
+                                            >
+                                                <span>Chơi lại</span>
+                                            </Button>
+                                            <Button
+                                                type="primary"
+                                                onClick={() => this.handleGameOver("back")}
+                                            >
+                                                <span>Chơi game khác</span>
+                                            </Button>
+                                        </>
+                                    }
+                                />
+                            </Row>
+                        </Col>
+                    )
+                } else {
+                    return (
+                        <Col className="multi-choice">
+                            <Row className="justify-content-center align-items-center">
+                                <Result
+                                    icon={<FrownOutlined />}
+                                    title={`Bạn cần cố găng nhiều hơn, bạn đã trả lời đúng ${point}/${total}  câu hỏi`}
+                                    extra={
+                                        <>
+                                            <Button
+                                                type="primary"
+                                                onClick={() => this.handleGameOver("again")}
+                                            >
+                                                <span>Chơi lại</span>
+                                            </Button>
+                                            <Button
+                                                type="primary"
+                                                onClick={() => this.handleGameOver("back")}
+                                            >
+                                                <span>Chơi game khác</span>
+                                            </Button>
+                                        </>
+                                    }
+                                />
+                            </Row>
+                        </Col>
+                    )
+                }
+            }
+        }
+    }
+
+    handleGameOver = (command) => {
+        if (command == "again") {
+            this.setState({
+                selectGame: { ...selectGameDefaultStatus }
+            }, () => this.selectGame(GAME_TYPE.SELECT))
+        } else {
+            this.setState({
+                selectGame: { ...selectGameDefaultStatus }
+            }, () => this.selectGame(""))
+        }
+    }
+
+    switchTimeChallenge(value) {
+        if (value) {
+            this.setState({
+                selectGame: {
+                    ...this.state.selectGame,
+                    timeChallenge: value,
+                    deadline: Date.now() + 1000 * this.TIME_PER_QUES,
+                }
+            })
+        } else {
+            this.setState({
+                selectGame: {
+                    ...this.state.selectGame,
+                    timeChallenge: value,
+                    deadline: 0,
+                }
+            })
+        }
+    }
+
+    handleTimeUp = () => {
+        if (this.state.selectGame.timeChallenge) {
+            this.handleSelectGame(null)
+        }
+    }
+
+    handleSelectGame = (selected) => {
+        const { selectGame, gameData } = this.state
+
+        if (gameData?.questions[selectGame.currentQuestion]?.CORRECT_ANSWER == selected) {
+            this.setState({
+                selectGame: {
+                    ...this.state.selectGame,
+                    point: this.state.selectGame.point + 1,
+                    correct: selected,
+                }
+            })
+        } else {
+            this.setState({
+                selectGame: {
+                    ...this.state.selectGame,
+                    correct: gameData?.questions[selectGame.currentQuestion]?.CORRECT_ANSWER,
+                    selected: selected,
+                }
+            })
+        }
+        window.setTimeout(() => {
+            this.setState({
+                selectGame: {
+                    ...this.state.selectGame,
+                    correct: "",
+                    selected: "",
+                    currentQuestion: this.state.selectGame.currentQuestion + 1,
+                }
+            }, () => {
+                if (this.state.selectGame.timeChallenge) {
+                    this.setState({
+                        selectGame: {
+                            ...this.state.selectGame,
+                            deadline: Date.now() + 1000 * this.TIME_PER_QUES,
+                        }
+                    })
+                }
+            })
+        }, this.TIME_SHOW)
+    }
+
+    renderGameFill() {
+        const { selectGame, fillGame, gameData, gameLoading } = this.state
+        if (gameLoading) {
+            return (
+                <Row className="align-items-center justify-content-center w-100">
+                    <Spin
+                        size="large"
+                        indicator={<LoadingOutlined style={{ fontSize: "50px" }} spin />}
+                    />
+                </Row>
+            )
+        } else {
             return (
                 <>
-                    <Col className="multi-choice">
+                    <Col className="fill-blank">
                         <Row className="justify-content-center mt-3">
                             <span className="question">{gameData?.questions[selectGame.currentQuestion]?.question}</span>
                         </Row>
-                        <Row className="mb-3 mt-5">
-                            <Col md={6}>
-                                <Alert message="Môi trường, tài nguyên" type="info" className="anwser" />
-                            </Col>
-                            <Col md={6}>
-                                <Alert message="Môi trường, tài nguyên" type="info" className="anwser" />
-                            </Col>
-                        </Row>
-                        <Row className="mt-3">
-                            <Col md={6}>
-                                <Alert message="Môi trường, tài nguyên" type="info" className="anwser" />
-                            </Col>
-                            <Col md={6}>
-                                <Alert message="Môi trường, tài nguyên" type="info" className="anwser" />
+
+                        <Row className="mb-3 mt-5 justify-content-center">
+                            <Col md={4}>
+                                <TextField
+                                    id="anwser-field"
+                                    className="w-100 py-5"
+                                    value={fillGame.userInput}
+                                    onChange={(e) => this.handleFillGame("userInput", e.target.value)}
+                                />
                             </Col>
                         </Row>
+
                         <Row className="mt-md-5 justify-content-center">
                             <IconButton
                                 aria-label="delete"
@@ -529,11 +775,33 @@ class Learn extends Component {
         }
     }
 
+    handleFillGame(field, value) {
+        this.setState({
+            fillGame: {
+                ...this.state.fillGame,
+                [field]: value,
+            }
+        })
+    }
+
     selectGame = (value) => {
         this.setState({
             gameLoading: true,
             gameType: value,
+            selectGame: {
+                ...this.state.selectGame,
+            }
         })
+
+        if (this.state.selectGame.timeChallenge && value == GAME_TYPE.SELECT) {
+            this.setState({
+                selectGame: {
+                    ...this.state.selectGame,
+                    deadline: Date.now() + 1000 * this.TIME_PER_QUES,
+                }
+            })
+        }
+
 
         window.setTimeout(() => this.setState({
             gameLoading: false,
@@ -544,7 +812,8 @@ class Learn extends Component {
     showGame = (value) => {
         if (!value) {
             this.setState({
-                gameType: null
+                gameType: null,
+                selectGame: { ...selectGameDefaultStatus }
             })
         }
         this.setState({ gameModal: value })

@@ -168,7 +168,12 @@ class Header extends Component {
                             }}
                             className="mt-3"
                         >
-                            <Row className="py-4">
+                            <Row
+                                className="py-4"
+                                style={{
+                                    width: "250px"
+                                }}
+                            >
                                 <Col xs={4}>
                                     <Avatar
                                         style={{ "background": "red" }}

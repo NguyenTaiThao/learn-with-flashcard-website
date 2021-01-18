@@ -15,6 +15,7 @@ const ROUTER = {
 
 const GAME_TYPE = {
   SELECT: "SELECT",
+  FILL:"FILL",
 }
 
 export { 
