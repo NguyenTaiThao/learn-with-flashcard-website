@@ -12,7 +12,7 @@ class Set extends Model
 {
     use HasFactory;
     protected $table = "sets";
-
+    protected $primaryKey = 'id';
     protected $fillable = [
         'title',
         'price',
@@ -89,21 +89,28 @@ class Set extends Model
             $multiple_choice[$key] = $value->back_side;
         }
         $data['number_of_questions'] = count($set->cards);
+        $data['questions'] = [];
         if ($data['number_of_questions'] >= 4) {
+            $question = [];
             foreach ($questions as $key => $value) {
-                $data[$key]['question'] = $value;
-                $data[$key]['CORRECT ANSWER'] = $multiple_choice[$key];
+                $question['question'] = $value;
+                $question['CORRECT ANSWER'] = $multiple_choice[$key];
                 $numbers = range(0, count($questions)-1);
                 unset($numbers[$key]);
                 shuffle($numbers);
                 $random_numbers = array_slice($numbers, 0, 3);
                 array_push($random_numbers, $key);
                 shuffle($random_numbers);
-                $data[$key]['answer 1'] = $multiple_choice[$random_numbers[0]];
-                $data[$key]['answer 2'] = $multiple_choice[$random_numbers[1]];
-                $data[$key]['answer 3'] = $multiple_choice[$random_numbers[2]];
-                $data[$key]['answer 4'] = $multiple_choice[$random_numbers[3]];
+                $question['answer 1'] = $multiple_choice[$random_numbers[0]];
+                $question['answer 2'] = $multiple_choice[$random_numbers[1]];
+                $question['answer 3'] = $multiple_choice[$random_numbers[2]];
+                $question['answer 4'] = $multiple_choice[$random_numbers[3]];
+                //array_push($data['question'], $question);
+                //$data['questions'] = $question;
+                array_push($data['questions'], $question);
             }
+            array_push($data['questions'], $question);
+            //$data['question'] = $question;
             return $data;
         }else{
             return $data;

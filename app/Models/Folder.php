@@ -9,7 +9,7 @@ class Folder extends Model
 {
     use HasFactory;
     protected $table = 'folders';
-
+    protected $primaryKey = 'id';
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id');

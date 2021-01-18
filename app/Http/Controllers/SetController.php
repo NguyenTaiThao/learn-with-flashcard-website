@@ -303,7 +303,8 @@ class SetController extends Controller
                     'msg' => "Thành công",
                     'data' => $data
                 ];
-                return response()->json($returnData, 200);
+                dd($returnData);
+                return $returnData;//response()->json($returnData, 200);
             } catch (Exception $e) {
                 $this->internalServerError($e);
             }
