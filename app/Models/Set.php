@@ -122,8 +122,8 @@ class Set extends Model
         $question = [];
         $data['number_of_questions'] = count($set->cards);
         foreach ($set->cards as $key => $value) {
-            $question['term'] = $value->front_side;
             $question['mean'] = $value->back_side;
+            $question['correct_answer'] = $value->front_side;
             array_push($data['questions'], $question);
         }
         shuffle($data['questions']);
@@ -171,6 +171,7 @@ class Set extends Model
                     ->offset($offset)
                     ->get('sets.*');
         $paginate = $this->paginate($this->allCompletedSet($user_id), $current_page, $sets_per_page);
+        dd(123);
         $data['paginate'] = $paginate;
         $data['sets'] = $sets;
         return $data;
