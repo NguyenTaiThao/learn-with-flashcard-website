@@ -186,7 +186,38 @@ class HomeScreen extends Component {
                     </Row>
                 </Col>
 
-               
+                <Col xs={12} className="home-element my-3">
+                    <CarouselBootstrap
+                        indicators={false}
+                        controls={false}
+                        keyboard={false}
+                    >
+                        <CarouselBootstrap.Item interval={5000}>
+                            <h3 className="user-review">Tôi phát hiện ra Quizlet hồi mới 12 tuổi.
+                            Nó đã giúp tôi cải thiện điểm số rất nhiều.
+                            Cảm ơn Quizlet đã giúp cho việc học trở nên vui vẻ và hiệu quả!
+                            </h3>
+                            <p className="user-info">-Nguyễn Tài Thao, 21 tuổi</p>
+                        </CarouselBootstrap.Item>
+                        <CarouselBootstrap.Item interval={5000}>
+                            <h3 className="user-review">Quizlet là một phương pháp học tuyệt vời.
+                            Tôi đã giới thiệu nó cho bạn bè và tất cả chúng tôi đang tiến bộ.
+                            Bất cứ khi nào nghĩ về Quizlet,
+                            tôi lại thấy niềm vui khi học trong vài phút thay vì nhiều giờ.
+                            </h3>
+                            <p className="user-info">-Trần Đức Trung, 22 tuổi</p>
+                        </CarouselBootstrap.Item>
+                        <CarouselBootstrap.Item interval={5000}>
+                            <h3 className="user-review">Trước đây, khi nói đến việc học, tôi dở vô cùng.
+                            Bây giờ tôi đang ở một trường đại học mới và họ giới thiệu tôi với Quizlet.
+                            Tôi không còn căng thẳng mỗi khi học và làm bài tập nữa. CẢM ƠN QUIZLET!!!
+                            </h3>
+                            <p className="user-info">-Phạm Tuấn Dũng, 18 tuổi</p>
+                        </CarouselBootstrap.Item>
+                    </CarouselBootstrap>
+                </Col>
+
+              
             </Row >
         )
     }
