@@ -11,6 +11,7 @@ use App\Http\Controllers\GetWeatherController;
 use App\Models\Folder;
 use App\Models\User;
 use App\Mail\NotifyMail;
+use App\Notifications\ConfirmBill;
 use Illuminate\Mail;
 use Illuminate\Support\Facades\Mail as FacadesMail;
 
@@ -79,3 +80,9 @@ Route::get('getWeather', [GetWeatherController::class, 'getWeather']);
 Route::get('search', [SetController::class, 'search']);
 Route::get('completedSets', [SetController::class, 'completedSets']);
 Route::post('updateCard', [CardController::class, 'updateCard']);
+
+
+Route::get('testNotify', function () {
+    User::find(4)->notify(new ConfirmBill);
+    echo "123";
+});
