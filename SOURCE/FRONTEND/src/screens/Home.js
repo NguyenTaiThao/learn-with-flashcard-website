@@ -71,7 +71,7 @@ class HomeScreen extends Component {
                     </Row>
                     <Row className="pb-5">
                         <Col md={7} sm={12} className="offset-0 offset-md-2">
-                            
+                            //
                             <Button
                                 variant="info"
                                 className="learn-now-btn"
