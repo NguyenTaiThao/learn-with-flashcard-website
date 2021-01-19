@@ -143,7 +143,22 @@ class HomeScreen extends Component {
                     </Row>
                 </Col>
 
-               
+                <Col xs={12} className="px-5 home-element">
+                    <Row>
+                        <Col md={6} className="text">
+                            <p className="title">Bạn chỉ cần động não, còn mọi thứ khác đã có chúng tôi lo.</p>
+                            <p className="content">Từ các thẻ ghi nhớ giúp bạn học tiếng Anh,
+                            đến các trò chơi giúp học lịch sử dễ dàng,
+                            bạn có thể sử dụng nhiều loại công cụ để chinh phục mọi thử thách.
+                            </p>
+                        </Col>
+                        <Col md={6} className="picture">
+                            <img src={require("@assets/effective.png")} className="w-100" alt="anh minh hoa"></img>
+                        </Col>
+                    </Row>
+                </Col>
+
+              
         )
     }
 
