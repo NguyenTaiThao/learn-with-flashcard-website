@@ -106,12 +106,15 @@ class HomeScreen extends Component {
                         fade={true}
                     >
                         <CarouselBootstrap.Item interval={3000}>
+                            //Theme src image
                             <img src={require("@src/assets/banner_01.png")} className="w-100" alt="anh-slide" />
                         </CarouselBootstrap.Item>
                         <CarouselBootstrap.Item interval={3000}>
+                            //Theme src image
                             <img src={require("@src/assets/banner_02.png")} className="w-100" alt="anh-slide" />
                         </CarouselBootstrap.Item>
                         <CarouselBootstrap.Item interval={3000}>
+                            //Theme src image
                             <img src={require("@src/assets/banner_03.png")} className="w-100" alt="anh-slide" />
                         </CarouselBootstrap.Item>
                     </CarouselBootstrap>
