@@ -241,6 +241,7 @@ class Learn extends Component {
                                                             <i
                                                                 className={`fad fa-bookmark remember-icon mr-2 
                                                             ${ele?.remember ? "text-success" : "text-secondary"} cursor`}
+                                                                onClick={() => this.updateCard()}
                                                             ></i>
                                                         </Tooltip>
                                                     </Col>
@@ -320,15 +321,17 @@ class Learn extends Component {
                                         </Fab>
                                     </Tooltip>
 
-                                    <Tooltip placement="bottom" title="Đánh dấu là đã thuộc">
+                                    <Tooltip
+                                        placement="bottom"
+                                        title={!this.filterCard()[this.state.currentCard]?.remember ? "Đánh dấu là đã thuộc" : "Đánh dấu là chưa thuộc"}>
                                         <Fab
                                             variant="extended"
-                                            className="bg-success text-white"
+                                            className={`text-white ${!this.filterCard()[this.state.currentCard]?.remember ? "bg-success" : "bg-danger"}`}
                                             aria-label="remembered"
                                             disabled={this.state.sets?.length <= 0 || this.state.loading}
                                             onClick={() => this.updateCard()}
                                         >
-                                            <b><i className="far fa-check"></i> Đã nhớ</b>
+                                            <b>{!this.filterCard()[this.state.currentCard]?.remember ? "Đã nhớ" : "Học lại"}</b>
                                         </Fab>
                                     </Tooltip>
 
