@@ -14,9 +14,4 @@ class Bill extends Model
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
-
-    public function sets()
-    {
-        return $this->belongsToMany('App\Models\Set', 'bill_detail', 'bill_id', 'set_id');
-    }
 }

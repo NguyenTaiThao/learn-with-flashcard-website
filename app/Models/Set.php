@@ -43,9 +43,9 @@ class Set extends Model
         return $this->hasMany('App\Models\Card', 'set_id', 'id');
     }
 
-    public function bills()
+    public function bill()
     {
-        return $this->belongsToMany('App\Bill', 'role_user_table', 'set_id', 'bill_id');
+        return $this->hasOne('App\Models\BillDetail', 'set_id', 'id');
     }
 
     public function completedPercent($id)

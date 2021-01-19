@@ -10,6 +10,7 @@ use App\Models\Folder;
 use App\Models\User;
 use App\Models\Set;
 use App\Models\Card;
+use App\Models\Bill;
 use Exception;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -225,7 +226,15 @@ class UserController extends Controller
                         $new_card->save();
                     }
                 }
-                echo "ok";
+                //create bill
+                $bill = new Bill;
+                $bill->user_id = $user->id;
+                $bill->total_price = $request->total_price;
+                $bill->save();
+                $bill_id = $bill->id;
+                for ($i=0; $i < count($set->cards); $i++) {
+                    
+                }
             } catch (Exception $e) {
                 return $this->internalServerError($e);
             }
