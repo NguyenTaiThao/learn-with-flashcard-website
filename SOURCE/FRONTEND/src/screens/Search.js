@@ -3,20 +3,70 @@ import "@styles/Search.css"
 import { withRouter } from "react-router-dom"
 import { Row, Col } from "react-bootstrap"
 import { Radio, RadioGroup, FormControlLabel } from '@material-ui/core/';
-import { Avatar, Card, Select } from "antd"
+import { Avatar, Card, Select, Empty, Skeleton, Space } from "antd"
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
+import { requestSearch } from "@constants/Api"
+import reactotron from "reactotron-react-js"
 
+const defaultState = {
+    loading: false,
+    data: [],
+    price: "-2",
+    type: "1",
+    sort: "0"
+}
 class SearchScreen extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            loading: false,
-            data: [],
+            ...defaultState
         }
     }
 
+    componentDidMount() {
+        // this.getData()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.location.state?.keyword !== this.props.location.state?.keyword) {
+            this.getData()
+        }
+    }
+
+    getData = async () => {
+        try {
+            this.setState({
+                loading: true
+            })
+            const res = await requestSearch({
+                page: 1,
+                keyword: this.props.location.state?.keyword,
+                price: this.state.price,
+                type: this.state.type,
+                sort: this.state.sort
+
+            })
+            this.setState({
+                data: { ...res?.data },
+                loading: false
+            })
+        } catch (e) {
+            this.setState({
+                loading: false
+            })
+        }
+    }
+
+    handleFieldChange(field, value) {
+        this.setState({
+            [field]: value
+        }, () => this.getData())
+    }
+
     render() {
+        const { data } = this.state
+        reactotron.log("data", data)
         return (
             <>
                 <Row className="search py-md-4">
@@ -27,23 +77,24 @@ class SearchScreen extends Component {
                                 <RadioGroup
                                     aria-label="prize"
                                     name="prize"
-                                    defaultValue="all"
+                                    value={this.state.price}
+                                    onChange={(e) => this.handleFieldChange("price", e.target.value)}
                                 >
                                     <FormControlLabel
                                         className="radio-btn-div"
-                                        value="all"
+                                        value="-2"
                                         control={<Radio />}
                                         label="Tất cả"
                                     />
                                     <FormControlLabel
                                         className="radio-btn-div"
-                                        value="free"
+                                        value="0"
                                         control={<Radio />}
                                         label="Miễn phí"
                                     />
                                     <FormControlLabel
                                         className="radio-btn-div"
-                                        value="fee"
+                                        value="-1"
                                         control={<Radio />}
                                         label="Trả phí"
                                     />
@@ -54,17 +105,18 @@ class SearchScreen extends Component {
                                 <RadioGroup
                                     aria-label="type"
                                     name="type"
-                                    defaultValue="set"
+                                    value={this.state.type}
+                                    onChange={(e) => this.handleFieldChange("type", e.target.value)}
                                 >
                                     <FormControlLabel
                                         className="radio-btn-div"
-                                        value="set"
+                                        value="1"
                                         control={<Radio />}
                                         label="Học phần"
                                     />
                                     <FormControlLabel
                                         className="radio-btn-div"
-                                        value="user"
+                                        value="2"
                                         control={<Radio />}
                                         label="Người dùng"
                                     />
@@ -75,18 +127,22 @@ class SearchScreen extends Component {
                     <Col md={7}>
                         <Row className="search">
                             <Col>
-                                <span className="search-keyword">"IT"</span>
+                                <span className="search-keyword">"{this.props.location.state?.keyword}"</span>
                             </Col>
                         </Row>
                         <Row>
                             <Col className="d-flex justify-content-end">
-                                <Select defaultValue="default" style={{ width: 150 }}>
-                                    <Select.Option value="default">Thứ tự mặc định</Select.Option>
-                                    <Select.Option value="asc">
+                                <Select
+                                    style={{ width: 150 }}
+                                    value={this.state.sort}
+                                    onChange={(selected) => this.handleFieldChange("sort", selected)}
+                                >
+                                    <Select.Option value="0">Thứ tự mặc định</Select.Option>
+                                    <Select.Option value="1">
                                         <i className="fas fa-sort-amount-up-alt mr-1"></i>
                                         <span>Giá tăng dần</span>
                                     </Select.Option>
-                                    <Select.Option value="desc">
+                                    <Select.Option value="2">
                                         <i className="fas fa-sort-amount-down-alt mr-1"></i>
                                         <span>Giá giảm dần</span>
                                     </Select.Option>
@@ -94,9 +150,41 @@ class SearchScreen extends Component {
                             </Col>
                         </Row>
                         <Row className="mt-5">
-                            <Col>
-                                {[1, 2, 3, 4].map(e => this.renderItem())}
-                            </Col>
+                            {this.state.loading ?
+                                <Row className="mb-5">
+                                    <Space className="w-100">
+                                        <Skeleton.Button style={{ width: 200 }} active={this.state.loading} size="large" shape="default" />
+                                        <Skeleton.Avatar active={this.state.loading} size="large" shape="circle" />
+                                        <Skeleton.Button style={{ width: 200 }} active={this.state.loading} size="large" shape="default" />
+                                        <Skeleton.Input style={{ width: 200 }} active={this.state.loading} size="large" />
+                                    </Space>
+                                    <br />
+                                    <Space className="w-100 mt-2">
+                                        <Skeleton.Input style={{ width: 200 }} active={this.state.loading} size="large" />
+                                    </Space>
+                                    <br />
+                                    <Space className="w-100 d-flex justify-content-between mt-2">
+                                        <Skeleton.Image size="large" style={{ width: 200 }} />
+                                        <Skeleton.Image size="large" style={{ width: 200 }} />
+                                        <Skeleton.Image size="large" style={{ width: 200 }} />
+                                    </Space>
+                                </Row>
+                                :
+                                <Col>
+                                    {data?.paginate?.total_items > 0 ?
+                                        data?.sets.map(e => this.renderItem(e))
+                                        :
+                                        <Empty
+                                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                            description={
+                                                <b>
+                                                    Không có kết quả nào phù hợp
+                                            </b>
+                                            }
+                                        />
+                                    }
+                                </Col>
+                            }
                         </Row>
                     </Col>
                 </Row>
@@ -104,34 +192,37 @@ class SearchScreen extends Component {
         )
     }
 
-    renderItem() {
+    renderItem(e) {
         return (
             <>
                 <Row className="item mb-4">
                     <Col>
                         <Row>
                             <Col md={2}>
-                                <span className="count">143 Thuật ngữ</span>
+                                <span className="count">{e && e?.number_of_cards} Thuật ngữ</span>
                             </Col>
                             <Col md={4}>
                                 <Avatar
                                     style={{ "background": "red" }}
                                     size={26}
                                 >
-                                    <span className="text-uppercase">T</span>
+                                    <span className="text-uppercase">{e && e?.author.charAt(0)}</span>
                                 </Avatar>
-                                <span className="typical-text owner">thaonguyentai</span>
+                                <span className="typical-text owner">{e && e?.author}</span>
+                            </Col>
+                            <Col md={6} className="text-right">
+                                <b className="text-success">{e.price == 0 ? "free" : `$${e.price}`}</b>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <span className="title">IT nihongo 1</span>
+                                <span className="title">{e && e?.title}</span>
                             </Col>
                         </Row>
                         <Row className="mt-2">
                             <Col>
                                 <Card>
-                                    {[1, 2, 3].map((e) =>
+                                    {e.cards?.slice(0, 3).map((e) =>
                                         <Card.Grid>
                                             <Flippy
                                                 flipOnHover={true} // default false
@@ -148,8 +239,8 @@ class SearchScreen extends Component {
                                                 >
                                                     <Row>
                                                         <span className="card-front">
-                                                            front
-                                                    </span>
+                                                            {e?.front_side}
+                                                        </span>
                                                     </Row>
                                                 </FrontSide>
                                                 <BackSide
@@ -158,8 +249,8 @@ class SearchScreen extends Component {
                                                 >
                                                     <Row>
                                                         <span className="card-back">
-                                                            back
-                                                    </span>
+                                                            {e?.back_side}
+                                                        </span>
                                                     </Row>
                                                 </BackSide>
                                             </Flippy>

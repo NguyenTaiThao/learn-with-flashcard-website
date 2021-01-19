@@ -60,6 +60,13 @@ class Header extends Component {
         }
     }
 
+    pushRef(link, data) {
+        this.props.history.push({
+            pathname: link,
+            state: { keyword: data }
+        })
+    }
+
     render() {
         return (
             <>
@@ -288,6 +295,7 @@ class Header extends Component {
                                 autoFocus={true}
                                 value={this.state.searchBox}
                                 onChange={(event) => this.onChangeSearch(event.target.value)}
+                                onKeyPress={(e) => this.handleSearchKeyPress(e)}
                             />
                         </Col>
                         <CloseCircleOutlined
@@ -302,6 +310,12 @@ class Header extends Component {
 
             </>
         )
+    }
+
+    handleSearchKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.pushRef(ROUTER.SEARCH, this.state.searchBox)
+        }
     }
 
     handlePopover = (e) => {

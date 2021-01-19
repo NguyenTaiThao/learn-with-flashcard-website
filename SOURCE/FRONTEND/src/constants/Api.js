@@ -45,13 +45,13 @@ function handleResult(api) {
       return Promise.resolve(res.data);
     }
   }).catch((e) => {
-    if(e.message){
+    if (e.message) {
       Reactotron.log("suc", e)
       return Promise.reject({
         ...e,
-        msg:e.message
+        msg: e.message
       })
-    }else{
+    } else {
       Reactotron.log("null", e)
       return Promise.reject(e)
     }
@@ -92,7 +92,7 @@ export const requestFolders = (payload) => {
 }
 
 export const requestFolderDetail = (payload) => {
-  return handleResult(getAxios.get(`folderDetail?id=${payload.id}`, ))
+  return handleResult(getAxios.get(`folderDetail?id=${payload.id}`,))
 }
 
 export const requestCreateFolder = (payload) => {
@@ -124,17 +124,25 @@ export const requestSetDetail = (payload) => {
 }
 
 export const requestRemoveSet = (payload) => {
-  return handleResult(getAxios.get(`setDetail`,payload))
+  return handleResult(getAxios.get(`setDetail`, payload))
 }
 
 export const requestRemoveFolder = (payload) => {
-  return handleResult(getAxios.get(`folder/delete`,payload))
+  return handleResult(getAxios.get(`folder/delete`, payload))
 }
 
 export const requestSetToFolder = (payload) => {
-  return handleResult(getAxios.get(`setToFolder`,payload))
+  return handleResult(getAxios.get(`setToFolder`, payload))
 }
 
 export const requestGame = (payload) => {
-  return handleResult(getAxios.get(`multipleChoiceGame?id=${payload.id}`,payload))
+  return handleResult(getAxios.get(`multipleChoiceGame?id=${payload.id}`, payload))
+}
+
+export const requestSearch = (payload) => {
+  return handleResult(getAxios.get(`search?keyword=${payload.keyword}`
+    + `&price=${payload.price}`
+    + `&type=${payload.type}`
+    + `&sort=${payload.sort}`
+    + `&current_page=${payload.page}`))
 }
