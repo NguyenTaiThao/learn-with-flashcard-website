@@ -472,7 +472,7 @@ class Learn extends Component {
                                         <Switch
                                             checkedChildren="ON"
                                             unCheckedChildren="OFF"
-                                            defaultChecked={selectGame.timeChallenge ? "ON" : "OFF"}
+                                            defaultChecked={false}
                                             value={selectGame.timeChallenge}
                                             onChange={() => this.switchTimeChallenge(!selectGame.timeChallenge)}
                                         />
