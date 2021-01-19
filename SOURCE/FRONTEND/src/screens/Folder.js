@@ -4,9 +4,11 @@ import { Avatar, Radio, Divider, Skeleton, Result, Button } from 'antd'
 import { Link, withRouter } from "react-router-dom"
 import "@styles/Folder.css"
 import { ROUTER } from "@constants/Constant"
-import { requestFolders, requestRecentSets, requestRecentAct, requestLearnedSet, requestCreatedSet } from "@constants/Api"
+import { requestRecentAct, requestLearnedSet, requestCreatedSet } from "@constants/Api"
 import reactotron from 'reactotron-react-js';
 import { connect } from 'react-redux'
+import Pagination from '@material-ui/lab/Pagination';
+
 class Folder extends Component {
 
     constructor(props) {
@@ -27,9 +29,7 @@ class Folder extends Component {
                 folder: this.props.folderState?.data?.folders
             })
         }
-        this.getRecentAct()
-        this.getLearnedSet()
-        this.getCreatedSet()
+        this.getData()
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -38,14 +38,36 @@ class Folder extends Component {
                 folder: [...nextProps.folderState?.data?.folders]
             })
         }
-        if(nextProps.screen){
+        if (nextProps.screen) {
             this.setState({
-                filter:nextProps.screen
+                filter: nextProps.screen
             })
         }
     }
 
-    
+
+    async getData() {
+        try {
+            this.setState({
+                loading: true
+            })
+            const res = await Promise.all([
+                requestRecentAct({ page: 1 }),
+                requestCreatedSet({ page: 1 }),
+                requestLearnedSet({ page: 1 }),
+            ])
+            this.setState({
+                loading: false,
+                recentActivities: { ...res[0]?.data },
+                made: { ...res[1]?.data },
+                learned: { ...res[2]?.data },
+            })
+        } catch (e) {
+            this.setState({
+                loading: false
+            })
+        }
+    }
 
     async getRecentAct() {
         try {
@@ -93,7 +115,7 @@ class Folder extends Component {
     }
 
     render() {
-        const data = this.state[this.props.screen]
+        const data = this.state[this.state.filter]
         const user = this.props.userState.data
         reactotron.log(this.props.screen, data)
         return (
@@ -161,6 +183,20 @@ class Folder extends Component {
                         {this.renderData(data)}
                     </Col>
                 </Row>
+
+                {this.state.filter != "recentActivities" ?
+                    <Row className="mt-3">
+                        <Col md={8} className="d-flex justify-content-center">
+                            <Pagination
+                                count={10}
+                                color="primary"
+                                size="large"
+                            />
+                        </Col>
+                    </Row>
+                    :
+                    null
+                }
             </>
         )
     }
