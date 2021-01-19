@@ -19,3 +19,20 @@ import {
     InstagramOutlined
 } from '@ant-design/icons';
 import Cookie from "js-cookie"
+
+class HomeScreen extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+
+        }
+    }
+
+    render() {
+        
+    }
+
+    
+}
+
+export default HomeScreen
