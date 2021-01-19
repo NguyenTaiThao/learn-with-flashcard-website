@@ -217,7 +217,17 @@ class HomeScreen extends Component {
                     </CarouselBootstrap>
                 </Col>
 
-              
+                <Col xs={12} className="text-center confirm-div">
+                    <h3 className="question">Bạn đã sẵn sàng cải thiện điểm số?</h3>
+                    <Button
+                        variant="info"
+                        className="learn-now-btn"
+                    >
+                        Bắt đầu học
+                    </Button>
+                </Col>
+
+               
             </Row >
         )
     }
