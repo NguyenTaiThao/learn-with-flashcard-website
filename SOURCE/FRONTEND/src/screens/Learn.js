@@ -8,7 +8,7 @@ import { Progress, Button, Select, Result, Spin, Modal, Alert, Statistic, Switch
 import { LoadingOutlined, SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import { withRouter, Redirect } from "react-router-dom"
 import { ROUTER, GAME_TYPE } from "@constants/Constant"
-import { requestSetDetail, requestGame } from "@constants/Api"
+import { requestSetDetail, requestGame, requestUpdateCard } from "@constants/Api"
 import _ from "lodash"
 import reactotron from "reactotron-react-js"
 import NotifyContext from "@context/NotifyContext"
@@ -65,6 +65,45 @@ class Learn extends Component {
         document.removeEventListener("keydown", this.navFunc, false);
     }
 
+    updateCard = async () => {
+        const card = { ...this.filterCard()[this.state.currentCard] }
+        try {
+            this.setState({
+                loading: true
+            })
+            const res = await requestUpdateCard({
+                ...card,
+                card_id: card.id,
+                remember: (!card.remember ? 1 : 0)
+            }
+            )
+            const newData = this.state.sets.map(e => e.id == card.id ? { ...card, remember: (!card.remember ? 1 : 0) } : e)
+            this.setState({
+                loading: false,
+                sets: newData,
+            })
+            if (!card.remember) {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        remembered_cards: parseInt(this.state.data.remembered_cards) + 1
+                    }
+                })
+            } else {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        remembered_cards: parseInt(this.state.data.remembered_cards) - 1
+                    }
+                })
+            }
+        } catch (e) {
+            this.setState({
+                loading: false
+            })
+        }
+    }
+
     render() {
         const id = this.props.location?.state?.id
         const { data, sets } = this.state
@@ -99,7 +138,7 @@ class Learn extends Component {
                                 <Tooltip placement="bottom" title="Tiến độ học của học phần này">
                                     <Progress
                                         type="circle"
-                                        percent={data?.completed || 0}
+                                        percent={data?.remembered_cards / sets?.length * 100 || 0}
                                         format={() => (data?.remembered_cards || 0) + "/" + (sets?.length || 0)}
                                     />
                                 </Tooltip>
@@ -193,13 +232,19 @@ class Learn extends Component {
                                                 }}
                                                 className="d-flex flex-column align-items-center justify-content-center px-0"
                                             >
-                                                <Row className="fixed-top justify-content-end">
-                                                    <Tooltip placement="bottom" title={ele?.remember ? "Bạn đã thuộc thẻ này" : "Bạn vẫn chưa thuộc thẻ này"}>
-                                                        <i
-                                                            className={`fad fa-bookmark remember-icon mr-2 
-                                                                        ${ele?.remember ? "text-success" : "text-secondary"} cursor`}
-                                                        ></i>
-                                                    </Tooltip>
+                                                <Row className="fixed-top">
+                                                    <Col xs={8} className="offset-2 text-center">
+                                                        <span>{this.state.currentCard + 1}/{this.filterCard().length}</span>
+                                                    </Col>
+                                                    <Col xs={2} className="text-right">
+                                                        <Tooltip placement="bottom" title={ele?.remember ? "Bạn đã thuộc thẻ này" : "Bạn vẫn chưa thuộc thẻ này"}>
+                                                            <i
+                                                                className={`fad fa-bookmark remember-icon mr-2 
+                                                            ${ele?.remember ? "text-success" : "text-secondary"} cursor`}
+                                                                onClick={() => this.updateCard()}
+                                                            ></i>
+                                                        </Tooltip>
+                                                    </Col>
                                                 </Row>
                                                 <Row>
                                                     <span className="card-front">
@@ -276,14 +321,17 @@ class Learn extends Component {
                                         </Fab>
                                     </Tooltip>
 
-                                    <Tooltip placement="bottom" title="Đánh dấu là đã thuộc">
+                                    <Tooltip
+                                        placement="bottom"
+                                        title={!this.filterCard()[this.state.currentCard]?.remember ? "Đánh dấu là đã thuộc" : "Đánh dấu là chưa thuộc"}>
                                         <Fab
                                             variant="extended"
-                                            className="bg-success text-white"
+                                            className={`text-white ${!this.filterCard()[this.state.currentCard]?.remember ? "bg-success" : "bg-danger"}`}
                                             aria-label="remembered"
-                                            disabled={this.state.sets?.length <= 0}
+                                            disabled={this.state.sets?.length <= 0 || this.state.loading}
+                                            onClick={() => this.updateCard()}
                                         >
-                                            <b><i className="far fa-check"></i> Đã nhớ</b>
+                                            <b>{!this.filterCard()[this.state.currentCard]?.remember ? "Đã nhớ" : "Học lại"}</b>
                                         </Fab>
                                     </Tooltip>
 
@@ -317,6 +365,7 @@ class Learn extends Component {
         this.setState({
             filter: value,
             loading: true,
+            currentCard: 0,
             sets: [],
         })
         window.setTimeout(() => this.setState({
@@ -328,9 +377,9 @@ class Learn extends Component {
     filterCard() {
         let value = this.state.filter
         if (value === "learning") {
-            return this.state.sets.filter((e) => e.remember === 0)
+            return this.state.sets.filter((e) => e.remember == 0)
         } else if (value === "learned") {
-            return this.state.sets.filter((e) => e.remember === 1)
+            return this.state.sets.filter((e) => e.remember == 1)
         } else {
             return this.state.sets
         }
@@ -423,6 +472,7 @@ class Learn extends Component {
                                         <Switch
                                             checkedChildren="ON"
                                             unCheckedChildren="OFF"
+                                            defaultChecked={selectGame.timeChallenge ? "ON" : "OFF"}
                                             value={selectGame.timeChallenge}
                                             onChange={() => this.switchTimeChallenge(!selectGame.timeChallenge)}
                                         />
@@ -432,10 +482,10 @@ class Learn extends Component {
                                     <Statistic.Countdown
                                         className="text-center"
                                         title="Game trắc nghiệm"
-                                        format="HH:mm:ss:SSS"
-                                        value={this.state.selectGame.deadline}
+                                        format="HH:mm:ss:SS"
+                                        value={selectGame.deadline}
                                         onFinish={() => this.handleTimeUp()}
-                                        disabled
+
                                     />
                                 </Col>
                             </Row> :
@@ -653,7 +703,7 @@ class Learn extends Component {
     handleGameOver = (command) => {
         if (command == "again") {
             this.setState({
-                selectGame: { ...selectGameDefaultStatus }
+                selectGame: { ...selectGameDefaultStatus, timeChallenge: this.state.selectGame.timeChallenge }
             }, () => this.selectGame(GAME_TYPE.SELECT))
         } else {
             this.setState({
@@ -683,7 +733,8 @@ class Learn extends Component {
     }
 
     handleTimeUp = () => {
-        if (this.state.selectGame.timeChallenge) {
+        const { selectGame, gameData } = this.state
+        if (selectGame.timeChallenge && selectGame.currentQuestion < gameData?.number_of_questions) {
             this.handleSelectGame(null)
         }
     }

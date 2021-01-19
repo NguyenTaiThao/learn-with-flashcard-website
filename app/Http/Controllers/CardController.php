@@ -38,7 +38,7 @@ class CardController extends Controller
 
     public function updateCard(Request $request)
     {
-        $token = $request->header();
+        $token = $request->header("token");
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
             return $this->tokenNotExist();
@@ -83,6 +83,21 @@ class CardController extends Controller
                     ];
                     return response()->json($returnData, 200);
                 }
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function allCardsInFolder(Request $request)
+    {
+        $token = $request->header();
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+
             }catch(Exception $e){
                 return $this->internalServerError($e);
             }

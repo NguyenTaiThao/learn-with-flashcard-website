@@ -44,7 +44,7 @@ Route::group(['prefix' => 'folder'], function () {
 Route::group(['prefix' => 'set'], function () {
     Route::post('/add', [SetController::class, 'addSet']);
     Route::post('/edit/{id}', [SetController::class, 'editSet']);
-    Route::post('/delete/{id}', [SetController::class, 'deleteSet']);
+    Route::post('/delete', [SetController::class, 'deleteSet']);
     Route::get('/completed', [SetController::class, 'completedSets']);
     Route::get('/created', [SetController::class, 'createdSets']);
     Route::get('/all', [SetController::class, 'allSets']);
@@ -55,6 +55,11 @@ Route::group(['prefix' => 'card'], function () {
     Route::post('/add', [CardController::class, 'addCard']);
     //Route::post('/update', [CardController::class, 'updateCard']);
     Route::post('/delete/{id}', [CardController::class, 'deleteCard']);
+});
+
+Route::group(['prefix' => 'cart'], function () {
+    Route::get('/get', [SetController::class, 'getCart']);
+    Route::post('/buy', [UserController::class, 'buy']);
 });
 
 Route::get('/recentSets', [UserController::class, 'recentSets']);
