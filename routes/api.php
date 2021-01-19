@@ -59,7 +59,7 @@ Route::group(['prefix' => 'card'], function () {
 
 Route::group(['prefix' => 'cart'], function () {
     Route::get('/get', [SetController::class, 'getCart']);
-    Route::post('/buy/{id}', [CardController::class, 'deleteCard']);
+    Route::post('/buy', [UserController::class, 'buy']);
 });
 
 Route::get('/recentSets', [UserController::class, 'recentSets']);

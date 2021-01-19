@@ -341,8 +341,13 @@ class SetController extends Controller
         }else{
             try {
                 $this->sets_per_page = 3;
-                return $this->set_model->search($request->current_page, $this->sets_per_page, $request->keyword, $request->price, $request->type, $request->sort);
-
+                $data = $this->set_model->search($request->current_page, $this->sets_per_page, $request->keyword, $request->price, $request->type, $request->sort);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
             }catch(Exception $e){
                 return $this->internalServerError($e);
             }
