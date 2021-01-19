@@ -10,6 +10,8 @@ use App\Models\Folder;
 use App\Models\User;
 use App\Models\Set;
 use App\Models\Card;
+use App\Models\Bill;
+use App\Models\BillDetail;
 use Exception;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -209,9 +211,40 @@ class UserController extends Controller
         }else {
             try {
                 $cart = $request->cart;
+                //create bill
+                $bill = new Bill;
+                $bill->user_id = $user->id;
+                $bill->total_price = $request->total_price;
+                $bill->save();
+                $bill_id = $bill->id;
                 foreach ($cart as $key => $set_id) {
-                    echo $set_id;
+                    $set = $this->set_model->find($set_id);
+                    //create bill's detail
+                    $bill_detail = new BillDetail;
+                    $bill_detail->bill_id = $bill_id;
+                    $bill_detail->set_id = $set_id;
+                    $bill_detail->quantum = 1;
+                    $bill_detail->price = $set->price;
+                    $bill_detail->save();
+                    //$set->bought_times = $set->bought_times + 1;
+                    $new_set = $set->replicate();
+                    $new_set->folder_id = $this->folder_model->minFolderID($user->id);
+                    $new_set->is_purchased = 1;
+                    $new_set->price = -1;
+                    $new_set->save();
+                    $new_set_id = $new_set->id;
+                    foreach ($set->cards as $card) {
+                        $new_card = $card->replicate();
+                        $new_card->set_id = $new_set_id;
+                        $new_card->remember = 0;
+                        $new_card->save();
+                    }
                 }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công"
+                ];
+                return response()->json($returnData, 200);
             } catch (Exception $e) {
                 return $this->internalServerError($e);
             }
