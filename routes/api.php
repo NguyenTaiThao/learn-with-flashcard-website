@@ -83,6 +83,7 @@ Route::post('updateCard', [CardController::class, 'updateCard']);
 
 
 Route::get('testNotify', function () {
-    User::find(4)->notify(new ConfirmBill);
-    echo "123";
+    User::find(4)->notify(new ConfirmBill("anh yeu em"));
+    $user = User::find(4);
+    dd($user->notifications);
 });

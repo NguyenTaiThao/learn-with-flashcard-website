@@ -16,9 +16,12 @@ class ConfirmBill extends Notification
      *
      * @return void
      */
-    public function __construct()
+
+    protected $data;
+
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -55,7 +58,7 @@ class ConfirmBill extends Notification
     public function toArray($notifiable)
     {
         return [
-            'data' => "first notify"
+            'data' => $this->data
         ];
     }
 }
