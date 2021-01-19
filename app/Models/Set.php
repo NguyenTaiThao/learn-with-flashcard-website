@@ -295,6 +295,10 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
+                foreach ($sets as $set) {
+                    $set->author = $set->folder->user->name;
+                    unset($set->folder);
+                }
                 $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                 $data['paginate'] = $paginate;
                 $data['sets'] = $sets;
@@ -307,6 +311,10 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
+                    foreach ($sets as $set) {
+                        $set->author = $set->folder->user->name;
+                        unset($set->folder);
+                    }
                     $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                     $data['paginate'] = $paginate;
                     $data['sets'] = $sets;
@@ -318,6 +326,10 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
+                    foreach ($sets as $set) {
+                        $set->author = $set->folder->user->name;
+                        unset($set->folder);
+                    }
                     $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                     $data['paginate'] = $paginate;
                     $data['sets'] = $sets;
@@ -329,26 +341,62 @@ class Set extends Model
                                 ->limit($sets_per_page)
                                 ->offset($offset)
                                 ->get('sets.*');
+                    foreach ($sets as $set) {
+                        $set->author = $set->folder->user->name;
+                        unset($set->folder);
+                    }
                     $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                     $data['paginate'] = $paginate;
                     $data['sets'] = $sets;
                     return $data;
                 }
             } else {
-                $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
+                if($sort == 1){
+                    $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
+                            ->orderBy('sets.price', 'desc')
+                            ->with('cards')
+                            ->limit($sets_per_page)
+                            ->offset($offset)
+                            ->get('sets.*');
+                    foreach ($sets as $set) {
+                        $set->author = $set->folder->user->name;
+                        unset($set->folder);
+                    }
+                    $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
+                    $data['paginate'] = $paginate;
+                    $data['sets'] = $sets;
+                    return $data;
+                }else if($sort == 2){
+                    $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
+                            ->orderBy('sets.price', 'desc')
+                            ->with('cards')
+                            ->limit($sets_per_page)
+                            ->offset($offset)
+                            ->get('sets.*');
+                    foreach ($sets as $set) {
+                        $set->author = $set->folder->user->name;
+                        unset($set->folder);
+                    }
+                    $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
+                    $data['paginate'] = $paginate;
+                    $data['sets'] = $sets;
+                    return $data;
+                }else{
+                    $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
                             ->orderBy('sets.updated_at', 'desc')
                             ->with('cards')
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
-                foreach ($sets as $set) {
-                    $set->author = $set->folder->user->name;
-                    unset($set->folder);
+                    foreach ($sets as $set) {
+                        $set->author = $set->folder->user->name;
+                        unset($set->folder);
+                    }
+                    $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
+                    $data['paginate'] = $paginate;
+                    $data['sets'] = $sets;
+                    return $data;
                 }
-                $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
-                $data['paginate'] = $paginate;
-                $data['sets'] = $sets;
-                return $data;
             }
         }else{ //tìm người dùng
             $users = User::where('name', 'LIKE', '%'.$keyword.'%')
