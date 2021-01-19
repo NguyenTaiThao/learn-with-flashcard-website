@@ -375,7 +375,25 @@ class HomeScreen extends Component {
                         <Divider />
                     </Col>
                     <Col xs={10} className="offset-1 contact">
-                       
+                        <Row>
+                            <Col md={6} className="left px-0">
+                                <Link>
+                                    <FacebookFilled className="contact-icon" />
+                                </Link>
+                                <Link>
+                                    <YoutubeOutlined className="contact-icon" />
+                                </Link>
+                                <Link>
+                                    <TwitterOutlined className="contact-icon" />
+                                </Link>
+                                <Link>
+                                    <InstagramOutlined className="contact-icon contact-icon-last" />
+                                </Link>
+                            </Col>
+                            <Col md={6} className="right px-0">
+                                <span className="copyright">© 2020 Quizlet Inc.</span>
+                            </Col>
+                        </Row>
                     </Col>
                     <div style={{ width: "100%", height: "100px" }}></div>
                 </Row>
@@ -385,4 +403,3 @@ class HomeScreen extends Component {
     
 }
 
-export default HomeScreen
