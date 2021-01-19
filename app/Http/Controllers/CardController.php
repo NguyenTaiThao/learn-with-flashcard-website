@@ -88,4 +88,19 @@ class CardController extends Controller
             }
         }
     }
+
+    public function allCardsInFolder(Request $request)
+    {
+        $token = $request->header();
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
+        }
+    }
 }

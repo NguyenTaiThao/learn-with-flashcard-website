@@ -281,7 +281,7 @@ class Set extends Model
         }
     }
 
-    public function search($current_page, $sets_per_page, $keyword, $price, $type)
+    public function search($current_page, $sets_per_page, $keyword, $price, $type, $sort)
     {
         $offset = ($current_page - 1) * $sets_per_page;
         if ($type == 1) { //tìm học phần
@@ -299,17 +299,41 @@ class Set extends Model
                 $data['paginate'] = $paginate;
                 $data['sets'] = $sets;
                 return $data;
-            } elseif ($price == -1) { //NO FREE
-                $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])
-                            ->orderBy('sets.updated_at', 'desc')
+            } else if ($price == -1) { //NO FREE
+                if($sort == 1){
+                    $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])
+                            ->orderBy('sets.price', 'asc')
                             ->with('cards')
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
-                $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
-                $data['paginate'] = $paginate;
-                $data['sets'] = $sets;
-                return $data;
+                    $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
+                    $data['paginate'] = $paginate;
+                    $data['sets'] = $sets;
+                    return $data;
+                }else if($sort == 2){
+                    $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])
+                            ->orderBy('sets.price', 'desc')
+                            ->with('cards')
+                            ->limit($sets_per_page)
+                            ->offset($offset)
+                            ->get('sets.*');
+                    $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
+                    $data['paginate'] = $paginate;
+                    $data['sets'] = $sets;
+                    return $data;
+                }else{
+                    $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])
+                                ->orderBy('sets.updated_at', 'desc')
+                                ->with('cards')
+                                ->limit($sets_per_page)
+                                ->offset($offset)
+                                ->get('sets.*');
+                    $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
+                    $data['paginate'] = $paginate;
+                    $data['sets'] = $sets;
+                    return $data;
+                }
             } else {
                 $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
                             ->orderBy('sets.updated_at', 'desc')
