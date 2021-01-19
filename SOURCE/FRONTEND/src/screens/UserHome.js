@@ -46,7 +46,7 @@ class UserHome extends Component {
         const options = {
             animationEnabled: true,
             subtitles: [{
-                text: this.state.loading ? "Loading" : "Hoàn thành " + data[0]?.completed + "%",
+                text: this.state.loading ? "Loading..." : "Hoàn thành " + data[0]?.completed + "%",
                 verticalAlign: "center",
                 fontSize: 14,
                 dockInsidePlotArea: false
@@ -60,12 +60,12 @@ class UserHome extends Component {
                 dataPoints: [
                     {
                         name: "Hoàn thành",
-                        y: data[0]?.completed,
+                        y: !this.state.loading ? data[0]?.completed : 100,
                         color: "green"
                     },
                     {
                         name: "Chưa hoàn thành",
-                        y: (1 - data[0]?.completed / 100) * 100,
+                        y: !this.state.loading ? (1 - data[0]?.completed / 100) * 100 : 0,
                         color: "#f0f0f0"
                     },
                 ]
