@@ -103,8 +103,12 @@ export const requestRecentSets = (payload) => {
   return handleResult(getAxios.get(`recentSets?current_page=${payload.page}`, { ...payload }))
 }
 
-export const requestLearn = (payload) => {
-  return handleResult(getAxios.get(`set/completed?current_page=${payload.page}`, { ...payload }))
+export const requestLearnedSet = (payload) => {
+  return handleResult(getAxios.get(`set/completed?current_page=${payload.page}`,))
+}
+
+export const requestCreatedSet = (payload) => {
+  return handleResult(getAxios.get(`set/created?current_page=${payload.page}`,))
 }
 
 export const requestCreateSet = (payload) => {

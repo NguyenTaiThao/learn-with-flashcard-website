@@ -4,7 +4,7 @@ import { Avatar, Radio, Divider, Skeleton, Result, Button } from 'antd'
 import { Link, withRouter } from "react-router-dom"
 import "@styles/Folder.css"
 import { ROUTER } from "@constants/Constant"
-import { requestFolders, requestRecentSets, requestRecentAct, requestLearn } from "@constants/Api"
+import { requestFolders, requestRecentSets, requestRecentAct, requestLearnedSet, requestCreatedSet } from "@constants/Api"
 import reactotron from 'reactotron-react-js';
 import { connect } from 'react-redux'
 class Folder extends Component {
@@ -22,48 +22,49 @@ class Folder extends Component {
     }
 
     componentDidMount() {
-        if(this.props.folderState?.data?.folders?.length > 0){
+        if (this.props.folderState?.data?.folders?.length > 0) {
             this.setState({
-                folder:this.props.folderState?.data?.folders
+                folder: this.props.folderState?.data?.folders
             })
         }
-        this.getRecentSets()
+        // this.getRecentSets()
         this.getRecentAct()
-        this.getLearn()
+        this.getLearnedSet()
+        this.getCreatedSet()
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps){
+    UNSAFE_componentWillReceiveProps(nextProps) {
         reactotron.log("next", nextProps)
-        if(nextProps.folderState?.data?.folders?.length > 0){
+        if (nextProps.folderState?.data?.folders?.length > 0) {
             this.setState({
-                folder:[...nextProps.folderState?.data?.folders]
+                folder: [...nextProps.folderState?.data?.folders]
             })
         }
     }
 
-    async getRecentSets() {
-        try {
-            this.setState({
-                loading: true
-            })
-            let res = await requestRecentSets({page:1});
-            this.setState({
-                recentActivities: [...res?.data],
-                loading: false
-            })
-        } catch (e) {
-            this.setState({ loading: false })
-        }
-    }
+    // async getRecentSets() {
+    //     try {
+    //         this.setState({
+    //             loading: true
+    //         })
+    //         let res = await requestRecentSets({ page: 1 });
+    //         this.setState({
+    //             recentActivities: [...res?.data],
+    //             loading: false
+    //         })
+    //     } catch (e) {
+    //         this.setState({ loading: false })
+    //     }
+    // }
 
     async getRecentAct() {
         try {
             this.setState({
                 loading: true
             })
-            let res = await requestRecentAct({page:1});
+            let res = await requestRecentAct({ page: 1 });
             this.setState({
-                recentActivities: [...res?.data],
+                recentActivities: { ...res?.data },
                 loading: false
             })
         } catch (e) {
@@ -71,14 +72,29 @@ class Folder extends Component {
         }
     }
 
-    async getLearn() {
+    async getLearnedSet() {
         try {
             this.setState({
                 loading: true
             })
-            let res = await requestLearn({page:1});
+            let res = await requestLearnedSet({ page: 1 });
             this.setState({
-                learned: [...res?.data],
+                learned: { ...res?.data },
+                loading: false
+            })
+        } catch (e) {
+            this.setState({ loading: false })
+        }
+    }
+
+    async getCreatedSet() {
+        try {
+            this.setState({
+                loading: true
+            })
+            let res = await requestCreatedSet({ page: 1 });
+            this.setState({
+                made: { ...res?.data },
                 loading: false
             })
         } catch (e) {
@@ -89,6 +105,7 @@ class Folder extends Component {
     render() {
         const data = this.state[this.props.screen]
         const user = this.props.userState.data
+        reactotron.log(this.props.screen, data)
         return (
             <>
                 <Row className="bg-white p-4 folder">
@@ -97,7 +114,7 @@ class Folder extends Component {
                             style={{ "background": "red" }}
                             size={110}
                         >
-                            <span className="text-uppercase">{ user && user?.name?.charAt(0)}</span>
+                            <span className="text-uppercase">{user && user?.name?.charAt(0)}</span>
                         </Avatar>
                     </Col>
                     <Col md={9} className="d-flex flex-column justify-content-center">
@@ -108,7 +125,7 @@ class Folder extends Component {
                             <Radio.Group value={this.state.filter} onChange={(e) => this.handleFilter(e)}>
                                 <Radio.Button
                                     value="recent-activities"
-                                onClick={() => this.pushRef(ROUTER.RECENT_ACT)}
+                                    onClick={() => this.pushRef(ROUTER.RECENT_ACT)}
                                 >
                                     <span className="txt-btn m-2">Hoạt động gần đây</span>
                                 </Radio.Button>
@@ -137,11 +154,20 @@ class Folder extends Component {
 
                 <Row className="my-4 px-md-4">
                     <Col md={8}>
-                        <Divider orientation="left" className="count-divider" plain>
-                            <span className="element-count">
-                                Tổng có: <span className="font-number">{this.state[this.props.screen]?.length || 0}</span>
-                            </span>
-                        </Divider>
+                        {this.props.screen == "recentActivities" ?
+                            // <Divider orientation="left" className="count-divider" plain>
+                            //     <span className="element-count">
+                            //         Tóm tắt
+                            //     </span>
+                            // </Divider>
+                            null
+                            :
+                            <Divider orientation="left" className="count-divider" plain>
+                                <span className="element-count">
+                                    Tổng có: <span className="font-number">{this.state[this.props.screen]?.paginate?.total_items || 0}</span>
+                                </span>
+                            </Divider>
+                        }
                         {this.renderData(data)}
                     </Col>
                 </Row>
@@ -157,25 +183,107 @@ class Folder extends Component {
                 </>
             )
         } else {
-            if (data.length > 0) {
-                return (
-                    <>
-                        {data?.map((ele) => this.renderContent(ele))}
-                    </>
-                )
-            } else {
-                return (
-                    <>
-                        <Result
-                            title="Danh sách rỗng"
-                            extra={
-                                <Button type="primary" key="console">
-                                    Tạo mới
-                                </Button>
+            if (this.props.screen == "made" || this.props.screen == "learned") {
+                if (data?.paginate?.total_items > 0) {
+                    return (
+                        <>
+                            {data?.sets?.map((ele) => this.renderContent(ele))}
+                        </>
+                    )
+                } else {
+                    return (
+                        <>
+                            <Result
+                                title="Danh sách rỗng"
+                                extra={
+                                    <Button
+                                        type="primary"
+                                        key="console"
+                                        onClick={() => this.props.history.push(ROUTER.CREATE_SET)}
+                                    >
+                                        <span>Tạo mới học phần</span>
+                                    </Button>
+                                }
+                            />
+                        </>
+                    )
+                }
+            } else if (this.props.screen == "recentActivities") {
+                let check = false
+                for (var prop in data) {
+                    if (data[prop].length > 0) {
+                        check = true
+                        break
+                    }
+                }
+                if (check) {
+                    return (
+                        <>
+                            {data.this_week.length > 0 &&
+                                <Divider orientation="left" className="count-divider" plain>
+                                    <span className="element-count">Tuần này</span>
+                                </Divider>
                             }
-                        />
-                    </>
-                )
+                            {data.this_week.length > 0 && data.this_week?.map((e) => this.renderContent(e))}
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(e => {
+                                if (data[e.toString()].length > 0) {
+                                    var today = new Date()
+                                    return (
+                                        <>
+                                            <Divider orientation="left" className="count-divider pt-md-4" plain>
+                                                <span className="element-count">Tháng {today.getMonth() + 1 == e ? "này" : e}</span>
+                                            </Divider>
+                                            {data[e.toString()]?.map(e => this.renderContent(e))}
+
+                                        </>
+                                    )
+                                }
+                            })}
+                        </>
+                    )
+                } else {
+                    return (
+                        <>
+                            <Result
+                                title="Bạn chưa có hoạt động nào."
+                                extra={
+                                    <Button
+                                        type="primary"
+                                        key="console"
+                                        onClick={() => this.props.history.push(ROUTER.CREATE_SET)}
+                                    >
+                                        <span>Tạo mới học phần</span>
+                                    </Button>
+                                }
+                            />
+                        </>
+                    )
+                }
+            } else if (this.props.screen == "folder") {
+                if (data?.length > 0) {
+                    return (
+                        <>
+                            {data?.map((ele) => this.renderContent(ele))}
+                        </>
+                    )
+                } else {
+                    return (
+                        <>
+                            <Result
+                                title="Danh sách rỗng"
+                                extra={
+                                    <Button
+                                        type="primary"
+                                        key="console"
+                                        onClick={() => this.props.history.push(ROUTER.FOLDER_CREATE)}
+                                    >
+                                        <span>Tạo mới thư mục</span>
+                                    </Button>
+                                }
+                            />
+                        </>
+                    )
+                }
             }
         }
     }
@@ -205,7 +313,7 @@ class Folder extends Component {
                             <span className="info">{ele && ele?.number_of_sets} học phần</span>
                         </Col>
                         <Col md={12}>
-                            <i class="fal fa-folder element-name-icon"></i>
+                            <i className="fal fa-folder element-name-icon text-warning"></i>
                             <span className="element-name">{ele.name}</span>
                         </Col>
                     </Row>
@@ -218,11 +326,11 @@ class Folder extends Component {
                         onClick={() => this.pushRef(ROUTER.LEARN, ele.id)}
                     >
                         <Col md={12}>
-                            <span className="info">2 thuật ngữ</span>
+                            <span className="info">{ele?.number_of_cards} thuật ngữ</span>
                         </Col>
                         <Col md={12}>
-                            <i class="fal fa-folder element-name-icon"></i>
-                            <span className="element-name">IT nihongo 1</span>
+                            <i className="fal fa-bookmark element-name-icon text-info"></i>
+                            <span className="element-name">{ele?.title}</span>
                         </Col>
                     </Row>
                 </>
@@ -237,7 +345,8 @@ class Folder extends Component {
                             <span className="info">{ele && ele?.number_of_cards} thuật ngữ</span>
                         </Col>
                         <Col md={12}>
-                            <i class="fal fa-bookmark element-name-icon"></i>
+                            {/* <i className="fal fa-bookmark element-name-icon"></i>' */}
+                            <i className="far fa-layer-plus element-name-icon text-primary"></i>'
                             <span className="element-name">{ele && ele?.title}</span>
                         </Col>
                     </Row>
@@ -253,7 +362,7 @@ class Folder extends Component {
                             <span className="info">{ele && ele?.number_of_cards} thuật ngữ</span>
                         </Col>
                         <Col md={12}>
-                            <i class="far fa-check element-name-icon"></i>
+                            <i className="far fa-check element-name-icon text-success"></i>
                             <span className="element-name">{ele && ele?.title}</span>
                         </Col>
                     </Row>
