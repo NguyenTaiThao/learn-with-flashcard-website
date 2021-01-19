@@ -371,7 +371,11 @@ class HomeScreen extends Component {
                             </Select>
                         </Row>
                     </Col>
-                    
+                    <Col xs={10} className="offset-1 divider">
+                        <Divider />
+                    </Col>
+                   
+                    <div style={{ width: "100%", height: "100px" }}></div>
                 </Row>
             </>
         )
