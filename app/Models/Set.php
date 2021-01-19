@@ -353,7 +353,7 @@ class Set extends Model
             } else {
                 if($sort == 1){
                     $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
-                            ->orderBy('sets.price', 'desc')
+                            ->orderBy('sets.price', 'asc')
                             ->with('cards')
                             ->limit($sets_per_page)
                             ->offset($offset)
