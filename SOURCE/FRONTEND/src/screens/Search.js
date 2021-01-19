@@ -7,13 +7,15 @@ import { Avatar, Card, Select, Empty, Skeleton, Space } from "antd"
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import { requestSearch } from "@constants/Api"
 import reactotron from "reactotron-react-js"
+import Pagination from '@material-ui/lab/Pagination';
 
 const defaultState = {
     loading: false,
-    data: [],
+    data: {},
     price: "-2",
     type: "1",
-    sort: "0"
+    sort: "0",
+    page: 1,
 }
 class SearchScreen extends Component {
 
@@ -40,7 +42,7 @@ class SearchScreen extends Component {
                 loading: true
             })
             const res = await requestSearch({
-                page: 1,
+                page: this.state.page,
                 keyword: this.props.location.state?.keyword,
                 price: this.state.price,
                 type: this.state.type,
@@ -185,10 +187,26 @@ class SearchScreen extends Component {
                                 </Col>
                             }
                         </Row>
+                        <Row className="justify-content-center mt-4">
+                            <Pagination
+                                count={Math.ceil(data?.paginate?.total_items / data?.paginate?.items_per_page)}
+                                color="primary"
+                                size="large"
+                                page={this.state.page}
+                                disabled={this.state.loading}
+                                onChange={(e, page) => this.handlePagi(page)}
+                            />
+                        </Row>
                     </Col>
                 </Row>
             </>
         )
+    }
+
+    handlePagi(page) {
+        this.setState({
+            page: page
+        }, () => this.getData())
     }
 
     renderResult(data) {

@@ -16,17 +16,18 @@ class Folder extends Component {
         this.state = {
             filter: this.props.screen,
             recentActivities: [],
-            learned: [1, 2, 3, 4, 5],
-            made: [],
-            folder: [],
-            loading: false
+            learned: {},
+            made: {},
+            folder: {},
+            loading: false,
+            page: 1,
         }
     }
 
     componentDidMount() {
         if (this.props.folderState?.data?.folders?.length > 0) {
             this.setState({
-                folder: this.props.folderState?.data?.folders
+                folder: { ...this.props.folderState?.data }
             })
         }
         this.getData()
@@ -35,12 +36,13 @@ class Folder extends Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.folderState?.data?.folders?.length > 0) {
             this.setState({
-                folder: [...nextProps.folderState?.data?.folders]
+                folder: { ...nextProps.folderState?.data }
             })
         }
         if (nextProps.screen) {
             this.setState({
-                filter: nextProps.screen
+                filter: nextProps.screen,
+                page: 1
             })
         }
     }
@@ -74,7 +76,7 @@ class Folder extends Component {
             this.setState({
                 loading: true
             })
-            let res = await requestRecentAct({ page: 1 });
+            let res = await requestRecentAct();
             this.setState({
                 recentActivities: { ...res?.data },
                 loading: false
@@ -84,12 +86,12 @@ class Folder extends Component {
         }
     }
 
-    async getLearnedSet() {
+    async getLearnedSet(page) {
         try {
             this.setState({
                 loading: true
             })
-            let res = await requestLearnedSet({ page: 1 });
+            let res = await requestLearnedSet({ page: page });
             this.setState({
                 learned: { ...res?.data },
                 loading: false
@@ -99,12 +101,12 @@ class Folder extends Component {
         }
     }
 
-    async getCreatedSet() {
+    async getCreatedSet(page) {
         try {
             this.setState({
                 loading: true
             })
-            let res = await requestCreatedSet({ page: 1 });
+            let res = await requestCreatedSet({ page: page });
             this.setState({
                 made: { ...res?.data },
                 loading: false
@@ -117,7 +119,6 @@ class Folder extends Component {
     render() {
         const data = this.state[this.state.filter]
         const user = this.props.userState.data
-        reactotron.log(this.props.screen, data)
         return (
             <>
                 <Row className="bg-white p-4 folder">
@@ -185,12 +186,15 @@ class Folder extends Component {
                 </Row>
 
                 {this.state.filter != "recentActivities" ?
-                    <Row className="mt-3">
+                    <Row className="mt-5">
                         <Col md={8} className="d-flex justify-content-center">
                             <Pagination
-                                count={10}
+                                count={Math.ceil(data?.paginate?.total_items / data?.paginate?.items_per_page)}
                                 color="primary"
                                 size="large"
+                                page={this.state.page}
+                                disabled={this.state.loading}
+                                onChange={(e, page) => this.handlePagi(page)}
                             />
                         </Col>
                     </Row>
@@ -199,6 +203,21 @@ class Folder extends Component {
                 }
             </>
         )
+    }
+
+    handlePagi(page) {
+        this.setState({
+            page: page
+        }, () => {
+            const { filter } = this.state
+            if (filter == "learned") {
+                this.getLearnedSet(page)
+            } else if (filter == "made") {
+                this.getCreatedSet(page)
+            } else if (filter == "folder") {
+
+            }
+        })
     }
 
     renderData(data) {
@@ -285,11 +304,11 @@ class Folder extends Component {
                         </>
                     )
                 }
-            } else if (this.props.screen == "folder") {
-                if (data?.length > 0) {
+            } else if (this.state.filter == "folder") {
+                if (data?.paginate?.total_items > 0) {
                     return (
                         <>
-                            {data?.map((ele) => this.renderContent(ele))}
+                            {data?.folders?.map((ele) => this.renderContent(ele))}
                         </>
                     )
                 } else {
@@ -371,7 +390,6 @@ class Folder extends Component {
                             <span className="info">{ele && ele?.number_of_cards} thuật ngữ</span>
                         </Col>
                         <Col md={12}>
-                            {/* <i className="fal fa-bookmark element-name-icon"></i>' */}
                             <i className="far fa-layer-plus element-name-icon text-primary"></i>'
                             <span className="element-name">{ele && ele?.title}</span>
                         </Col>

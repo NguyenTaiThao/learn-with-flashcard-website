@@ -138,18 +138,6 @@ class NavBar extends Component {
                 </Menu.Item>
             </SubMenu>
 
-            {/* <SubMenu
-                key="sub2"
-                icon={<UsergroupAddOutlined style={{ fontSize: "20px" }} />}
-                title={<b>Lớp học</b>}
-            >
-                <Menu.Item key="9">Lớp 10</Menu.Item>
-                <Menu.Item key="10">Lớp 11</Menu.Item>
-                <Menu.Item key="11">
-                    <span className="text-info">Tham gia hoặc tạo lớp</span>
-                </Menu.Item>
-            </SubMenu> */}
-
             <Divider />
         </Menu>
 
