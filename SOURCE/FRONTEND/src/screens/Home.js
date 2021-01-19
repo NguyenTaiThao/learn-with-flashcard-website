@@ -227,7 +227,23 @@ class HomeScreen extends Component {
                     </Button>
                 </Col>
 
-               
+                <Col xs={12} className="teacher-div">
+                    <Row>
+                        <Col md={6} className="left">
+                            <p className="teacher">GIÁO VIÊN</p>
+                            <p className="role">Truyền năng lượng cho học sinh của bạn</p>
+                            <p className="target">Giúp các em tự tin học bất cứ nội dung nào,
+                            dù cho mục tiêu phấn đấu có là gì đi nữa. Sử dụng các học phần miễn phí,
+                            chế độ học và trò chơi trong lớp của Quizlet,
+                            bạn có thể dễ dàng khích lệ học sinh của mình.
+                            </p>
+                            <Link className="link">Mang Quizlet đến lớp của bạn</Link>
+                        </Col>
+                        <Col md={6} className="px-0 right">
+                            <img src={require("@src/assets/teacher.png")} className="w-100" alt="anh-slide" />
+                        </Col>
+                    </Row>
+                </Col>
             </Row >
         )
     }
