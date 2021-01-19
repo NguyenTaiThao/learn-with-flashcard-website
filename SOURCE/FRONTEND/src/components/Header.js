@@ -168,7 +168,12 @@ class Header extends Component {
                             }}
                             className="mt-3"
                         >
-                            <Row className="py-4">
+                            <Row
+                                className="py-4"
+                                style={{
+                                    width: "250px"
+                                }}
+                            >
                                 <Col xs={4}>
                                     <Avatar
                                         style={{ "background": "red" }}
@@ -195,7 +200,7 @@ class Header extends Component {
                                 <ListItem button className="py-3">
                                     <Row className="w-100">
                                         <Col xs={3} className="px-2">
-                                            <i class="far fa-cog user-utils-icon"></i>
+                                            <i className="far fa-cog user-utils-icon"></i>
                                         </Col>
                                         <Col xs={9} className="px-0">
                                             <b className="user-utils-text">Cài đặt</b>
@@ -205,7 +210,7 @@ class Header extends Component {
                                 <ListItem button className="py-3">
                                     <Row className="w-100">
                                         <Col xs={3} className="px-2">
-                                            <i class="far fa-comment-alt user-utils-icon"></i>
+                                            <i className="far fa-comment-alt user-utils-icon"></i>
                                         </Col>
                                         <Col xs={9} className="px-0">
                                             <b className="user-utils-text">Trung tâm hỗ trợ</b>
@@ -215,7 +220,7 @@ class Header extends Component {
                                 <ListItem button className="py-3">
                                     <Row className="w-100">
                                         <Col xs={3} className="px-2">
-                                            <i class="fas fa-shield-alt user-utils-icon"></i>
+                                            <i className="fas fa-shield-alt user-utils-icon"></i>
                                         </Col>
                                         <Col xs={9} className="px-0">
                                             <b className="user-utils-text">Quyền riêng tư</b>
@@ -232,7 +237,7 @@ class Header extends Component {
                                 >
                                     <Row className="w-100">
                                         <Col xs={3} className="px-2">
-                                            <i class="fas fa-sign-out-alt user-utils-icon"></i>
+                                            <i className="fas fa-sign-out-alt user-utils-icon"></i>
                                         </Col>
                                         <Col xs={9} className="px-0">
                                             <b className="logout-text user-utils-text">Đăng xuất</b>

@@ -37,6 +37,7 @@ function handleResult(api) {
     if (res.data.code == 403) {
       Cookie.remove("SESSION_ID");
       alert("Phiên đăng nhập hết hạn")
+      window.location.replace("/")
     } else {
       if (res.data.status != 1) {
         return Promise.reject(res.data);
@@ -87,7 +88,7 @@ export const requestLogout = () => {
 }
 
 export const requestFolders = (payload) => {
-  return handleResult(getAxios.get(`listFolders`, { current_page: payload.page }))
+  return handleResult(getAxios.get(`listFolders?current_page=${payload.page}`, { current_page: payload.page }))
 }
 
 export const requestFolderDetail = (payload) => {
@@ -99,11 +100,11 @@ export const requestCreateFolder = (payload) => {
 }
 
 export const requestRecentSets = (payload) => {
-  return handleResult(getAxios.get(`recentSets`, { ...payload }))
+  return handleResult(getAxios.get(`recentSets?current_page=${payload.page}`, { ...payload }))
 }
 
 export const requestLearn = (payload) => {
-  return handleResult(getAxios.get(`set/completed`, { ...payload }))
+  return handleResult(getAxios.get(`set/completed?current_page=${payload.page}`, { ...payload }))
 }
 
 export const requestCreateSet = (payload) => {
@@ -128,4 +129,8 @@ export const requestRemoveFolder = (payload) => {
 
 export const requestSetToFolder = (payload) => {
   return handleResult(getAxios.get(`setToFolder`,payload))
+}
+
+export const requestGame = (payload) => {
+  return handleResult(getAxios.get(`multipleChoiceGame?id=${payload.id}`,payload))
 }

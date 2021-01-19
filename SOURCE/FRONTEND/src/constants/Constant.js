@@ -13,6 +13,12 @@ const ROUTER = {
     SEARCH:"/search"
   };
 
+const GAME_TYPE = {
+  SELECT: "SELECT",
+  FILL:"FILL",
+}
+
 export { 
-  ROUTER
+  ROUTER,
+  GAME_TYPE
 }

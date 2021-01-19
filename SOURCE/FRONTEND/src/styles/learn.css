@@ -40,3 +40,36 @@
 .select-type {
     color: #3CCFCF;
 }
+
+.game-div .select-title{
+    font-size: 25px;
+    font-weight: 600;
+    color:rgba(0, 0, 0, 0.623);
+}
+
+.game-div .multi-choice .question{
+    font-size: 35px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.game-div .multi-choice .anwser{
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.game-div .multi-choice .anwser:hover{
+    background-color: #fffbe6;
+    border: 1px solid #ffe58f;
+}
+
+.game-div .next-btn{
+    border: 1px solid #91d5ff !important;
+}
+
+.game-div .fill-blank #anwser-field{
+    font-size: 30px !important;
+}

@@ -155,7 +155,7 @@ class CreateSet extends Component {
                                 </Col>
                                 <Col className="text-right">
                                     <i
-                                        class="far fa-trash new-div-icon cursor"
+                                        className="far fa-trash new-div-icon cursor"
                                         onClick={() => this.removeCard(index)}
                                     >
 
@@ -191,7 +191,7 @@ class CreateSet extends Component {
                     className="new-div mt-4 mx-md-5 py-4 align-items-center justify-content-center cursor"
                     onClick={() => this.addNewCard()}
                 >
-                    <b className="new-card-btn"><i class="fas fa-plus"></i> THÊM THẺ MỚI</b>
+                    <b className="new-card-btn"><i className="fas fa-plus"></i> THÊM THẺ MỚI</b>
                 </Row>
             </>
         )
