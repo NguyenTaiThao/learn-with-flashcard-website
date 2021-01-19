@@ -181,7 +181,6 @@ class Set extends Model
                     ->offset($offset)
                     ->get('sets.*');
         $paginate = $this->paginate($this->allCompletedSet($user_id), $current_page, $sets_per_page);
-        dd(123);
         $data['paginate'] = $paginate;
         $data['sets'] = $sets;
         return $data;
