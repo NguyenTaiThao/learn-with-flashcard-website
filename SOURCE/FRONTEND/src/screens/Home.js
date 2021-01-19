@@ -134,6 +134,18 @@ class HomeScreen extends Component {
             </Row>
         )
     }
+    renderPage2() {
+        return (
+            <Row className="page-2 w-100">
+                <Col xs={12} className="my-5 py-5">
+                    <Row className="title my-5">
+                        <p className="text-center w-100"><em>90%</em>người dùng Quizlet cho biết họ đã cải thiện được điểm số</p>
+                    </Row>
+                </Col>
+
+               
+        )
+    }
 
     
 }
