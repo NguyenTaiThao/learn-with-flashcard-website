@@ -28,28 +28,28 @@ class HomeScreen extends Component {
         }
     }
 
-render() {
-    const check = Cookie.get("SESSION_ID") ? true : false
+    render() {
+        const check = Cookie.get("SESSION_ID") ? true : false
 
-    if (check) {
-        return (
-            <Redirect to={ROUTER.USER_HOME} />
-        )
-    } else {
-        return (
-            <>
-                <div className="wrap">
+        if (check) {
+            return (
+                <Redirect to={ROUTER.USER_HOME} />
+            )
+        } else {
+            return (
+                <>
+                    <div className="wrap">
 
-                    {this.renderPage1()}
+                        {this.renderPage1()}
 
-                    {this.renderPage2()}
+                        {this.renderPage2()}
 
-                    {this.renderFooter()}
-                </div>
-            </>
-        )
+                        {this.renderFooter()}
+                    </div>
+                </>
+            )
+        }
     }
-}
 
     renderPage1() {
         return (
