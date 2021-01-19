@@ -38,6 +38,11 @@ class Folder extends Component {
                 folder: [...nextProps.folderState?.data?.folders]
             })
         }
+        if(nextProps.screen){
+            this.setState({
+                filter:nextProps.screen
+            })
+        }
     }
 
     
@@ -109,7 +114,7 @@ class Folder extends Component {
                         <Row className="mt-2">
                             <Radio.Group value={this.state.filter} onChange={(e) => this.handleFilter(e)}>
                                 <Radio.Button
-                                    value="recent-activities"
+                                    value="recentActivities"
                                     onClick={() => this.pushRef(ROUTER.RECENT_ACT)}
                                 >
                                     <span className="txt-btn m-2">Hoạt động gần đây</span>
