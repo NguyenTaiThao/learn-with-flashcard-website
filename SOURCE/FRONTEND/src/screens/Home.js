@@ -302,7 +302,31 @@ class HomeScreen extends Component {
                             </ul>
                         </Row>
                     </Col>
-                    
+                    <Col md={2}>
+                        <Row className="title">
+                            <b>Hỗ trợ</b>
+                        </Row>
+                        <Row>
+                            <ul>
+                                <li>
+                                    <Link>Đăng kí</Link>
+                                </li>
+                                <li>
+                                    <Link>Trung tâm hỗ trợ</Link>
+                                </li>
+                                <li>
+                                    <Link>Quy tắc danh dự</Link>
+                                </li>
+                                <li>
+                                    <Link>Nguyễn tắc cộng đồng</Link>
+                                </li>
+                                <li>
+                                    <Link>Giác viên</Link>
+                                </li>
+                            </ul>
+                        </Row>
+                    </Col>
+                   
                 </Row>
             </>
         )
