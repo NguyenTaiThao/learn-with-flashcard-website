@@ -50,6 +50,9 @@ class HomeScreen extends Component {
             )
         }
     }
+    renderPage1() {
+       
+    }
 
     
 }
