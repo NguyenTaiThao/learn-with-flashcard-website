@@ -349,4 +349,25 @@ class SetController extends Controller
         }
     }
 
+    public function getCart(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->getCart($request->cart);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
 }

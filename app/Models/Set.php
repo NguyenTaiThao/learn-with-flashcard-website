@@ -70,13 +70,28 @@ class Set extends Model
                     ->whereBetween('sets.created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
                     ->get('sets.*');
         $data['this_week'] = $sets;
-        for($month = 1; $month <= 12; $month++){
-            $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
+        $duplicate_sets = []; $i = 0;
+        foreach ($sets as $key => $value) {
+            $duplicate_sets[$i++] = $value->id;
+        }
+        $this_month = Carbon::now()->month;
+        for ($month = 1; $month <= 12; $month++) {
+            if ($month == $this_month) {
+                $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
                         ->where('folders.user_id', $user_id)
                         ->whereYear('sets.created_at', Carbon::now()->year)
                         ->whereMonth('sets.created_at', $month)
+                        ->whereNotIn('sets.id', $duplicate_sets)
                         ->get('sets.*');
-            $data[$month] = $sets;
+                $data[$month] = $sets;
+            } else {
+                $sets = Set::join('folders', 'folders.id', '=', 'sets.folder_id')
+                            ->where('folders.user_id', $user_id)
+                            ->whereYear('sets.created_at', Carbon::now()->year)
+                            ->whereMonth('sets.created_at', $month)
+                            ->get('sets.*');
+                $data[$month] = $sets;
+            }
         }
         return $data;
     }
@@ -324,5 +339,18 @@ class Set extends Model
             $data['users'] = $users;
             return $data;
         }
+    }
+
+    public function getCart($cart)
+    {
+        $data = [];
+        $sets = $this->whereIn('id', $cart)->get();
+        $total_price = 0;
+        foreach ($sets as $key => $value) {
+            $total_price += $value->price;
+        }
+        $data['sets'] = $sets;
+        $data['total_price'] = $total_price;
+        return $data;
     }
 }
