@@ -27,7 +27,7 @@ class HomeScreen extends Component {
 
         }
     }
-    //Check session id va render ra page
+    
     render() {
         const check = Cookie.get("SESSION_ID") ? true : false
 
@@ -63,7 +63,7 @@ class HomeScreen extends Component {
                     
                     <Row className="action pb-5">
                         <Col md={7} sm={12} className="offset-0 offset-md-2">
-                            //Nam vung mon hoc, tung buoc mot
+                            
                             <span>
                                 Nắm vững mọi môn học, từng bước một
                             </span>
@@ -71,7 +71,7 @@ class HomeScreen extends Component {
                     </Row>
                     <Row className="pb-5">
                         <Col md={7} sm={12} className="offset-0 offset-md-2">
-                            //Them nut bat dau hoc
+                            
                             <Button
                                 variant="info"
                                 className="learn-now-btn"
