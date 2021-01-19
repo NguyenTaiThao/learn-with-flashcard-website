@@ -18,6 +18,6 @@ class BillDetail extends Model
 
     public function set()
     {
-        return $this->hasOne('App\Models\Set', 'set_id', 'id');
+        return $this->belongsTo('App\Models\Set', 'set_id', 'id');
     }
 }

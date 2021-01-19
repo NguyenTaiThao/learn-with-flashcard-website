@@ -38,7 +38,7 @@ class CardController extends Controller
 
     public function updateCard(Request $request)
     {
-        $token = $request->header();
+        $token = $request->header("token");
         $user = $this->user_model->isTokenExist($token);
         if ($user == null) {
             return $this->tokenNotExist();
@@ -97,7 +97,7 @@ class CardController extends Controller
             return $this->tokenNotExist();
         }else{
             try {
-                
+
             }catch(Exception $e){
                 return $this->internalServerError($e);
             }
