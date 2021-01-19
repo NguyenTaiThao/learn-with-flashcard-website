@@ -27,7 +27,7 @@ class HomeScreen extends Component {
 
         }
     }
-
+    //Check session id va render ra page
     render() {
         const check = Cookie.get("SESSION_ID") ? true : false
 
