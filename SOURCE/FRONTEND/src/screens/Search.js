@@ -25,7 +25,7 @@ class SearchScreen extends Component {
     }
 
     componentDidMount() {
-        // this.getData()
+        this.getData()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -66,7 +66,6 @@ class SearchScreen extends Component {
 
     render() {
         const { data } = this.state
-        reactotron.log("data", data)
         return (
             <>
                 <Row className="search py-md-4">
@@ -172,7 +171,7 @@ class SearchScreen extends Component {
                                 :
                                 <Col>
                                     {data?.paginate?.total_items > 0 ?
-                                        data?.sets.map(e => this.renderItem(e))
+                                        this.renderResult(data)
                                         :
                                         <Empty
                                             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -192,78 +191,115 @@ class SearchScreen extends Component {
         )
     }
 
+    renderResult(data) {
+        if (this.state.type == "1") {
+            return (
+                data?.sets?.map(e => this.renderItem(e))
+            )
+        } else {
+            return (
+                data?.users?.map(e => this.renderItem(e))
+            )
+        }
+    }
+
     renderItem(e) {
-        return (
-            <>
-                <Row className="item mb-4">
-                    <Col>
-                        <Row>
-                            <Col md={2}>
-                                <span className="count">{e && e?.number_of_cards} Thuật ngữ</span>
-                            </Col>
-                            <Col md={4}>
-                                <Avatar
-                                    style={{ "background": "red" }}
-                                    size={26}
-                                >
-                                    <span className="text-uppercase">{e && e?.author.charAt(0)}</span>
-                                </Avatar>
-                                <span className="typical-text owner">{e && e?.author}</span>
-                            </Col>
-                            <Col md={6} className="text-right">
-                                <b className="text-success">{e.price == 0 ? "free" : `$${e.price}`}</b>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <span className="title">{e && e?.title}</span>
-                            </Col>
-                        </Row>
-                        <Row className="mt-2">
-                            <Col>
-                                <Card>
-                                    {e.cards?.slice(0, 3).map((e) =>
-                                        <Card.Grid>
-                                            <Flippy
-                                                flipOnHover={true} // default false
-                                                flipOnClick={true} // default false
-                                                flipDirection="horizontal" // horizontal or vertical
-                                                ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
-                                                style={{ height: "100px" }}
-                                            >
-                                                <FrontSide
-                                                    style={{
-                                                        backgroundColor: '#fff',
-                                                    }}
-                                                    className="d-flex flex-column align-items-center justify-content-center px-0"
+        if (this.state.type == "1") {
+            return (
+                <>
+                    <Row className="item mb-4 cursor">
+                        <Col>
+                            <Row>
+                                <Col md={2}>
+                                    <span className="count">{e && e?.number_of_cards} Thuật ngữ</span>
+                                </Col>
+                                <Col md={4}>
+                                    <Avatar
+                                        style={{ "background": "red" }}
+                                        size={26}
+                                    >
+                                        <span className="text-uppercase">{e && e?.author.charAt(0)}</span>
+                                    </Avatar>
+                                    <span className="typical-text owner">{e && e?.author}</span>
+                                </Col>
+                                <Col md={6} className="text-right">
+                                    <b className="text-success">{e.price == 0 ? "free" : `$${e.price}`}</b>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <span className="title">{e && e?.title}</span>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Col>
+                                    <Card>
+                                        {e.cards?.slice(0, 3).map((e) =>
+                                            <Card.Grid>
+                                                <Flippy
+                                                    flipOnHover={true} // default false
+                                                    flipOnClick={true} // default false
+                                                    flipDirection="horizontal" // horizontal or vertical
+                                                    ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
+                                                    style={{ height: "100px" }}
                                                 >
-                                                    <Row>
-                                                        <span className="card-front">
-                                                            {e?.front_side}
-                                                        </span>
-                                                    </Row>
-                                                </FrontSide>
-                                                <BackSide
-                                                    style={{ backgroundColor: '#fff' }}
-                                                    className="d-flex flex-column align-items-center justify-content-center px-0"
-                                                >
-                                                    <Row>
-                                                        <span className="card-back">
-                                                            {e?.back_side}
-                                                        </span>
-                                                    </Row>
-                                                </BackSide>
-                                            </Flippy>
-                                        </Card.Grid>
-                                    )
-                                    }
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-            </>
-        )
+                                                    <FrontSide
+                                                        style={{
+                                                            backgroundColor: '#fff',
+                                                        }}
+                                                        className="d-flex flex-column align-items-center justify-content-center px-0"
+                                                    >
+                                                        <Row>
+                                                            <span className="card-front">
+                                                                {e?.front_side}
+                                                            </span>
+                                                        </Row>
+                                                    </FrontSide>
+                                                    <BackSide
+                                                        style={{ backgroundColor: '#fff' }}
+                                                        className="d-flex flex-column align-items-center justify-content-center px-0"
+                                                    >
+                                                        <Row>
+                                                            <span className="card-back">
+                                                                {e?.back_side}
+                                                            </span>
+                                                        </Row>
+                                                    </BackSide>
+                                                </Flippy>
+                                            </Card.Grid>
+                                        )
+                                        }
+                                    </Card>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Row className="item mb-4 cursor">
+                        <Col>
+                            <Row className="align-items-center">
+                                <Col md={8} className="d-flex align-items-center">
+                                    <Avatar
+                                        style={{ "background": "red" }}
+                                        size={26}
+                                    >
+                                        <span className="text-uppercase">{e && e?.name.charAt(0)}</span>
+                                    </Avatar>
+                                    <span className="typical-text owner text-uppercase" style={{ fontSize: "25px" }}>{e && e?.name}</span>
+                                </Col>
+                                <Col md={4} className="text-right">
+                                    <span className="count">{e && e?.sets?.length} học phần</span>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                </>
+            )
+        }
     }
 }
 
