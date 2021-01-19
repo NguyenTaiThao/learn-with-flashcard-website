@@ -210,8 +210,22 @@ class UserController extends Controller
             try {
                 $cart = $request->cart;
                 foreach ($cart as $key => $set_id) {
-                    echo $set_id;
+                    $set = $this->set_model->find($set_id);
+                    //$set->bought_times = $set->bought_times + 1;
+                    $new_set = $set->replicate();
+                    $new_set->folder_id = $this->folder_model->minFolderID($user->id);
+                    $new_set->is_purchased = 1;
+                    $new_set->price = -1;
+                    $new_set->save();
+                    $new_set_id = $new_set->id;
+                    foreach ($set->cards as $card) {
+                        $new_card = $card->replicate();
+                        $new_card->set_id = $new_set_id;
+                        $new_card->remember = 0;
+                        $new_card->save();
+                    }
                 }
+                echo "ok";
             } catch (Exception $e) {
                 return $this->internalServerError($e);
             }
