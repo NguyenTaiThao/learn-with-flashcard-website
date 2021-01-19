@@ -250,7 +250,15 @@ class HomeScreen extends Component {
     renderFooter() {
         return (
             <>
-               
+                <Row className="footer">
+                    <Col md={2} xs={6} className="offset-md-1">
+                        <Row className="title">
+                            <b>Chủ đề</b>
+                        </Row>
+                       
+                    </Col>
+                  
+                </Row>
             </>
         )
     }
