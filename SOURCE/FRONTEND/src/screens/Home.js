@@ -278,7 +278,31 @@ class HomeScreen extends Component {
                             </ul>
                         </Row>
                     </Col>
-                  
+                    <Col md={2} xs={6}>
+                        <Row className="title">
+                            <b>Tính năng</b>
+                        </Row>
+                        <Row>
+                            <ul>
+                                <li>
+                                    <Link>Quizlet Live</Link>
+                                </li>
+                                <li>
+                                    <Link>Chế độ học</Link>
+                                </li>
+                                <li>
+                                    <Link>Sơ đồ</Link>
+                                </li>
+                                <li>
+                                    <Link>Thẻ ghi nhớ</Link>
+                                </li>
+                                <li>
+                                    <Link>Ứng dụng</Link>
+                                </li>
+                            </ul>
+                        </Row>
+                    </Col>
+                    
                 </Row>
             </>
         )
