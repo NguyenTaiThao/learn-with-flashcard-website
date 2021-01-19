@@ -57,6 +57,11 @@ Route::group(['prefix' => 'card'], function () {
     Route::post('/delete/{id}', [CardController::class, 'deleteCard']);
 });
 
+Route::group(['prefix' => 'cart'], function () {
+    Route::get('/get', [SetController::class, 'getCart']);
+    Route::post('/buy/{id}', [CardController::class, 'deleteCard']);
+});
+
 Route::get('/recentSets', [UserController::class, 'recentSets']);
 Route::get('/listSetsByTime', [UserController::class, 'listSetsByTime']);
 Route::post('/createOrUpdateSet', [SetController::class, 'createOrUpdateSet']);

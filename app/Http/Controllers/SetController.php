@@ -228,7 +228,7 @@ class SetController extends Controller
                     $returnData = [
                         'status' => 0,
                         'msg' => "Không có đủ sets để fill vào trang này",
-                        'data' => $data['paginate']
+                        'data' => $data
                     ];
                     return response()->json($returnData, 500);
                 }
@@ -257,7 +257,7 @@ class SetController extends Controller
                     $returnData = [
                         'status' => 0,
                         'msg' => "Không có đủ sets để fill vào trang này",
-                        'data' => $data['paginate']
+                        'data' => $data
                     ];
                     return response()->json($returnData, 500);
                 }
@@ -286,7 +286,7 @@ class SetController extends Controller
                     $returnData = [
                         'status' => 0,
                         'msg' => "Không có đủ sets để fill vào trang này",
-                        'data' => $data['paginate']
+                        'data' => $data
                     ];
                     return response()->json($returnData, 500);
                 }
@@ -316,7 +316,7 @@ class SetController extends Controller
                     $returnData = [
                         'status' => 0,
                         'msg' => "Không có đủ sets để fill vào trang này",
-                        'data' => $data['paginate']
+                        'data' => $data
                     ];
                     return response()->json($returnData, 500);
                 }
@@ -343,6 +343,27 @@ class SetController extends Controller
                 $this->sets_per_page = 3;
                 return $this->set_model->search($request->current_page, $this->sets_per_page, $request->keyword, $request->price, $request->type);
 
+            }catch(Exception $e){
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function getCart(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else{
+            try {
+                $data = $this->set_model->getCart($request->cart);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
             }catch(Exception $e){
                 return $this->internalServerError($e);
             }

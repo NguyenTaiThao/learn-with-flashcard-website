@@ -200,4 +200,22 @@ class UserController extends Controller
         }
     }
 
+    public function buy(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else {
+            try {
+                $cart = $request->cart;
+                foreach ($cart as $key => $set_id) {
+                    echo $set_id;
+                }
+            } catch (Exception $e) {
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
 }
