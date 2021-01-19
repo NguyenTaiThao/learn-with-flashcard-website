@@ -120,7 +120,15 @@ class HomeScreen extends Component {
                         autoplay={true}
                         className="mt-1"
                     >
-                        
+                        <div>
+                            <h3 className="floating-text">Những học sinh tự nhủ "Mình có thể nhận được điểm cao hơn 10 không nhỉ?"</h3>
+                        </div>
+                        <div>
+                            <h3 className="floating-text">Những học sinh tự nhủ "Giờ mình càng chăm học, thì càng thoải mái tận hưởng kỳ nghỉ."</h3>
+                        </div>
+                        <div>
+                            <h3 className="floating-text">Những học sinh tự nhủ "Đêm nay, mình sẽ làm xong bài tập để cuối tuần có thể đi chơi."</h3>
+                        </div>
                     </Carousel>
                 </Col>
             </Row>
