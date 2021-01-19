@@ -140,6 +140,7 @@ class HomeScreen extends Component {
             </Row>
         )
     }
+    // Tra ve page 02
     renderPage2() {
         return (
             <Row className="page-2 w-100">
