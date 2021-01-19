@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class BillDetail extends Model
 {
     use HasFactory;
-    protected $table = 'bills';
+    protected $table = 'bill_detail';
     use HasFactory;
 
     public function bill()
