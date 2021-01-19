@@ -359,7 +359,19 @@ class HomeScreen extends Component {
                             </ul>
                         </Row>
                     </Col>
-                   
+                    <Col md={2}>
+                        <Row className="title">
+                            <b>Ngôn ngữ</b>
+                        </Row>
+                        <Row>
+                            <Select defaultValue="vi" className="w-100 lang-select">
+                                <Select.Option value="vi">Tiếng Việt</Select.Option>
+                                <Select.Option value="en">English</Select.Option>
+                                <Select.Option value="ja">日本語</Select.Option>
+                            </Select>
+                        </Row>
+                    </Col>
+                    
                 </Row>
             </>
         )
