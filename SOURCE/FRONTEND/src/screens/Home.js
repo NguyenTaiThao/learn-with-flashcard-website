@@ -326,6 +326,39 @@ class HomeScreen extends Component {
                             </ul>
                         </Row>
                     </Col>
+                    <Col md={2}>
+                        <Row className="title">
+                            <b>Giới thiệu</b>
+                        </Row>
+                        <Row>
+                            <ul>
+                                <li>
+                                    <Link>Công ty</Link>
+                                </li>
+                                <li>
+                                    <Link>Blog</Link>
+                                </li>
+                                <li>
+                                    <Link>Báo chí</Link>
+                                </li>
+                                <li>
+                                    <Link>Tuyển dụng</Link>
+                                </li>
+                                <li>
+                                    <Link>Quảng cáo</Link>
+                                </li>
+                                <li>
+                                    <Link>Quyền riêng tư</Link>
+                                </li>
+                                <li>
+                                    <Link>Chính sách quảng cáo và cookie</Link>
+                                </li>
+                                <li>
+                                    <Link>điều khoản dịch vụ</Link>
+                                </li>
+                            </ul>
+                        </Row>
+                    </Col>
                    
                 </Row>
             </>
