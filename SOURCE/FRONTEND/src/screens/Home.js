@@ -60,12 +60,13 @@ class HomeScreen extends Component {
                             <span>Trở thành phiên bản xuất sắc nhất của chính bạn</span>
                         </Col>
                     </Row>
-
+                    
                     <Row className="action pb-5">
                         <Col md={7} sm={12} className="offset-0 offset-md-2">
+                            //Nam vung mon hoc, tung buoc mot
                             <span>
                                 Nắm vững mọi môn học, từng bước một
-                                    </span>
+                            </span>
                         </Col>
                     </Row>
                     <Row className="pb-5">
@@ -75,7 +76,7 @@ class HomeScreen extends Component {
                                 className="learn-now-btn"
                             >
                                 Bắt đầu học
-                                    </Button>
+                            </Button>
                         </Col>
                     </Row>
 
