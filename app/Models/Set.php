@@ -295,9 +295,12 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
-                foreach ($sets as $set) {
+                foreach ($sets as $key => $set) {
                     $set->author = $set->folder->user->name;
                     unset($set->folder);
+                    if(count($set->cards) < 3){
+                        $sets->forget($key);
+                    }
                 }
                 $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                 $data['paginate'] = $paginate;
@@ -311,9 +314,12 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
-                    foreach ($sets as $set) {
+                    foreach ($sets as $key => $set) {
                         $set->author = $set->folder->user->name;
                         unset($set->folder);
+                        if(count($set->cards) < 3){
+                            $sets->forget($key);
+                        }
                     }
                     $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                     $data['paginate'] = $paginate;
@@ -326,9 +332,12 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
-                    foreach ($sets as $set) {
+                    foreach ($sets as $key => $set) {
                         $set->author = $set->folder->user->name;
                         unset($set->folder);
+                        if(count($set->cards) < 3){
+                            $sets->forget($key);
+                        }
                     }
                     $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                     $data['paginate'] = $paginate;
@@ -341,9 +350,12 @@ class Set extends Model
                                 ->limit($sets_per_page)
                                 ->offset($offset)
                                 ->get('sets.*');
-                    foreach ($sets as $set) {
+                    foreach ($sets as $key => $set) {
                         $set->author = $set->folder->user->name;
                         unset($set->folder);
+                        if(count($set->cards) < 3){
+                            $sets->forget($key);
+                        }
                     }
                     $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                     $data['paginate'] = $paginate;
@@ -358,9 +370,12 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
-                    foreach ($sets as $set) {
+                    foreach ($sets as $key => $set) {
                         $set->author = $set->folder->user->name;
                         unset($set->folder);
+                        if(count($set->cards) < 3){
+                            $sets->forget($key);
+                        }
                     }
                     $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                     $data['paginate'] = $paginate;
@@ -373,9 +388,12 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
-                    foreach ($sets as $set) {
+                    foreach ($sets as $key => $set) {
                         $set->author = $set->folder->user->name;
                         unset($set->folder);
+                        if(count($set->cards) < 3){
+                            $sets->forget($key);
+                        }
                     }
                     $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                     $data['paginate'] = $paginate;
@@ -388,9 +406,12 @@ class Set extends Model
                             ->limit($sets_per_page)
                             ->offset($offset)
                             ->get('sets.*');
-                    foreach ($sets as $set) {
+                    foreach ($sets as $key => $set) {
                         $set->author = $set->folder->user->name;
                         unset($set->folder);
+                        if(count($set->cards) < 3){
+                            $sets->forget($key);
+                        }
                     }
                     $paginate = $this->paginate($this->countSetWithPriceAndName($price, $keyword), $current_page, $sets_per_page);
                     $data['paginate'] = $paginate;
