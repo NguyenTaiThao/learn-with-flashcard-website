@@ -3,9 +3,13 @@ import { TextField } from '@material-ui/core/'
 import { Row, Col } from "react-bootstrap"
 import { Button } from "antd"
 import "@styles/CreateFolder.css"
-import {requestCreateFolder} from "@constants/Api"
+import { requestCreateFolder } from "@constants/Api"
 import NotifyContext from "@context/NotifyContext"
 import reactotron from "reactotron-react-js"
+import { getFolders } from "@src/redux/actions";
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
+import { ROUTER } from '@constants/Constant';
 
 const defaultState = {
     open: false,
@@ -14,14 +18,14 @@ const defaultState = {
         name: "",
         discription: ""
     },
-    loading:false
+    loading: false
 }
 
 class CreateFolder extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {...defaultState}
+        this.state = { ...defaultState }
     }
 
     static contextType = NotifyContext
@@ -81,21 +85,26 @@ class CreateFolder extends Component {
         })
     }
 
-    async handleCreate(){
-        try{
-            this.setState({loading:true})
-            const res = await requestCreateFolder({...this.state.form})
+    async handleCreate() {
+        try {
+            this.setState({ loading: true })
+            const res = await requestCreateFolder({ ...this.state.form })
             this.setState({
-                loading:false,
-                form: {...defaultState.form}
+                loading: false,
+                form: { ...defaultState.form }
             })
             this.context("success", "Thành công", "Thêm mới thư mục thành công.")
-        }catch(e){
+            this.props.getFolders({ page: 1 })
+            this.props.history.push(ROUTER.FOLDER)
+        } catch (e) {
             reactotron.log("them folder", e)
             this.context("error", "Thất bại", e.msg)
-            this.setState({loading:false})
+            this.setState({ loading: false })
         }
     }
 }
+const mapDispatchToProps = {
+    getFolders
+}
 
-export default CreateFolder;
+export default connect(null, mapDispatchToProps)(withRouter(CreateFolder));

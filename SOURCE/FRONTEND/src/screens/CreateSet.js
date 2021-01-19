@@ -220,7 +220,7 @@ class CreateSet extends Component {
             this.setState({
                 loading: false
             })
-            this.context("error", "Thất bại", "Tạo học phần thất bại.")
+            this.context("error", "Thất bại", e.msg)
         }
     }
 

@@ -5,8 +5,12 @@ import { Skeleton, Popconfirm, Card, Tooltip, Button } from 'antd';
 import { EditOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { withRouter, Redirect } from 'react-router-dom'
 import { ROUTER } from "@constants/Constant"
-import { requestFolderDetail } from "@constants/Api"
+import { requestFolderDetail, requestRemoveFolder } from "@constants/Api"
 import reactotron from "reactotron-react-js"
+import NotifyContext from "@context/NotifyContext"
+import { connect } from 'react-redux'
+import { getFolders } from "@src/redux/actions"
+
 class FolderContent extends Component {
 
     constructor(props) {
@@ -16,6 +20,8 @@ class FolderContent extends Component {
             data: null,
         }
     }
+
+    static contextType = NotifyContext
 
     componentDidMount() {
         this.getDetail()
@@ -40,6 +46,28 @@ class FolderContent extends Component {
             })
         } catch (e) {
             reactotron.log("folder content error", e)
+        }
+    }
+
+    removeFolder = async () => {
+        try {
+            this.setState({
+                loading: true
+            })
+            const res = await requestRemoveFolder({
+                folder_id: this.props.location?.state?.id
+            })
+            this.setState({
+                loading: false
+            })
+            this.context("success", "Thành công", "Xoá thư mục thành công.")
+            this.props.getFolders({ page: 1 })
+            this.props.history.push(ROUTER.FOLDER)
+        } catch (e) {
+            this.setState({
+                loading: false
+            })
+            this.context("error", "Thất bại", e.msg)
         }
     }
 
@@ -102,8 +130,7 @@ class FolderContent extends Component {
                             <Tooltip placement="bottom" title="Xóa">
                                 <Popconfirm
                                     title="Bạn muốn xóa học phần này và tất cả các thẻ card trong nó?"
-                                    onConfirm={this.removeSet}
-                                    // onCancel={cancel}
+                                    onConfirm={this.removeFolder}
                                     okText="Đồng ý"
                                     cancelText="Hủy"
                                 >
@@ -198,15 +225,10 @@ class FolderContent extends Component {
             reactotron.log("remove set err", e)
         }
     }
-
-    removeFolder = async () => {
-        try {
-
-        } catch (e) {
-
-        }
-    }
-
 }
 
-export default withRouter(FolderContent);
+const mapDispatchToProps = {
+    getFolders
+}
+
+export default connect(null, mapDispatchToProps)(withRouter(FolderContent));

@@ -27,14 +27,12 @@ class Folder extends Component {
                 folder: this.props.folderState?.data?.folders
             })
         }
-        // this.getRecentSets()
         this.getRecentAct()
         this.getLearnedSet()
         this.getCreatedSet()
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-        reactotron.log("next", nextProps)
         if (nextProps.folderState?.data?.folders?.length > 0) {
             this.setState({
                 folder: [...nextProps.folderState?.data?.folders]
@@ -42,20 +40,7 @@ class Folder extends Component {
         }
     }
 
-    // async getRecentSets() {
-    //     try {
-    //         this.setState({
-    //             loading: true
-    //         })
-    //         let res = await requestRecentSets({ page: 1 });
-    //         this.setState({
-    //             recentActivities: [...res?.data],
-    //             loading: false
-    //         })
-    //     } catch (e) {
-    //         this.setState({ loading: false })
-    //     }
-    // }
+    
 
     async getRecentAct() {
         try {
