@@ -255,7 +255,28 @@ class HomeScreen extends Component {
                         <Row className="title">
                             <b>Chủ đề</b>
                         </Row>
-                       
+                        <Row>
+                            <ul>
+                                <li>
+                                    <Link>Khoa học</Link>
+                                </li>
+                                <li>
+                                    <Link>Khoa học xã hội</Link>
+                                </li>
+                                <li>
+                                    <Link>Khác</Link>
+                                </li>
+                                <li>
+                                    <Link>Nghệ thuật nhân văn</Link>
+                                </li>
+                                <li>
+                                    <Link>Toán học</Link>
+                                </li>
+                                <li>
+                                    <Link>Ngôn ngữ</Link>
+                                </li>
+                            </ul>
+                        </Row>
                     </Col>
                   
                 </Row>
