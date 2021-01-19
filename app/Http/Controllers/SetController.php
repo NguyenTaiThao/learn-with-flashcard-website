@@ -316,7 +316,7 @@ class SetController extends Controller
                     $returnData = [
                         'status' => 0,
                         'msg' => "Không có đủ sets để fill vào trang này",
-                        'data' => $data['paginate']
+                        'data' => $data
                     ];
                     return response()->json($returnData, 500);
                 }
