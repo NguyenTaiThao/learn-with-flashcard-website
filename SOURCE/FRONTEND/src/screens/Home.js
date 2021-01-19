@@ -158,7 +158,22 @@ class HomeScreen extends Component {
                     </Row>
                 </Col>
 
-              
+                <Col xs={12} className="mt-1 home-element">
+                    <Row>
+                        <Col md={6} className="picture">
+                            <img src={require("@assets/success.png")} className="w-100" alt="anh minh hoa"></img>
+                        </Col>
+                        <Col md={6} className="text">
+                            <p className="title">Thành công tiếp theo của bạn đang ở rất gần rồi.</p>
+                            <p className="content">Mỗi kiến thức mới bạn học là một thành tích.
+                            Quizlet chia nhỏ các chủ đề và môn học để bạn tiến bộ từng ngày.
+                            </p>
+                        </Col>
+                    </Row>
+                </Col>
+
+               
+            </Row >
         )
     }
 
