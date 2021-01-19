@@ -124,15 +124,20 @@ export const requestSetDetail = (payload) => {
 }
 
 export const requestRemoveSet = (payload) => {
-  return handleResult(getAxios.get(`setDetail`, payload))
+  return handleResult(getAxios.post(`setDetail`, payload))
 }
 
 export const requestRemoveFolder = (payload) => {
-  return handleResult(getAxios.get(`folder/delete`, payload))
+  return handleResult(getAxios.post(`folder/delete`, payload))
+}
+
+export const requestUpdateCard = (payload) => {
+  Reactotron.log("update", payload)
+  return handleResult(getAxios.post(`updateCard`, payload))
 }
 
 export const requestSetToFolder = (payload) => {
-  return handleResult(getAxios.get(`setToFolder`, payload))
+  return handleResult(getAxios.post(`setToFolder`, payload))
 }
 
 export const requestGame = (payload) => {
