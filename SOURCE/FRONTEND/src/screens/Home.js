@@ -247,7 +247,13 @@ class HomeScreen extends Component {
             </Row >
         )
     }
-
+    renderFooter() {
+        return (
+            <>
+               
+            </>
+        )
+    }
     
 }
 
