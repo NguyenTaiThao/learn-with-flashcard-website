@@ -9,7 +9,7 @@ import {
 import CarouselBootstrap from 'react-bootstrap/Carousel'
 import "@styles/Home.css"
 import { Link, Redirect } from "react-router-dom"
-import {ROUTER} from "@constants/Constant"
+import { ROUTER } from "@constants/Constant"
 import { Carousel, Select } from "antd";
 import Divider from '@material-ui/core/Divider';
 import {
@@ -28,28 +28,29 @@ class HomeScreen extends Component {
         }
     }
 
-    render() {
-        const check = Cookie.get("SESSION_ID") ? true : false
+render() {
+    const check = Cookie.get("SESSION_ID") ? true : false
 
-        if (check) {
-            return(
-                <Redirect to={ROUTER.USER_HOME}/>
-            )
-        } else {
-            return (
-                <>
-                    <div className="wrap">
+    if (check) {
+        return (
+            <Redirect to={ROUTER.USER_HOME} />
+        )
+    } else {
+        return (
+            <>
+                <div className="wrap">
 
-                        {this.renderPage1()}
+                    {this.renderPage1()}
 
-                        {this.renderPage2()}
+                    {this.renderPage2()}
 
-                        {this.renderFooter()}
-                    </div>
-                </>
-            )
-        }
+                    {this.renderFooter()}
+                </div>
+            </>
+        )
     }
+}
+
     renderPage1() {
         return (
             <Row className="w-100 page-1">
@@ -400,7 +401,7 @@ class HomeScreen extends Component {
             </>
         )
     }
-    
+
 }
 
 export default HomeScreen
