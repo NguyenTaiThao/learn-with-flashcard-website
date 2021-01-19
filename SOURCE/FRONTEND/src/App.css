@@ -97,3 +97,7 @@ body {
 .back-drop .loading-icon{
     color:#fff;
 }
+
+button:focus{
+    outline: none !important;
+}

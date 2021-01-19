@@ -10,13 +10,12 @@ import {
     HomeOutlined,
     BarChartOutlined,
     FolderOutlined,
-    UsergroupAddOutlined,
 } from '@ant-design/icons';
 import { getFolders } from "@src/redux/actions";
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import reactotron from 'reactotron-react-js';
-import {Row, Col} from "react-bootstrap"
+import { Row, Col } from "react-bootstrap"
 
 const { SubMenu } = Menu;
 const drawerWidth = 256;
@@ -39,8 +38,20 @@ class NavBar extends Component {
         });
     };
 
-    render() {
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        let path = nextProps.location.pathname
+        if (path) {
+            if (path == ROUTER.FOLDER_CONTENT) {
+                this.setState({
+                    path: path + nextProps.location.state?.id
+                },)
+            } else {
+                this.setState({ path: path })
+            }
+        }
+    }
 
+    render() {
         return (
             <>
                 <div className="d-flex wrapper">
@@ -56,11 +67,11 @@ class NavBar extends Component {
     listMenu = () => (
         <Menu
             onClick={this.handleClick}
-            defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
             inlineCollapsed={this.state.collapsed}
             style={{ maxWidth: "256px" }}
+            selectedKeys={[this.state.path]}
         >
             <div
                 onClick={this.toggleCollapsed}
@@ -74,7 +85,7 @@ class NavBar extends Component {
             <Divider />
 
             <Menu.Item
-                key="1"
+                key={ROUTER.USER_HOME}
                 icon={<HomeOutlined style={{ fontSize: "20px" }} />}
                 onClick={() => this.props.history.push(ROUTER.USER_HOME)}
             >
@@ -82,7 +93,7 @@ class NavBar extends Component {
             </Menu.Item>
 
             <Menu.Item
-                key="2"
+                key={ROUTER.PROGRESS}
                 icon={<BarChartOutlined style={{ fontSize: "20px" }} />}
                 onClick={() => this.props.history.push(ROUTER.PROGRESS)}
             >
@@ -90,7 +101,7 @@ class NavBar extends Component {
             </Menu.Item>
 
             <Menu.Item
-                key="3"
+                key={ROUTER.SET}
                 icon={<AppstoreOutlined style={{ fontSize: "20px" }} />}
                 onClick={() => this.props.history.push(ROUTER.SET)}
             >
@@ -105,7 +116,7 @@ class NavBar extends Component {
                 title={<b>Thư mục</b>}
             >
                 <Menu.Item
-                    key="5"
+                    key={ROUTER.FOLDER}
                     onClick={() => this.props.history.push(ROUTER.FOLDER)}
                 >
                     Tất cả
@@ -122,7 +133,7 @@ class NavBar extends Component {
                 {this.props.folderState?.data?.folders?.length > 0 && this.props.folderState?.data?.folders.map((e, index) => {
                     return (
                         <Menu.Item
-                            key={6 + index}
+                            key={ROUTER.FOLDER_CONTENT + e.id}
                             onClick={() => this.pushRef(ROUTER.FOLDER_CONTENT, e.id)}
                         >
                             <span>{e.name}</span>
@@ -131,24 +142,12 @@ class NavBar extends Component {
                 }
                 )}
                 <Menu.Item
-                    key={6 + this.props.folderState?.data?.folders?.length}
+                    key={ROUTER.FOLDER_CREATE}
                     onClick={() => this.props.history.push(ROUTER.FOLDER_CREATE)}
                 >
                     <span className="text-info">Thêm thư mục</span>
                 </Menu.Item>
             </SubMenu>
-
-            {/* <SubMenu
-                key="sub2"
-                icon={<UsergroupAddOutlined style={{ fontSize: "20px" }} />}
-                title={<b>Lớp học</b>}
-            >
-                <Menu.Item key="9">Lớp 10</Menu.Item>
-                <Menu.Item key="10">Lớp 11</Menu.Item>
-                <Menu.Item key="11">
-                    <span className="text-info">Tham gia hoặc tạo lớp</span>
-                </Menu.Item>
-            </SubMenu> */}
 
             <Divider />
         </Menu>

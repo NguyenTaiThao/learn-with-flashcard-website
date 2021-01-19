@@ -9,7 +9,7 @@ import {
 import CarouselBootstrap from 'react-bootstrap/Carousel'
 import "@styles/Home.css"
 import { Link, Redirect } from "react-router-dom"
-import {ROUTER} from "@constants/Constant"
+import { ROUTER } from "@constants/Constant"
 import { Carousel, Select } from "antd";
 import Divider from '@material-ui/core/Divider';
 import {
@@ -19,6 +19,7 @@ import {
     InstagramOutlined
 } from '@ant-design/icons';
 import Cookie from "js-cookie"
+
 class HomeScreen extends Component {
     constructor(props) {
         super(props)
@@ -26,13 +27,13 @@ class HomeScreen extends Component {
 
         }
     }
-
+    
     render() {
         const check = Cookie.get("SESSION_ID") ? true : false
 
         if (check) {
-            return(
-                <Redirect to={ROUTER.USER_HOME}/>
+            return (
+                <Redirect to={ROUTER.USER_HOME} />
             )
         } else {
             return (
@@ -49,7 +50,7 @@ class HomeScreen extends Component {
             )
         }
     }
-
+    // Tra ve page 1
     renderPage1() {
         return (
             <Row className="w-100 page-1">
@@ -59,22 +60,24 @@ class HomeScreen extends Component {
                             <span>Trở thành phiên bản xuất sắc nhất của chính bạn</span>
                         </Col>
                     </Row>
-
+                    
                     <Row className="action pb-5">
                         <Col md={7} sm={12} className="offset-0 offset-md-2">
+                            
                             <span>
                                 Nắm vững mọi môn học, từng bước một
-                                    </span>
+                            </span>
                         </Col>
                     </Row>
                     <Row className="pb-5">
                         <Col md={7} sm={12} className="offset-0 offset-md-2">
+                            
                             <Button
                                 variant="info"
                                 className="learn-now-btn"
                             >
                                 Bắt đầu học
-                                    </Button>
+                            </Button>
                         </Col>
                     </Row>
 
@@ -103,12 +106,15 @@ class HomeScreen extends Component {
                         fade={true}
                     >
                         <CarouselBootstrap.Item interval={3000}>
+                            //Theme src image
                             <img src={require("@src/assets/banner_01.png")} className="w-100" alt="anh-slide" />
                         </CarouselBootstrap.Item>
                         <CarouselBootstrap.Item interval={3000}>
+                            //Theme src image
                             <img src={require("@src/assets/banner_02.png")} className="w-100" alt="anh-slide" />
                         </CarouselBootstrap.Item>
                         <CarouselBootstrap.Item interval={3000}>
+                            //Theme src image
                             <img src={require("@src/assets/banner_03.png")} className="w-100" alt="anh-slide" />
                         </CarouselBootstrap.Item>
                     </CarouselBootstrap>
@@ -134,7 +140,7 @@ class HomeScreen extends Component {
             </Row>
         )
     }
-
+    // Tra ve page 02
     renderPage2() {
         return (
             <Row className="page-2 w-100">
@@ -248,7 +254,6 @@ class HomeScreen extends Component {
             </Row >
         )
     }
-
     renderFooter() {
         return (
             <>
@@ -402,6 +407,7 @@ class HomeScreen extends Component {
             </>
         )
     }
+
 }
 
 export default HomeScreen
