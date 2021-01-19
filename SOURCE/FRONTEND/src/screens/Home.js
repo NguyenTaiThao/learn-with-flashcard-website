@@ -254,6 +254,7 @@ class HomeScreen extends Component {
             </Row >
         )
     }
+    // Tra ve footer
     renderFooter() {
         return (
             <>
