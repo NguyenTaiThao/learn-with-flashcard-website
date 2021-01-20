@@ -334,23 +334,17 @@ class SetController extends Controller
 
     public function search(Request $request)
     {
-        $token = $request->header("token");
-        $user = $this->user_model->isTokenExist($token);
-        if ($user == null) {
-            return $this->tokenNotExist();
-        }else{
-            try {
-                $this->sets_per_page = 3;
-                $data = $this->set_model->search($request->current_page, $this->sets_per_page, $request->keyword, $request->price, $request->type, $request->sort);
-                $returnData = [
-                    'status' => 1,
-                    'msg' => "Thành công",
-                    'data' => $data
-                ];
-                return response()->json($returnData, 200);
-            }catch(Exception $e){
-                return $this->internalServerError($e);
-            }
+        try {
+            $this->sets_per_page = 3;
+            $data = $this->set_model->search($request->current_page, $this->sets_per_page, $request->keyword, $request->price, $request->type, $request->sort);
+            $returnData = [
+                'status' => 1,
+                'msg' => "Thành công",
+                'data' => $data
+            ];
+            return response()->json($returnData, 200);
+        }catch(Exception $e){
+            return $this->internalServerError($e);
         }
     }
 

@@ -12,6 +12,7 @@ use App\Models\Set;
 use App\Models\Card;
 use App\Models\Bill;
 use App\Models\BillDetail;
+use App\Notifications\ConfirmBill;
 use Exception;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -219,6 +220,7 @@ class UserController extends Controller
                 $bill_id = $bill->id;
                 foreach ($cart as $key => $set_id) {
                     $set = $this->set_model->find($set_id);
+                    $this->user_model->find($set->folder->user->id)->notify(new ConfirmBill("Set ". $set->title . " vừa được mua bởi ". $user->name));
                     //create bill's detail
                     $bill_detail = new BillDetail;
                     $bill_detail->bill_id = $bill_id;

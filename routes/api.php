@@ -83,7 +83,19 @@ Route::post('updateCard', [CardController::class, 'updateCard']);
 
 
 Route::get('testNotify', function () {
-    User::find(4)->notify(new ConfirmBill("anh yeu em"));
+    //User::find(4)->notify(new ConfirmBill("anh yeu em nhieu lam"));
     $user = User::find(4);
-    dd($user->notifications);
+    $data['notifications'] = $user->notifications;
+    return view('welcome', $data);
+});
+
+
+Route::get('count', function () {
+    return count(User::find(4)->notifications);
+});
+
+
+Route::get('sendNotify', function () {
+    User::find(4)->notify(new ConfirmBill("anh yeu em nhieu lam lam"));
+    echo "ok";
 });
