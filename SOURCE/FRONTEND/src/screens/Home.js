@@ -27,7 +27,7 @@ class HomeScreen extends Component {
 
         }
     }
-    //Check session id va render ra page
+    
     render() {
         const check = Cookie.get("SESSION_ID") ? true : false
 
@@ -60,22 +60,24 @@ class HomeScreen extends Component {
                             <span>Trở thành phiên bản xuất sắc nhất của chính bạn</span>
                         </Col>
                     </Row>
-
+                    
                     <Row className="action pb-5">
                         <Col md={7} sm={12} className="offset-0 offset-md-2">
+                            
                             <span>
                                 Nắm vững mọi môn học, từng bước một
-                                    </span>
+                            </span>
                         </Col>
                     </Row>
                     <Row className="pb-5">
                         <Col md={7} sm={12} className="offset-0 offset-md-2">
+                            
                             <Button
                                 variant="info"
                                 className="learn-now-btn"
                             >
                                 Bắt đầu học
-                                    </Button>
+                            </Button>
                         </Col>
                     </Row>
 
@@ -104,12 +106,15 @@ class HomeScreen extends Component {
                         fade={true}
                     >
                         <CarouselBootstrap.Item interval={3000}>
+                            //Theme src image
                             <img src={require("@src/assets/banner_01.png")} className="w-100" alt="anh-slide" />
                         </CarouselBootstrap.Item>
                         <CarouselBootstrap.Item interval={3000}>
+                            //Theme src image
                             <img src={require("@src/assets/banner_02.png")} className="w-100" alt="anh-slide" />
                         </CarouselBootstrap.Item>
                         <CarouselBootstrap.Item interval={3000}>
+                            //Theme src image
                             <img src={require("@src/assets/banner_03.png")} className="w-100" alt="anh-slide" />
                         </CarouselBootstrap.Item>
                     </CarouselBootstrap>
@@ -135,6 +140,7 @@ class HomeScreen extends Component {
             </Row>
         )
     }
+    // Tra ve page 02
     renderPage2() {
         return (
             <Row className="page-2 w-100">
@@ -248,6 +254,7 @@ class HomeScreen extends Component {
             </Row >
         )
     }
+    // Tra ve footer
     renderFooter() {
         return (
             <>
