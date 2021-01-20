@@ -34,15 +34,20 @@ class Folder extends Model
         return Folder::where('user_id', $user_id)->min('id');
     }
 
-    public function folderDetail($id)
+    public function folderDetail($id, $current_page, $sets_per_page)
     {
-        $folder = $this->where('id',$id)->with('sets')->firstOrFail();
+        $current_page = intval($current_page);
+        $offset = ($current_page - 1) * $sets_per_page;
+        $folder = $this->where('id',$id)->firstOrFail();
         $folder->total_sets = count($folder->sets);
         $folder->author = $folder->user->name;
+        $paginate = $this->paginate($folder->total_sets, $current_page, $sets_per_page);
+        unset($folder->sets);
+        $sets = Set::where('sets.folder_id', $folder->id)->limit($sets_per_page)->offset($offset)->get();
+        $folder->sets = $sets;
+        $data['paginate'] = $paginate;
+        $data['folders'] = $folder;
         unset($folder->user);
-        foreach ($folder->sets as $set) {
-            $set->number_of_cards = count($set->cards);
-        }
-        return $folder;
+        return $data;
     }
 }

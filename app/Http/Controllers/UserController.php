@@ -12,6 +12,7 @@ use App\Models\Set;
 use App\Models\Card;
 use App\Models\Bill;
 use App\Models\BillDetail;
+use App\Notifications\ConfirmBill;
 use Exception;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -219,6 +220,7 @@ class UserController extends Controller
                 $bill_id = $bill->id;
                 foreach ($cart as $key => $set_id) {
                     $set = $this->set_model->find($set_id);
+                    $this->user_model->find($set->folder->user->id)->notify(new ConfirmBill("Set ". $set->title . " vừa được mua bởi ". $user->name. "\. Số dư + ".$set->price));
                     //create bill's detail
                     $bill_detail = new BillDetail;
                     $bill_detail->bill_id = $bill_id;
@@ -240,6 +242,47 @@ class UserController extends Controller
                         $new_card->save();
                     }
                 }
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công"
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function getNoti(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else {
+            try {
+                $data = $this->user_model->getNoti($user->id);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function markAsRead(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else {
+            try {
+                $this->user_model->markAsRead($user->id);
                 $returnData = [
                     'status' => 1,
                     'msg' => "Thành công"
