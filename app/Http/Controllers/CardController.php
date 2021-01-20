@@ -50,7 +50,9 @@ class CardController extends Controller
                 $card->set_id = $request->set_id;
                 $card->remember = $request->remember;
                 $card->save();
-                $this->set_model->completedPercent($card->set_id);
+                $set = $this->set_model->find($card->set_id);
+                $set->completed = $this->set_model->completedPercent($set->id);
+                $set->save();
                 $returnData = [
                     'status' => 1,
                     'msg' => 'Update card successfully'
