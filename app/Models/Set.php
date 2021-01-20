@@ -304,7 +304,7 @@ class Set extends Model
             //price: -1 => no free
             //price: -2 => all
             if ($price == 0) { //FREE
-                $sets = $this->where([['price', 0],['title', 'LIKE', '%'.$keyword.'%']])
+                $sets = $this->where([['price', 0],['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])
                             ->orderBy('sets.updated_at', 'desc')
                             ->with('cards')
                             ->limit($sets_per_page)
@@ -323,7 +323,7 @@ class Set extends Model
                 return $data;
             } else if ($price == -1) { //NO FREE
                 if($sort == 1){
-                    $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])
+                    $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])
                             ->orderBy('sets.price', 'asc')
                             ->with('cards')
                             ->limit($sets_per_page)
@@ -341,7 +341,7 @@ class Set extends Model
                     $data['sets'] = $sets;
                     return $data;
                 }else if($sort == 2){
-                    $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])
+                    $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])
                             ->orderBy('sets.price', 'desc')
                             ->with('cards')
                             ->limit($sets_per_page)
@@ -359,7 +359,7 @@ class Set extends Model
                     $data['sets'] = $sets;
                     return $data;
                 }else{
-                    $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])
+                    $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])
                                 ->orderBy('sets.updated_at', 'desc')
                                 ->with('cards')
                                 ->limit($sets_per_page)
@@ -379,7 +379,7 @@ class Set extends Model
                 }
             } else {
                 if($sort == 1){
-                    $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
+                    $sets = $this->where([['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])
                             ->orderBy('sets.price', 'asc')
                             ->with('cards')
                             ->limit($sets_per_page)
@@ -397,7 +397,7 @@ class Set extends Model
                     $data['sets'] = $sets;
                     return $data;
                 }else if($sort == 2){
-                    $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
+                    $sets = $this->where([['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])
                             ->orderBy('sets.price', 'desc')
                             ->with('cards')
                             ->limit($sets_per_page)
@@ -415,7 +415,7 @@ class Set extends Model
                     $data['sets'] = $sets;
                     return $data;
                 }else{
-                    $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')
+                    $sets = $this->where([['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])
                             ->orderBy('sets.updated_at', 'desc')
                             ->with('cards')
                             ->limit($sets_per_page)
