@@ -104,29 +104,31 @@ class SetController extends Controller
             return $this->tokenNotExist();
         }else{
             try {
-                $set = $this->set_model::Find($request->set_id);
-                if ($set->folder_id == $this->folder_model->minFolderID($user->id)
-                    || $request->folder_id == $this->folder_model->minFolderID($user->id)) { //đây là trường hợp set chưa thuộc folder nào hoặc folder muốn chuyển tới là "Không thuộc folder nào"
-                    $set->folder_id = $request->folder_id; // chỉ cần chuyển ID
-                    $set->save();
-                } else { // trường hợp đã thuộc 1 nhóm rồi
-                    //cần clone set sang folder mới
-                    $new_set = $set->replicate();
-                    $new_set->folder_id = $request->folder_id;
-                    $new_set->completed = 0;
-                    $new_set->save();
-                    $newSet_id = $new_set->id;
-                    //cần clone toàn bộ card có trong set luôn
-                    foreach ($set->cards as $key => $value) {
-                        $new_card = $value->replicate();
-                        $new_card->set_id = $newSet_id;
-                        $new_card->save();
-                    }
-                }
+                $set = $this->set_model->find($request->set_id);
+                $set->folder_id = $request->folder_id;
+                $set->save();
+                // if ($set->folder_id == $this->folder_model->minFolderID($user->id)
+                //     || $request->folder_id == $this->folder_model->minFolderID($user->id)) { //đây là trường hợp set chưa thuộc folder nào hoặc folder muốn chuyển tới là "Không thuộc folder nào"
+                //     $set->folder_id = $request->folder_id; // chỉ cần chuyển ID
+                //     $set->save();
+                // } else { // trường hợp đã thuộc 1 nhóm rồi
+                //     //cần clone set sang folder mới
+                //     $new_set = $set->replicate();
+                //     $new_set->folder_id = $request->folder_id;
+                //     $new_set->completed = 0;
+                //     $new_set->save();
+                //     $newSet_id = $new_set->id;
+                //     //cần clone toàn bộ card có trong set luôn
+                //     foreach ($set->cards as $key => $value) {
+                //         $new_card = $value->replicate();
+                //         $new_card->set_id = $newSet_id;
+                //         $new_card->save();
+                //     }
+                // }
                 $returnData = [
                     'status' => 1,
                     'msg' => 'Add Set to Folder successfully!',
-                    'data' => $new_set
+                    //'data' => $new_set
                 ];
                 return response()->json($returnData, 200);
             }catch(Exception $e){
