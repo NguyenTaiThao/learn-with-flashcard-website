@@ -264,13 +264,18 @@ class Learn extends Component {
                                                 className="d-flex flex-column align-items-center justify-content-center px-0"
                                             >
                                                 <Row className="fixed-top">
-                                                    <Tooltip
-                                                        placement="bottom"
-                                                        title={ele?.remember ? "Bạn đã thuộc thẻ này" : "Bạn vẫn chưa thuộc thẻ này"}
-                                                    >
-                                                        <i className={`fad fa-bookmark remember-icon ml-2 
+                                                    <Col xs={8} className="offset-2 text-center">
+                                                        <span>{this.state.currentCard + 1}/{this.filterCard().length}</span>
+                                                    </Col>
+                                                    <Col xs={2} className="text-right">
+                                                        <Tooltip
+                                                            placement="bottom"
+                                                            title={ele?.remember ? "Bạn đã thuộc thẻ này" : "Bạn vẫn chưa thuộc thẻ này"}
+                                                        >
+                                                            <i className={`fad fa-bookmark remember-icon ml-2 
                                                             ${ele?.remember ? "text-success" : "text-secondary"} cursor`}></i>
-                                                    </Tooltip>
+                                                        </Tooltip>
+                                                    </Col>
                                                 </Row>
                                                 <Row>
                                                     <span className="card-back">

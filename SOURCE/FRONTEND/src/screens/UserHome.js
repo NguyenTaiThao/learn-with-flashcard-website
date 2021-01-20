@@ -9,6 +9,7 @@ import { EditOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { withRouter } from "react-router-dom"
 import { connect } from "react-redux"
 import { requestRecentSets } from "@constants/Api"
+import NotifyContext from "@context/NotifyContext"
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -20,6 +21,8 @@ class UserHome extends Component {
             data: []
         }
     }
+
+    static contextType = NotifyContext
 
     componentDidMount() {
         this.getData()
@@ -36,7 +39,7 @@ class UserHome extends Component {
                 data: res.data
             })
         } catch (e) {
-            reactotron.log("user home err", e)
+            this.context("error", "Thất bại", e.msg)
         }
     }
 

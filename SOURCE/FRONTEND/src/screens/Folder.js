@@ -8,6 +8,7 @@ import { requestRecentAct, requestLearnedSet, requestCreatedSet } from "@constan
 import reactotron from 'reactotron-react-js';
 import { connect } from 'react-redux'
 import Pagination from '@material-ui/lab/Pagination';
+import NotifyContext from "@context/NotifyContext"
 
 class Folder extends Component {
 
@@ -23,6 +24,8 @@ class Folder extends Component {
             page: 1,
         }
     }
+
+    static contextType = NotifyContext
 
     componentDidMount() {
         if (this.props.folderState?.data?.folders?.length > 0) {
@@ -64,10 +67,11 @@ class Folder extends Component {
                 made: { ...res[1]?.data },
                 learned: { ...res[2]?.data },
             })
-        } catch (e) {
+        } catch (err) {
             this.setState({
                 loading: false
             })
+            this.context("error", "Thất bại", err.msg)
         }
     }
 

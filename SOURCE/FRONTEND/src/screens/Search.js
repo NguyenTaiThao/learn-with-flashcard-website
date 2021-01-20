@@ -32,11 +32,14 @@ class SearchScreen extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.location.state?.keyword !== this.props.location.state?.keyword) {
-            this.getData()
+            this.setState({
+                page: 1
+            }, () => this.getData())
         }
+
     }
 
-    getData = async () => {
+    getData = async (page) => {
         try {
             this.setState({
                 loading: true
@@ -62,7 +65,8 @@ class SearchScreen extends Component {
 
     handleFieldChange(field, value) {
         this.setState({
-            [field]: value
+            [field]: value,
+            page: 1,
         }, () => this.getData())
     }
 
