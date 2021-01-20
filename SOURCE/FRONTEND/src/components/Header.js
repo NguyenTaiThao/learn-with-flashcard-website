@@ -12,6 +12,7 @@ import {
     FolderAddOutlined,
     CloseCircleOutlined,
     ShoppingCartOutlined,
+    BellOutlined,
 } from '@ant-design/icons'
 import { Link, withRouter } from "react-router-dom"
 import "animate.css"
@@ -79,6 +80,8 @@ class Header extends Component {
 
                 {/* hiển thị Modal đăng nhập */}
                 {this.renderLoginModal()}
+
+                {this.renderCartModal()}
             </>
         )
     }
@@ -140,14 +143,24 @@ class Header extends Component {
                     <Row className="align-items-center justify-content-center justify-content-md-end">
                         <IconButton className="mr-1">
                             <Badge
-                                color="green"
+                                count={4}
                             >
-                                <ShoppingCartOutlined
-                                    style={{
-                                        fontSize: "25px",
-                                        color: "white"
-                                    }}
-                                />
+                                <i
+                                    className="fas fa-bell text-white"
+                                    style={{ fontSize: "20px" }}
+                                ></i>
+                            </Badge>
+                        </IconButton>
+
+                        <IconButton className="mr-1">
+                            <Badge
+                                count={4} 
+                                style={{ backgroundColor: '#52c41a' }}
+                            >
+                                <i
+                                    className="fas fa-shopping-cart text-white"
+                                    style={{ fontSize: "20px" }}
+                                ></i>
                             </Badge>
                         </IconButton>
                         <IconButton
@@ -307,6 +320,14 @@ class Header extends Component {
                         />
                     </Row>
                 </Col>
+
+            </>
+        )
+    }
+
+    renderCartModal() {
+        return (
+            <>
 
             </>
         )

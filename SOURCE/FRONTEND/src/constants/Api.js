@@ -46,7 +46,6 @@ function handleResult(api) {
     }
   }).catch((e) => {
     if (e.message) {
-      Reactotron.log("suc", e)
       return Promise.reject({
         ...e,
         msg: e.message
@@ -124,7 +123,7 @@ export const requestSetDetail = (payload) => {
 }
 
 export const requestRemoveSet = (payload) => {
-  return handleResult(getAxios.post(`setDetail`, payload))
+  return handleResult(getAxios.post(`set/delete`, payload))
 }
 
 export const requestRemoveFolder = (payload) => {
@@ -142,6 +141,10 @@ export const requestSetToFolder = (payload) => {
 
 export const requestGame = (payload) => {
   return handleResult(getAxios.get(`multipleChoiceGame?id=${payload.id}`, payload))
+}
+
+export const requestSetNoFolder = (payload) => {
+  return handleResult(getAxios.get(`set/no-folder?current_page=${payload.page}`))
 }
 
 export const requestSearch = (payload) => {

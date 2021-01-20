@@ -7,7 +7,8 @@ import "@styles/CreateSet.css"
 import reactotron from 'src/ReactotronConfig';
 import { requestCreateSet } from "@constants/Api"
 import NotifyContext from "@context/NotifyContext"
-
+import { getFolders } from "@src/redux/actions";
+import { connect } from "react-redux"
 
 const defaultState = {
     name: "",
@@ -208,12 +209,17 @@ class CreateSet extends Component {
                 "id": 0,
                 "title": name,
                 "price": price,
-                "folder_id": 0,
+                "folder_id": this.props.location.state?.folder_id || 0,
                 "cards": [...newSet]
             })
             this.setState({
                 ...defaultState
             })
+
+            if (this.props.location.state?.folder_id) {
+                this.props.getFolders({ page: 1 })
+            }
+
             this.context("success", "Thành công", "Thêm mới học phần thành công")
         } catch (e) {
             reactotron.log(e)
@@ -254,4 +260,8 @@ class CreateSet extends Component {
     }
 }
 
-export default withRouter(CreateSet);
+const mapDispatchToProps = {
+    getFolders
+}
+
+export default connect(null, mapDispatchToProps)(withRouter(CreateSet));
