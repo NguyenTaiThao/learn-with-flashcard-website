@@ -435,7 +435,7 @@
 
 <body class="antialiased">
     <!-- Example single danger button -->
-    <div class="btn-group" style="margin-left:1400px">
+    {{-- <div class="btn-group" style="margin-left:1400px">
         <button type="button" class=" notification btn btn-danger dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             Noti
@@ -451,7 +451,7 @@
             @endforeach
 
         </div>
-    </div>
+    </div> --}}
     <div
         class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
         @if (Route::has('login'))

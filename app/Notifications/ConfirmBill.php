@@ -17,11 +17,11 @@ class ConfirmBill extends Notification
      * @return void
      */
 
-    protected $data;
+    protected $msg;
 
-    public function __construct($data)
+    public function __construct($msg)
     {
-        $this->data = $data;
+        $this->msg = $msg;
     }
 
     /**
@@ -32,7 +32,7 @@ class ConfirmBill extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -44,9 +44,10 @@ class ConfirmBill extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->from('cskh@flashcard.com', 'FlashCard')
+                    ->line($this->msg)
+                    ->action('Chi tiết', url('/'))
+                    ->line('Cảm ơn bạn đồng hành cùng Flashcard!');
     }
 
     /**
@@ -58,7 +59,7 @@ class ConfirmBill extends Notification
     public function toArray($notifiable)
     {
         return [
-            'data' => $this->data
+            'data' => $this->msg
         ];
     }
 }

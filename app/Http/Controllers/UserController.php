@@ -220,7 +220,7 @@ class UserController extends Controller
                 $bill_id = $bill->id;
                 foreach ($cart as $key => $set_id) {
                     $set = $this->set_model->find($set_id);
-                    $this->user_model->find($set->folder->user->id)->notify(new ConfirmBill("Set ". $set->title . " vừa được mua bởi ". $user->name));
+                    $this->user_model->find($set->folder->user->id)->notify(new ConfirmBill("Set ". $set->title . " vừa được mua bởi ". $user->name. "\. Số dư + ".$set->price));
                     //create bill's detail
                     $bill_detail = new BillDetail;
                     $bill_detail->bill_id = $bill_id;

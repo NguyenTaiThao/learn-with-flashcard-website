@@ -102,4 +102,9 @@ class User extends Authenticatable
     {
         $this->find($id)->unreadNotifications->markAsRead();
     }
+
+    public function routeNotificationForMail($notification)
+    {
+        return ["ductrung.2112xx@gmail.com" => $this->name];
+    }
 }
