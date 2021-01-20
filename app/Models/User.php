@@ -88,4 +88,18 @@ class User extends Authenticatable
         $users = User::where('name', 'LIKE', '%'.$keyword.'%')->get();
         return count($users);
     }
+
+    public function getNoti($id)
+    {
+        $user = $this->find($id);
+        $data['readNotifications'] = $user->readNotifications;
+        $data['unreadNotifications'] = $user->unreadNotifications;
+        $data['unread'] = count($data['unreadNotifications']);
+        return $data;
+    }
+
+    public function markAsRead($id)
+    {
+        $this->find($id)->unreadNotifications->markAsRead();
+    }
 }

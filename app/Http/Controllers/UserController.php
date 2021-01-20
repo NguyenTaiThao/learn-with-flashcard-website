@@ -253,4 +253,45 @@ class UserController extends Controller
         }
     }
 
+    public function getNoti(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else {
+            try {
+                $data = $this->user_model->getNoti($user->id);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $data
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
+    public function markAsRead(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else {
+            try {
+                $this->user_model->markAsRead($user->id);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công"
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                return $this->internalServerError($e);
+            }
+        }
+    }
+
 }

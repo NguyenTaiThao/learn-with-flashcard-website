@@ -81,6 +81,8 @@ Route::get('search', [SetController::class, 'search']);
 Route::get('completedSets', [SetController::class, 'completedSets']);
 Route::post('updateCard', [CardController::class, 'updateCard']);
 
+Route::get('notification', [UserController::class, 'getNoti']);
+Route::get('markAsRead', [UserController::class, 'markAsRead']);
 
 Route::get('testNotify', function () {
     //User::find(4)->notify(new ConfirmBill("anh yeu em nhieu lam"));
