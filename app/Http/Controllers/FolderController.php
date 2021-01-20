@@ -168,7 +168,13 @@ class FolderController extends Controller
             return $this->tokenNotExist();
         }else{
             try{
-                $folder = $this->folder_model->folderDetail($request->id);
+                if($request->current_page == NULL){
+                    $this->current_page = 1;
+                }else{
+                    $this->current_page = $request->current_page;
+                }
+                $sets_per_page = 5;
+                $folder = $this->folder_model->folderDetail($request->id, $this->current_page, $sets_per_page);
                 if($folder == NULL){
                     $returnData = [
                         'status' => 0,
