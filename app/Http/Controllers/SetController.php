@@ -228,11 +228,11 @@ class SetController extends Controller
                 $data = $this->set_model->completedSets($request->current_page, $this->sets_per_page, $user->id);
                 if(count($data['sets']) == 0){
                     $returnData = [
-                        'status' => 0,
+                        'status' => 1,
                         'msg' => "Không có đủ sets để fill vào trang này",
                         'data' => $data
                     ];
-                    return response()->json($returnData, 500);
+                    return response()->json($returnData, 200);
                 }
                 $returnData = [
                     'status' => 1,
@@ -257,11 +257,11 @@ class SetController extends Controller
                 $data = $this->set_model->createdSets($request->current_page, $this->sets_per_page, $user->id);
                 if(count($data['sets']) == 0){
                     $returnData = [
-                        'status' => 0,
+                        'status' => 1,
                         'msg' => "Không có đủ sets để fill vào trang này",
                         'data' => $data
                     ];
-                    return response()->json($returnData, 500);
+                    return response()->json($returnData, 200);
                 }
                 $returnData = [
                     'status' => 1,
@@ -284,13 +284,13 @@ class SetController extends Controller
         }else{
             try {
                 $data = $this->set_model->allSets($request->current_page, $this->sets_per_page, $user->id);
-                if(count($data['sets']) == 0){
+                if(count($data['sets']) == 1){
                     $returnData = [
                         'status' => 0,
                         'msg' => "Không có đủ sets để fill vào trang này",
                         'data' => $data
                     ];
-                    return response()->json($returnData, 500);
+                    return response()->json($returnData, 200);
                 }
                 $returnData = [
                     'status' => 1,
@@ -314,13 +314,13 @@ class SetController extends Controller
             try {
                 $min_folder = $this->folder_model->minFolderID($user->id);
                 $data = $this->set_model->noFolderSets($request->current_page, $this->sets_per_page, $user->id, $min_folder);
-                if(count($data['sets']) == 0){
+                if(count($data['sets']) == 1){
                     $returnData = [
                         'status' => 0,
                         'msg' => "Không có đủ sets để fill vào trang này",
                         'data' => $data
                     ];
-                    return response()->json($returnData, 500);
+                    return response()->json($returnData, 200);
                 }
                 $returnData = [
                     'status' => 1,
