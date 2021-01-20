@@ -91,7 +91,7 @@ export const requestFolders = (payload) => {
 }
 
 export const requestFolderDetail = (payload) => {
-  return handleResult(getAxios.get(`folderDetail?id=${payload.id}`,))
+  return handleResult(getAxios.get(`folderDetail?id=${payload.id}&current_page=${payload.current_page}`,))
 }
 
 export const requestCreateFolder = (payload) => {

@@ -32,9 +32,12 @@ class Header extends Component {
         this.state = {
             loginModal: false,
             registerModal: false,
+            cartModal: true,
             showSearchBox: false,
             popover: false,
+            notifyPopover: false,
             anchorEl: null,
+            notifyAnchorEl: null,
             loginLoading: false,
             registerLoading: false,
             loading: false,
@@ -141,7 +144,10 @@ class Header extends Component {
             return (
                 <Col md={7} className="button">
                     <Row className="align-items-center justify-content-center justify-content-md-end">
-                        <IconButton className="mr-1">
+                        <IconButton
+                            className="mr-1"
+                            onClick={(e) => this.handlePopover(e, "notifyPopover", "notifyAnchorEl")}
+                        >
                             <Badge
                                 count={4}
                             >
@@ -152,9 +158,12 @@ class Header extends Component {
                             </Badge>
                         </IconButton>
 
-                        <IconButton className="mr-1">
+                        <IconButton
+                            className="mr-1"
+                            onClick={() => this.handleShow("cartModal", true)}
+                        >
                             <Badge
-                                count={4} 
+                                count={4}
                                 style={{ backgroundColor: '#52c41a' }}
                             >
                                 <i
@@ -168,15 +177,16 @@ class Header extends Component {
                         >
                             <Avatar
                                 style={{ "background": "red" }}
-                                onClick={(e) => this.handlePopover(e)}
+                                onClick={(e) => this.handlePopover(e, "popover", "anchorEl")}
                                 size="large"
                             >
                                 <span className="text-uppercase">{info && info?.name?.charAt(0)}</span>
                             </Avatar>
                         </IconButton>
+
                         <Popover
                             open={this.state.popover}
-                            onClose={(e) => this.handlePopover(e)}
+                            onClose={(e) => this.handlePopover(e, "popover", "anchorEl")}
                             anchorEl={this.state.anchorEl}
                             anchorOrigin={{
                                 vertical: 'bottom',
@@ -266,6 +276,54 @@ class Header extends Component {
                                 </ListItem>
                             </List>
                         </Popover>
+
+                        <Popover
+                            open={this.state.notifyPopover}
+                            onClose={(e) => this.handlePopover(e, "notifyPopover", "notifyAnchorEl")}
+                            anchorEl={this.state.notifyAnchorEl}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                            className="mt-3"
+                        >
+                            <List className="py-0">
+                                <ListItem button className="py-3">
+                                    <Row className="w-100">
+                                        <Col xs={3} className="px-2">
+                                            <i className="far fa-cog user-utils-icon"></i>
+                                        </Col>
+                                        <Col xs={9} className="px-0">
+                                            <b className="user-utils-text">Cài đặt</b>
+                                        </Col>
+                                    </Row>
+                                </ListItem>
+                                <ListItem button className="py-3">
+                                    <Row className="w-100">
+                                        <Col xs={3} className="px-2">
+                                            <i className="far fa-comment-alt user-utils-icon"></i>
+                                        </Col>
+                                        <Col xs={9} className="px-0">
+                                            <b className="user-utils-text">Trung tâm hỗ trợ</b>
+                                        </Col>
+                                    </Row>
+                                </ListItem>
+                                <ListItem button className="py-3">
+                                    <Row className="w-100">
+                                        <Col xs={3} className="px-2">
+                                            <i className="fas fa-shield-alt user-utils-icon"></i>
+                                        </Col>
+                                        <Col xs={9} className="px-0">
+                                            <b className="user-utils-text">Quyền riêng tư</b>
+                                        </Col>
+                                    </Row>
+                                </ListItem>
+                            </List>
+                        </Popover>
                     </Row>
                 </Col>
             )
@@ -328,7 +386,22 @@ class Header extends Component {
     renderCartModal() {
         return (
             <>
+                <Modal
+                    title="Giỏ hàng"
+                    centered
+                    keyboard={false}
+                    maskClosable={false}
+                    visible={this.state.cartModal}
+                    onOk={() => this.handleShow("cartModal", false)}
+                    onCancel={() => this.handleShow("cartModal", false)}
+                    width={700}
+                    footer={null}
+                >
+                    <Row className="justify-content-center">
 
+                    </Row>
+
+                </Modal>
             </>
         )
     }
@@ -339,10 +412,11 @@ class Header extends Component {
         }
     }
 
-    handlePopover = (e) => {
+    handlePopover = (e, popover, anchor) => {
+        reactotron.log(popover, anchor)
         this.setState({
-            popover: !this.state.popover,
-            anchorEl: e?.currentTarget || null,
+            [popover]: !this.state[popover],
+            [anchor]: e?.currentTarget || null,
         })
     }
 

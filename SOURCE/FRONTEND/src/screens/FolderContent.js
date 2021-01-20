@@ -11,6 +11,7 @@ import NotifyContext from "@context/NotifyContext"
 import { connect } from 'react-redux'
 import { getFolders } from "@src/redux/actions"
 import InfiniteScroll from 'react-infinite-scroller';
+import Pagination from '@material-ui/lab/Pagination';
 
 class FolderContent extends Component {
 
@@ -25,6 +26,7 @@ class FolderContent extends Component {
             addSetModal: false,
             folderList: [],
             currentPage: 1,
+            page: 1,
         }
     }
 
@@ -122,7 +124,7 @@ class FolderContent extends Component {
                     </Row>
 
                     <Row className="justify-content-between w-75 py-4 px-4">
-                        {data?.sets ? data?.sets?.map((ele, index) =>
+                        {data?.paginate?.total_items ? data?.folders?.sets?.map((ele, index) =>
                             <Card
                                 style={{ width: 400, marginTop: 16 }}
                                 actions={[
@@ -162,7 +164,7 @@ class FolderContent extends Component {
                                 <Skeleton loading={loading} avatar active>
                                     <Card.Meta
                                         title={ele && ele?.title}
-                                        description={`${ele && ele?.cards.length} thuật ngữ`}
+                                        description={`${ele && ele?.number_of_cards} thuật ngữ`}
                                     />
                                 </Skeleton>
                             </Card>
@@ -175,7 +177,16 @@ class FolderContent extends Component {
                         }
 
                     </Row>
-
+                    <Row className="justify-content-center w-75">
+                        <Pagination
+                            count={Math.ceil(data?.paginate?.total_items / data?.paginate?.items_per_page)}
+                            color="primary"
+                            size="large"
+                            page={this.state.page}
+                            disabled={this.state.loading}
+                            onChange={(e, page) => this.handlePagi(page)}
+                        />
+                    </Row>
                     {this.renderModalAddSet()}
                 </>
             )
@@ -185,6 +196,12 @@ class FolderContent extends Component {
             )
         }
 
+    }
+
+    handlePagi(page) {
+        this.setState({
+            page: page
+        }, ()=> this.getDetail())
     }
 
     renderModalAddSet() {
@@ -391,7 +408,10 @@ class FolderContent extends Component {
             this.setState({
                 loading: true
             })
-            const res = await requestFolderDetail({ id: this.props.location?.state?.id })
+            const res = await requestFolderDetail({
+                id: this.props.location?.state?.id,
+                current_page: this.state.page
+            })
             this.setState({
                 loading: false,
                 data: res?.data
