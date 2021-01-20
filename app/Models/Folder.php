@@ -43,7 +43,7 @@ class Folder extends Model
         $folder->author = $folder->user->name;
         $paginate = $this->paginate($folder->total_sets, $current_page, $sets_per_page);
         unset($folder->sets);
-        $sets = Set::where('sets.folder_id', $folder->id)->limit($sets_per_page)->offset($sets_per_page)->get();
+        $sets = Set::where('sets.folder_id', $folder->id)->limit($sets_per_page)->offset($offset)->get();
         $folder->sets = $sets;
         $data['paginate'] = $paginate;
         $data['folders'] = $folder;
