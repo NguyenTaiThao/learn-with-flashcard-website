@@ -284,9 +284,9 @@ class SetController extends Controller
         }else{
             try {
                 $data = $this->set_model->allSets($request->current_page, $this->sets_per_page, $user->id);
-                if(count($data['sets']) == 1){
+                if(count($data['sets']) == 0){
                     $returnData = [
-                        'status' => 0,
+                        'status' => 1,
                         'msg' => "Không có đủ sets để fill vào trang này",
                         'data' => $data
                     ];
@@ -314,9 +314,9 @@ class SetController extends Controller
             try {
                 $min_folder = $this->folder_model->minFolderID($user->id);
                 $data = $this->set_model->noFolderSets($request->current_page, $this->sets_per_page, $user->id, $min_folder);
-                if(count($data['sets']) == 1){
+                if(count($data['sets']) == 0){
                     $returnData = [
-                        'status' => 0,
+                        'status' => 1,
                         'msg' => "Không có đủ sets để fill vào trang này",
                         'data' => $data
                     ];
