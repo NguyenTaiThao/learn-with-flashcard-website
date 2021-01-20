@@ -167,10 +167,13 @@ class Learn extends Component {
                                 >
                                     <span className="typical-text">Xáo trộn thẻ</span>
                                 </Button>
-                                <Tooltip placement="bottom" title="Cùng chơi game để học thuộc thuật ngữ">
+                                <Tooltip
+                                    placement="bottom"
+                                    title={this.state.sets?.length >= 4 ? "Cùng chơi game để học thuộc thuật ngữ" : "Học phần này có quá ít từ để chơi game"}
+                                >
                                     <Button
                                         block
-                                        disabled={this.state.sets?.length <= 0}
+                                        disabled={this.state.sets?.length < 4 || this.state.loading}
                                         className="my-2"
                                         onClick={() => this.showGame(true)}
                                     >

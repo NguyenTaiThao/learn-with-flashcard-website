@@ -10,6 +10,7 @@ import {
     HomeOutlined,
     BarChartOutlined,
     FolderOutlined,
+    RocketOutlined,
 } from '@ant-design/icons';
 import { getFolders } from "@src/redux/actions";
 import { connect } from "react-redux"
@@ -44,7 +45,7 @@ class NavBar extends Component {
             if (path == ROUTER.FOLDER_CONTENT) {
                 this.setState({
                     path: path + nextProps.location.state?.id
-                },)
+                })
             } else {
                 this.setState({ path: path })
             }
@@ -93,6 +94,22 @@ class NavBar extends Component {
             </Menu.Item>
 
             <Menu.Item
+                key={ROUTER.SET}
+                icon={<AppstoreOutlined style={{ fontSize: "20px" }} />}
+                onClick={() => this.props.history.push(ROUTER.SET)}
+            >
+                <b>Học phần</b>
+            </Menu.Item>
+
+            <Menu.Item
+                key={ROUTER.LEARN}
+                icon={<RocketOutlined style={{ fontSize: "20px" }} />}
+                onClick={() => this.props.history.push(ROUTER.LEARN)}
+            >
+                <b>Luyện tập</b>
+            </Menu.Item>
+
+            <Menu.Item
                 key={ROUTER.PROGRESS}
                 icon={<BarChartOutlined style={{ fontSize: "20px" }} />}
                 onClick={() => this.props.history.push(ROUTER.PROGRESS)}
@@ -100,13 +117,6 @@ class NavBar extends Component {
                 <b>Thống kê</b>
             </Menu.Item>
 
-            <Menu.Item
-                key={ROUTER.SET}
-                icon={<AppstoreOutlined style={{ fontSize: "20px" }} />}
-                onClick={() => this.props.history.push(ROUTER.SET)}
-            >
-                <b>Học phần</b>
-            </Menu.Item>
 
             <Divider />
 
