@@ -253,7 +253,7 @@ class SearchScreen extends Component {
                                     <span className="typical-text owner">{e && e?.author}</span>
                                 </Col>
                                 <Col md={6} className="text-right">
-                                    <b className="text-success">{e.price == 0 ? "free" : `$${e.price}`}</b>
+                                    <b className="text-success">{!e.is_purchased ? (e.price == 0 ? "free" : `$${e.price}`) : "Đã sở hữu"}</b>
                                 </Col>
                             </Row>
                             <Row>

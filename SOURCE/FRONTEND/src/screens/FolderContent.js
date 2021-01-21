@@ -5,7 +5,11 @@ import { Skeleton, Popconfirm, Card, Tooltip, Button, Modal, List, Spin, Switch 
 import { EditOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { withRouter, Redirect } from 'react-router-dom'
 import { ROUTER } from "@constants/Constant"
-import { requestFolderDetail, requestRemoveFolder, requestRemoveSet, requestSetNoFolder, requestSetToFolder } from "@constants/Api"
+import {
+    requestFolderDetail, requestRemoveFolder,
+    requestRemoveSet, requestSetNoFolder,
+    requestSetToFolder, requestUpdateSet
+} from "@constants/Api"
 import reactotron from "reactotron-react-js"
 import NotifyContext from "@context/NotifyContext"
 import { connect } from 'react-redux'
@@ -201,7 +205,7 @@ class FolderContent extends Component {
     handlePagi(page) {
         this.setState({
             page: page
-        }, ()=> this.getDetail())
+        }, () => this.getDetail())
     }
 
     renderModalAddSet() {
@@ -291,7 +295,7 @@ class FolderContent extends Component {
 
             await requestSetToFolder({
                 set_id: set_id,
-                folder_id: this.props.location.state?.id
+                folder_id: (value ? this.props.location.state?.id : 0)
             })
 
             newSets = this.state.folderList.sets.map((e) => e.id == set_id ? { ...e, loading: false, checked: value } : e)

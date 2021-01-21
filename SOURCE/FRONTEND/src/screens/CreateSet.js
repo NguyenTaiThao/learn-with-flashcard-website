@@ -204,13 +204,13 @@ class CreateSet extends Component {
             this.setState({
                 loading: true
             })
-            let data = newSet.filter(e => e.front_side || e.back_side)
+            let data = newSet.filter(e => (e.front_side || e.back_side))
             const res = await requestCreateSet({
                 "id": 0,
                 "title": name,
                 "price": price,
                 "folder_id": this.props.location.state?.folder_id || 0,
-                "cards": [...newSet]
+                "cards": [...data]
             })
             this.setState({
                 ...defaultState
