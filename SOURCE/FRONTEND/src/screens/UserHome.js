@@ -8,7 +8,7 @@ import { Skeleton, Tooltip, Card, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined, BookOutlined } from '@ant-design/icons';
 import { withRouter } from "react-router-dom"
 import { connect } from "react-redux"
-import { requestRecentSets } from "@constants/Api"
+import { requestRecentSets, requestRemoveSet } from "@constants/Api"
 import NotifyContext from "@context/NotifyContext"
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -167,7 +167,16 @@ class UserHome extends Component {
                                             placement="bottom"
                                             title="Xóa"
                                         >
-                                            <DeleteOutlined key="delete" />
+                                            <Popconfirm
+                                                title="Bạn muốn xóa học phần này và tất cả các thẻ trong nó?"
+                                                onConfirm={() => {
+                                                    this.removeSet(e.id)
+                                                }}
+                                                okText="Đồng ý"
+                                                cancelText="Hủy"
+                                            >
+                                                <DeleteOutlined key="delete" />
+                                            </Popconfirm>
                                         </Tooltip>,
                                     ]}
                                 >
@@ -207,15 +216,8 @@ class UserHome extends Component {
                                                     placement="bottom"
                                                     title="Xóa"
                                                 >
-                                                    <Popconfirm
-                                                        title="Bạn muốn xóa học phần này và tất cả các thẻ card trong nó?"
-                                                        onConfirm={this.removeSet}
-                                                        // onCancel={cancel}
-                                                        okText="Đồng ý"
-                                                        cancelText="Hủy"
-                                                    >
-                                                        <DeleteOutlined key="delete" />
-                                                    </Popconfirm>
+
+                                                    <DeleteOutlined key="delete" />
                                                 </Tooltip>,
                                             ]}
                                         >
@@ -229,9 +231,25 @@ class UserHome extends Component {
                             }
                         </Row>
                     </Col>
-                </Row>
+                </Row >
             </>
         )
+    }
+
+    removeSet = async (id) => {
+        try {
+
+            await requestRemoveSet({ set_id: id })
+
+            const newSet = this.state?.data?.filter((e) => e.id != id)
+            this.setState({
+                data: [...newSet]
+            })
+
+            this.context("success", "Thành công", "Xóa học phần thành công.")
+        } catch (e) {
+            this.context("error", "Thất bại", "Xóa học phần không thành công.")
+        }
     }
 
     pushRef(link, id) {
@@ -241,13 +259,6 @@ class UserHome extends Component {
         })
     }
 
-    removeSet = async () => {
-        try {
-
-        } catch (e) {
-            reactotron.log("remove set err", e)
-        }
-    }
 }
 
 export default connect(null, null)(withRouter(UserHome))

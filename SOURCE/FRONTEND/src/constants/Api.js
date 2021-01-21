@@ -155,6 +155,10 @@ export const requestNoti = () => {
   return handleResult(getAxios.get(`notification`))
 }
 
+export const requestStatistic = () => {
+  return handleResult(getAxios.get(`getInfo`))
+}
+
 export const requestSetInCart = (payload) => {
   var param = ""
   payload.forEach((e) => param += `cart[]=${e}&`)

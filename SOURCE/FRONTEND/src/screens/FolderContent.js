@@ -8,7 +8,7 @@ import { ROUTER } from "@constants/Constant"
 import {
     requestFolderDetail, requestRemoveFolder,
     requestRemoveSet, requestSetNoFolder,
-    requestSetToFolder, requestUpdateSet
+    requestSetToFolder
 } from "@constants/Api"
 import reactotron from "reactotron-react-js"
 import NotifyContext from "@context/NotifyContext"
