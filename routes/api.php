@@ -97,7 +97,4 @@ Route::get('count', function () {
 });
 
 
-Route::get('sendNotify', function () {
-    User::find(4)->notify(new ConfirmBill("anh yeu em nhieu lam lam"));
-    echo "ok";
-});
+Route::post('import', [UserController::class, 'importExcel']);
