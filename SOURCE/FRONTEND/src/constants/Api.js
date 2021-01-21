@@ -5,8 +5,8 @@ const Reactotron = process.env.NODE_ENV !== "production" && require("reactotron-
 
 function createAxios() {
   var axiosInstant = axios.create();
-  // axiosInstant.defaults.baseURL = "https://flashcard-web-project.herokuapp.com/api/";
-  axiosInstant.defaults.baseURL = "http://127.0.0.1:8000/api/";
+  axiosInstant.defaults.baseURL = "https://flashcard-web-project.herokuapp.com/api/";
+  // axiosInstant.defaults.baseURL = "http://127.0.0.1:8000/api/";
   axiosInstant.defaults.timeout = 20000;
   axiosInstant.defaults.headers = { "Content-Type": "application/json" };
 
@@ -132,8 +132,11 @@ export const requestRemoveFolder = (payload) => {
 }
 
 export const requestUpdateCard = (payload) => {
-  Reactotron.log("update", payload)
   return handleResult(getAxios.post(`updateCard`, payload))
+}
+
+export const requestUpdateSet = (payload) => {
+  return handleResult(getAxios.post(`createOrUpdateSet`, payload))
 }
 
 export const requestSetToFolder = (payload) => {
@@ -146,6 +149,10 @@ export const requestGame = (payload) => {
 
 export const requestSetNoFolder = (payload) => {
   return handleResult(getAxios.get(`set/no-folder?current_page=${payload.page}`))
+}
+
+export const requestNoti = () => {
+  return handleResult(getAxios.get(`notification`))
 }
 
 export const requestSetInCart = (payload) => {

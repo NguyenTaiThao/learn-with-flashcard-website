@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import "@styles/Header.css"
 import { Col, Row, Button } from 'react-bootstrap'
 import { Modal, Form, Input, Checkbox, Avatar, Badge } from 'antd'
-import { Button as AntButton } from 'antd'
+import { Button as AntButton, Empty } from 'antd'
 import {
     UserOutlined,
     LockOutlined,
@@ -422,7 +422,7 @@ class Header extends Component {
                                             <span className="item">{e && e?.title}</span>
                                         </Row>
                                         <Row>
-                                            <span className="price">${e && e?.price}</span>
+                                            <span className="price">${e && (e?.price)}</span>
                                         </Row>
                                     </Col>
                                     <Col xs={1} className="text-right">
@@ -437,7 +437,14 @@ class Header extends Component {
                                 </Row>
                             )
                                 :
-                                null
+                                <Empty 
+                                    image={Empty.PRESENTED_IMAGE_SIMPLE} 
+                                    description={
+                                        <span>
+                                         Giỏ hàng rỗng
+                                        </span>
+                                      }
+                                    />
                             }
                         </Col>
                     </Row>
@@ -462,6 +469,7 @@ class Header extends Component {
                             size="large"
                             onClick={() => this.buy()}
                             loading={this.state.cartLoading}
+                            disabled={this.state.cartData.length <= 0}
                         >
                             <span>Thanh toán</span>
                         </AntButton>
@@ -534,11 +542,11 @@ class Header extends Component {
             } else {
                 cart = []
             }
-            this.getCartData()
+
             this.setState({
                 [modal]: visible,
                 cartData: cart
-            })
+            }, () => this.getCartData())
         } else {
             this.setState({
                 [modal]: visible
@@ -563,6 +571,10 @@ class Header extends Component {
                 })
                 this.context("error", "Thất bại", err.msg)
             }
+        } else {
+            this.setState({
+                cartDataDetail: {}
+            })
         }
     }
 
