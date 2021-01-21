@@ -222,7 +222,13 @@ class UserController extends Controller
                 $bill_id = $bill->id;
                 foreach ($cart as $key => $set_id) {
                     $set = $this->set_model->find($set_id);
-                    $this->user_model->find($set->folder->user->id)->notify(new ConfirmBill("Set ". $set->title . " vừa được mua bởi ". $user->name. "\. Số dư + ".$set->price));
+                    $seller = $this->user_model->find($set->folder->user->id)->firstOrFail();
+                    $seller->notify(new ConfirmBill("Set ". $set->title . " vừa được mua bởi ". $user->name. "\. Số dư + ".$set->price));
+                    $seller->wallet += $set->price;
+                    $seller->revenue += $set->price;
+                    $user->wallet -= $set->price;
+                    $user->save();
+                    $seller->save();
                     //create bill's detail
                     $bill_detail = new BillDetail;
                     $bill_detail->bill_id = $bill_id;
@@ -368,6 +374,29 @@ class UserController extends Controller
             }
         }
 
+    }
+
+
+    public function getInfo(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else {
+            try {
+                $user->created_sets = $this->set_model->countAllSets($user->id);
+                $user->completed_sets = $this->set_model->allCompletedSet($user->id);
+                $returnData = [
+                    'status' => 1,
+                    'msg' => "Thành công",
+                    'data' => $user
+                ];
+                return response()->json($returnData, 200);
+            } catch (Exception $e) {
+                return $this->internalServerError($e);
+            }
+        }
     }
 
 }

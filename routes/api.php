@@ -98,3 +98,4 @@ Route::get('count', function () {
 
 
 Route::post('import', [UserController::class, 'importExcel']);
+Route::get('getInfo', [UserController::class, 'getInfo']);
