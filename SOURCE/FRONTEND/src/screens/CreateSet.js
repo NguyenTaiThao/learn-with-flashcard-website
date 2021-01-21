@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { Row, Col } from "react-bootstrap"
-import { Button } from "antd"
+import { Button, Upload, Modal, message } from "antd"
 import { TextField, MenuItem, Divider } from "@material-ui/core/"
 import { withRouter, Link } from "react-router-dom"
 import "@styles/CreateSet.css"
 import reactotron from 'src/ReactotronConfig';
-import { requestCreateSet } from "@constants/Api"
+import { requestCreateSet, requestUpload } from "@constants/Api"
 import NotifyContext from "@context/NotifyContext"
 import { getFolders } from "@src/redux/actions";
 import { connect } from "react-redux"
+import { InboxOutlined } from '@ant-design/icons';
+import { ROUTER } from "@constants/Constant"
 
 const defaultState = {
     name: "",
     discription: "",
     price: 0,
+    uploadModal: false,
     newSet: [
         {
             id: 0,
@@ -41,6 +44,7 @@ const defaultState = {
         },
 
     ],
+    file: null,
     loading: false
 }
 class CreateSet extends Component {
@@ -63,7 +67,13 @@ class CreateSet extends Component {
                     <Button
                         className="typical-btn create-btn "
                         type="primary"
-                        onClick={() => this.createSet()}
+                        onClick={() => {
+                            if (this.state.file) {
+                                this.handleUpload()
+                            } else {
+                                this.createSet()
+                            }
+                        }}
                         loading={this.state.loading}
                     >
                         <span>Tạo</span>
@@ -101,7 +111,8 @@ class CreateSet extends Component {
 
                 <Row className="bg-white pt-4 pb-5 align-items-center">
                     <Col>
-                        <b className="typical-text">+ Nhập từ Word, Excel, Google Docs, v.v.</b>
+                        {/* <b className="typical-text" id="input-root">+ Nhập từ Excel v.v.</b> */}
+                        <input type="file" id="input-root" onChange={(e) => this.handleChangeSet("file", e.target.files[0])}></input>
                     </Col>
                     <Col>
                         <Row>
@@ -147,7 +158,7 @@ class CreateSet extends Component {
                     </Col>
                 </Row>
 
-                {newSet.length > 0 && newSet.map((element, index) =>
+                {!this.state.file && newSet?.map((element, index) =>
                     <Row className="new-div mt-4 mx-md-5 py-3">
                         <Col className="px-0">
                             <Row className="align-items-center px-3 pb-2">
@@ -187,15 +198,102 @@ class CreateSet extends Component {
                         </Col>
                     </Row>
                 )}
+                {!this.state.file ?
+                    <Row
+                        className="new-div mt-4 mx-md-5 py-4 align-items-center justify-content-center cursor"
+                        onClick={() => this.addNewCard()}
+                    >
+                        <b className="new-card-btn"><i className="fas fa-plus"></i> THÊM THẺ MỚI</b>
+                    </Row>
+                    :
+                    null
+                }
 
-                <Row
-                    className="new-div mt-4 mx-md-5 py-4 align-items-center justify-content-center cursor"
-                    onClick={() => this.addNewCard()}
-                >
-                    <b className="new-card-btn"><i className="fas fa-plus"></i> THÊM THẺ MỚI</b>
-                </Row>
+                {/* {this.renderUploadModal()} */}
             </>
         )
+    }
+
+    createFormData = (dataObject) => {
+        let formdata = new FormData()
+        const keys = Object.keys(dataObject)
+        if (keys.length === 0) {
+            return null
+        }
+        keys.forEach((key) => {
+            formdata.append(key, dataObject[key])
+        })
+
+        return formdata
+    }
+
+    renderUploadModal() {
+        const { name, discription, price, newSet } = this.state
+        return (
+            <>
+                <>
+                    <Modal
+                        title="Tải file lên"
+                        centered
+                        keyboard={false}
+                        maskClosable={false}
+                        visible={this.state.uploadModal}
+                        onOk={() => this.handleShow("uploadModal", false)}
+                        onCancel={() => this.handleShow("uploadModal", false)}
+                        width={700}
+                        footer={null}
+                        bodyStyle={{ background: "#f6f7fb" }}
+                    >
+                        <Upload.Dragger
+                            name='file'
+                            multiple={false}
+                            action={(file) => requestUpload(file)}
+                            onChange={(info) => this.state.handleUpload({
+                                "id": 0,
+                                "title": name,
+                                "price": price,
+                            },
+                                info)}
+                        >
+                            <p className="ant-upload-drag-icon">
+                                <InboxOutlined />
+                            </p>
+                            <p className="ant-upload-text">Click hoặc kéo thả file vào để upload</p>
+                            <p className="ant-upload-hint">
+                                Tính năng này chỉ hỗ trợ file dạng Excel có format dữ liệu được quy định trước
+                            </p>
+                        </Upload.Dragger>
+                    </Modal>
+                </>
+            </>
+        )
+    }
+
+    async handleUpload(file) {
+        const { name, discription, price } = this.state
+        try {
+            const formdata = this.createFormData({
+                "title": name,
+                "price": price,
+                "file": this.state.file
+            });
+
+            this.setState({ loading: true });
+            await requestUpload(formdata)
+            this.setState({ loading: false });
+            this.context("success", "Thành công", "Import dữ liệu thành công")
+            this.props.history.push(ROUTER.RECENT_ACT)
+        } catch (err) {
+            this.setState({ loading: false });
+            this.context("error", "Thất bại", err.msg)
+
+        }
+    }
+
+    handleShow(modal, value) {
+        this.setState({
+            [modal]: value
+        })
     }
 
     async createSet() {
@@ -221,6 +319,7 @@ class CreateSet extends Component {
             }
 
             this.context("success", "Thành công", "Thêm mới học phần thành công")
+            this.props.history.push(ROUTER.RECENT_ACT)
         } catch (e) {
             reactotron.log(e)
             this.setState({
@@ -229,7 +328,6 @@ class CreateSet extends Component {
             this.context("error", "Thất bại", e.msg)
         }
     }
-
 
     handleChangeSet(field, value) {
         this.setState({
@@ -258,6 +356,8 @@ class CreateSet extends Component {
             newSet: [...newSet]
         })
     }
+
+
 }
 
 const mapDispatchToProps = {

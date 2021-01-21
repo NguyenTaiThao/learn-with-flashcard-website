@@ -165,6 +165,10 @@ export const requestBuy = (payload) => {
   return handleResult(getAxios.post(`cart/buy`, payload))
 }
 
+export const requestUpload = (payload) => {
+  return handleResult(getAxios.post(`import`, payload))
+}
+
 export const requestSearch = (payload) => {
   return handleResult(getAxios.get(`search?keyword=${payload.keyword}`
     + `&price=${payload.price}`
