@@ -3,11 +3,14 @@ import "@styles/Search.css"
 import { withRouter } from "react-router-dom"
 import { Row, Col } from "react-bootstrap"
 import { Radio, RadioGroup, FormControlLabel } from '@material-ui/core/';
-import { Avatar, Card, Select, Empty, Skeleton, Space } from "antd"
+import { Avatar, Card, Select, Empty, Skeleton, Space, notification } from "antd"
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import { requestSearch } from "@constants/Api"
 import reactotron from "reactotron-react-js"
 import Pagination from '@material-ui/lab/Pagination';
+import Cookie from "js-cookie"
+import NotifyContext from "@context/NotifyContext"
+import { ROUTER } from '@constants/Constant';
 
 const defaultState = {
     loading: false,
@@ -25,6 +28,8 @@ class SearchScreen extends Component {
             ...defaultState
         }
     }
+
+    static contextType = NotifyContext
 
     componentDidMount() {
         this.getData()
@@ -229,7 +234,10 @@ class SearchScreen extends Component {
         if (this.state.type == "1") {
             return (
                 <>
-                    <Row className="item mb-4 cursor">
+                    <Row
+                        className="item mb-4 cursor"
+                        onClick={() => this.addCart(e?.id)}
+                    >
                         <Col>
                             <Row>
                                 <Col md={2}>
@@ -323,6 +331,24 @@ class SearchScreen extends Component {
             )
         }
     }
+
+    addCart = (id) => {
+        var cart = Cookie.get("CART")
+        if (cart) {
+            var cart_arr = cart.split("|")
+            if (cart_arr.includes(id.toString())) {
+                this.context("warning", "Đã tồn tại", "Học phần này đã nằm trong giỏ hàng.")
+            } else {
+                Cookie.set("CART", [...cart_arr, id].join("|"))
+                this.context("success", "Thành công", "Học phần được thêm vào giỏ hàng hàng công.")
+            }
+        } else {
+            Cookie.set("CART", "")
+            Cookie.set("CART", id.toString())
+            this.context("success", "Thành công", "Học phần được thêm vào giỏ hàng hàng công.")
+        }
+    }
+
 }
 
 export default withRouter(SearchScreen)

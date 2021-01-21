@@ -9,7 +9,7 @@ import reactotron from 'reactotron-react-js';
 import { connect } from 'react-redux'
 import Pagination from '@material-ui/lab/Pagination';
 import NotifyContext from "@context/NotifyContext"
-
+import { getFolders } from "@src/redux/actions"
 class Folder extends Component {
 
     constructor(props) {
@@ -172,11 +172,6 @@ class Folder extends Component {
                 <Row className="my-4 px-md-4">
                     <Col md={8}>
                         {this.props.screen == "recentActivities" ?
-                            // <Divider orientation="left" className="count-divider" plain>
-                            //     <span className="element-count">
-                            //         Tóm tắt
-                            //     </span>
-                            // </Divider>
                             null
                             :
                             <Divider orientation="left" className="count-divider" plain>
@@ -219,7 +214,7 @@ class Folder extends Component {
             } else if (filter == "made") {
                 this.getCreatedSet(page)
             } else if (filter == "folder") {
-
+                this.props.getFolders({ page: page })
             }
         })
     }
@@ -434,7 +429,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+    getFolders
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Folder));

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import "@styles/Header.css"
 import { Col, Row, Button } from 'react-bootstrap'
 import { Modal, Form, Input, Checkbox, Avatar, Badge } from 'antd'
+import { Button as AntButton } from 'antd'
 import {
     UserOutlined,
     LockOutlined,
@@ -11,15 +12,13 @@ import {
     SearchOutlined,
     FolderAddOutlined,
     CloseCircleOutlined,
-    ShoppingCartOutlined,
-    BellOutlined,
 } from '@ant-design/icons'
 import { Link, withRouter } from "react-router-dom"
 import "animate.css"
 import Cookie from 'js-cookie'
 import { IconButton, Popover, List, ListItem, Divider } from '@material-ui/core';
 import { ROUTER } from "@constants/Constant"
-import { requestRegister, requestLogin, requestLogout } from "@constants/Api"
+import { requestRegister, requestLogin, requestLogout, requestSetInCart, requestBuy } from "@constants/Api"
 import { connect } from "react-redux";
 import { getUserInfo } from "@src/redux/actions";
 import reactotron from "reactotron-react-js"
@@ -32,7 +31,9 @@ class Header extends Component {
         this.state = {
             loginModal: false,
             registerModal: false,
-            cartModal: true,
+            cartModal: false,
+            cartData: [],
+            cartDataDetail: [],
             showSearchBox: false,
             popover: false,
             notifyPopover: false,
@@ -62,6 +63,15 @@ class Header extends Component {
         if (Cookie.get("SESSION_ID")) {
             this.props.getUserInfo()
         }
+        var cart = (Cookie.get("CART"))
+        if (cart) {
+            cart = cart.split("|")
+        } else {
+            cart = []
+        }
+        this.setState({
+            cartData: cart
+        })
     }
 
     pushRef(link, data) {
@@ -163,7 +173,7 @@ class Header extends Component {
                             onClick={() => this.handleShow("cartModal", true)}
                         >
                             <Badge
-                                count={4}
+                                count={this.state?.cartData?.length || 0}
                                 style={{ backgroundColor: '#52c41a' }}
                             >
                                 <i
@@ -384,6 +394,8 @@ class Header extends Component {
     }
 
     renderCartModal() {
+        const cart = this.state.cartData
+        const { cartDataDetail } = this.state
         return (
             <>
                 <Modal
@@ -396,14 +408,108 @@ class Header extends Component {
                     onCancel={() => this.handleShow("cartModal", false)}
                     width={700}
                     footer={null}
+                    bodyStyle={{ background: "#f6f7fb" }}
                 >
-                    <Row className="justify-content-center">
-
+                    <Row className="justify-content-center cart">
+                        <Col className="">
+                            {cartDataDetail?.sets?.length > 0 ? cartDataDetail?.sets?.map((e, index) =>
+                                <Row className="align-items-center cart-item mb-2">
+                                    <Col xs={1}>
+                                        <span className="stt">#{index + 1}</span>
+                                    </Col>
+                                    <Col xs={9}>
+                                        <Row>
+                                            <span className="item">{e && e?.title}</span>
+                                        </Row>
+                                        <Row>
+                                            <span className="price">${e && e?.price}</span>
+                                        </Row>
+                                    </Col>
+                                    <Col xs={1} className="text-right">
+                                        <i class="fad fa-heart icon-like cursor"></i>
+                                    </Col>
+                                    <Col xs={1} className="text-right">
+                                        <i
+                                            class="fad fa-times-circle icon-del cursor"
+                                            onClick={() => this.removeCartItem(e?.id)}
+                                        ></i>
+                                    </Col>
+                                </Row>
+                            )
+                                :
+                                null
+                            }
+                        </Col>
                     </Row>
 
+                    <Row className="m-2 pt-3">
+                        <Col>
+                            <Divider />
+                        </Col>
+                    </Row>
+
+                    <Row className="payment">
+                        <Col className="d-flex justify-content-between">
+                            <span className="title">Tổng cộng:</span>
+                            <span className="total">${cartDataDetail && cartDataDetail?.total_price}</span>
+                        </Col>
+                    </Row>
+
+                    <Row className="justify-content-center align-items-center">
+                        <AntButton
+                            type="primary"
+                            shape="round"
+                            size="large"
+                            onClick={() => this.buy()}
+                            loading={this.state.cartLoading}
+                        >
+                            <span>Thanh toán</span>
+                        </AntButton>
+                    </Row>
                 </Modal>
             </>
         )
+    }
+
+    buy = async () => {
+        try {
+            this.setState({
+                cartLoading: true
+            })
+
+            await requestBuy({
+                cart: this.state.cartData,
+                total_price: this.state.cartDataDetail.total_price
+            })
+
+            this.setState({
+                cartLoading: false,
+                cartData: [],
+                cartDataDetail: {},
+            })
+            Cookie.set("CART", "")
+        } catch (err) {
+            this.setState({
+                cartLoading: false
+            })
+            this.context("error", "Thất bại", err.msg)
+        }
+    }
+
+    removeCartItem = (id) => {
+        var newCart = this.state.cartData.filter((e) => e != id)
+        var newCartDetail = this.state.cartDataDetail?.sets?.filter((e) => e.id != id)
+        this.setState({
+            cartData: newCart,
+            cartDataDetail: {
+                ...this.state.cartDataDetail,
+                sets: newCartDetail
+            }
+        }, () => {
+            Cookie.set("CART", newCart.join("|"))
+        }
+        )
+
     }
 
     handleSearchKeyPress = (e) => {
@@ -421,9 +527,43 @@ class Header extends Component {
     }
 
     handleShow(modal, visible) {
-        this.setState({
-            [modal]: visible
-        })
+        if (modal == "cartModal" && visible) {
+            var cart = (Cookie.get("CART"))
+            if (cart) {
+                cart = cart.split("|")
+            } else {
+                cart = []
+            }
+            this.getCartData()
+            this.setState({
+                [modal]: visible,
+                cartData: cart
+            })
+        } else {
+            this.setState({
+                [modal]: visible
+            })
+        }
+    }
+
+    getCartData = async () => {
+        if (this.state.cartData.length > 0) {
+            try {
+                this.setState({
+                    cartLoading: true
+                })
+                const res = await requestSetInCart(this.state.cartData)
+                this.setState({
+                    cartLoading: false,
+                    cartDataDetail: res.data
+                })
+            } catch (err) {
+                this.setState({
+                    cartLoading: false
+                })
+                this.context("error", "Thất bại", err.msg)
+            }
+        }
     }
 
     onChangeSearch = (value) => {
@@ -459,6 +599,7 @@ class Header extends Component {
         await requestLogout()
         this.setState({ loading: false })
         Cookie.remove("SESSION_ID")
+        Cookie.remove("CART")
         this.props.history.push("/")
         this.context("success", "Thành công", "Đăng xuất thành công.")
     }
