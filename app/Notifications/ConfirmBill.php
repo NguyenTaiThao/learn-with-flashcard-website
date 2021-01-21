@@ -47,7 +47,7 @@ class ConfirmBill extends Notification
                     ->from('cskh@flashcard.com', 'FlashCard')
                     ->line($this->msg)
                     ->action('Chi tiết', url('/'))
-                    ->line('Cảm ơn bạn đồng hành cùng Flashcard!');
+                    ->line('Cảm ơn bạn đã đồng hành cùng Flashcard!');
     }
 
     /**

@@ -16,6 +16,8 @@ use App\Notifications\ConfirmBill;
 use Exception;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Importer;
+use Symfony\Component\Routing\Loader\Configurator\ImportConfigurator;
 
 class UserController extends Controller
 {
@@ -292,6 +294,62 @@ class UserController extends Controller
                 return $this->internalServerError($e);
             }
         }
+    }
+
+    public function importExcel(Request $request)
+    {
+        $token = $request->header("token");
+        $user = $this->user_model->isTokenExist($token);
+        if ($user == null) {
+            return $this->tokenNotExist();
+        }else {
+            try {
+
+                $validator = Validator::make($request->all(), [
+                    'file' => 'required|max:100000|mimes:xlsx,xls,csv'
+                ], [
+                    'file.required' => "Chưa nhập file",
+                    'file.max' => "Quá dung lượng cho phép",
+                    'file.mimes' => "Chỉ chấp nhận file xlsx, xls hoặc csv"
+                ]);
+                if ($validator->fails()) {
+                    $returnData = array(
+                        'status' => 0,
+                        'msg' => $validator->errors()->all()
+                    );
+                    return response()->json($returnData, 200);
+                }
+                //handle file
+                $time = date('Ymd_His');
+                $file = $request->file('file');
+                $file_name = $time . '-' . $file->getClientOriginalName();
+                $save_path = public_path('/upload/');
+                $file->move($save_path, $file_name);
+                //excel
+                $excel = Importer::make('Excel');
+                $excel->load($save_path.$file_name);
+                $collection = $excel->getCollection();
+                if(sizeof($collection[1]) == 2){
+                    for($row=1; $row<sizeof($collection); $row++){
+                        try{
+                            echo $collection[$row][1];
+                        }catch(Exception $e)
+                        {
+                            return $this->internalServerError($e);
+                        }
+                    }
+                }else{
+                    $returnData = array(
+                        'status' => 0,
+                        'msg' => 'File phải được định dạng đúng với file mẫu'
+                    );
+                    return response()->json($returnData, 200);
+                }
+            } catch (Exception $e) {
+                return $this->internalServerError($e);
+            }
+        }
+
     }
 
 }
