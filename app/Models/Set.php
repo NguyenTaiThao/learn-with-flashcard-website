@@ -280,7 +280,7 @@ class Set extends Model
     public function countSetWithPriceAndName($price, $keyword)
     {
         if($price == 0){
-            $sets = $this->where([['price', 0],['title', 'LIKE', '%'.$keyword.'%']])->get();
+            $sets = $this->where([['price', 0],['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])->get();
             foreach ($sets as $key => $set) {
                 if(count($set->cards) < 3){
                     $sets->forget($key);
@@ -288,7 +288,7 @@ class Set extends Model
             }
             return count($sets);
         }else if($price == -1){
-            $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%']])->get();
+            $sets = $this->where([['price', '>', 0],['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])->get();
             foreach ($sets as $key => $set) {
                 if(count($set->cards) < 3){
                     $sets->forget($key);
@@ -296,7 +296,7 @@ class Set extends Model
             }
             return count($sets);
         }else if($price == -2){
-            $sets = $this->where('title', 'LIKE', '%'.$keyword.'%')->get();
+            $sets = $this->where([['title', 'LIKE', '%'.$keyword.'%'], ['is_purchased', 0]])->get();
             foreach ($sets as $key => $set) {
                 if(count($set->cards) < 3){
                     $sets->forget($key);
