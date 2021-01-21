@@ -330,14 +330,31 @@ class UserController extends Controller
                 $excel->load($save_path.$file_name);
                 $collection = $excel->getCollection();
                 if(sizeof($collection[1]) == 2){
-                    for($row=1; $row<sizeof($collection); $row++){
+                    $set = new Set;
+                    $set->title = $request->title;
+                    $set->price = $request->price;
+                    $set->folder_id = $this->folder_model->minFolderID($user->id);
+                    $set->number_of_cards = sizeof($collection);
+                    $set->save();
+                    $set_id = $set->id;
+                    for($row=0; $row<sizeof($collection); $row++){
                         try{
-                            echo $collection[$row][1];
+                            $card = new Card;
+                            $card->front_side = $collection[$row][0];
+                            $card->back_side = $collection[$row][1];
+                            $card->remember = 0;
+                            $card->set_id = $set_id;
+                            $card->save();
                         }catch(Exception $e)
                         {
                             return $this->internalServerError($e);
                         }
                     }
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => "Thành công"
+                    ];
+                    return response()->json($returnData, 200);
                 }else{
                     $returnData = array(
                         'status' => 0,
