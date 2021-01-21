@@ -148,7 +148,7 @@ export const requestGame = (payload) => {
 }
 
 export const requestSetNoFolder = (payload) => {
-  return handleResult(getAxios.get(`set/no-folder?current_page=${payload.page}`))
+  return handleResult(getAxios.get(`set/no-folder?current_page=${payload.page}&folder_id=${payload.folder_id}`))
 }
 
 export const requestNoti = () => {
