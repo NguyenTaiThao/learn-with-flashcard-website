@@ -333,6 +333,7 @@ class UserController extends Controller
                     $set = new Set;
                     $set->title = $request->title;
                     $set->price = $request->price;
+                    $set->description = $request->description;
                     $set->folder_id = $this->folder_model->minFolderID($user->id);
                     $set->number_of_cards = sizeof($collection);
                     $set->save();

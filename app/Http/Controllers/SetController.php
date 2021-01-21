@@ -57,6 +57,7 @@ class SetController extends Controller
                 }
                 $set->title = $request->title;
                 $set->price = $request->price;
+                $set->description = $request->description;
                 if ($request->folder_id == 0) { // người dùng không chọn folder cho set
                     $backup_folder = $this->folder_model->minFolderID($user->id);
                     $set->folder_id = $backup_folder;
