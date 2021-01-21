@@ -313,7 +313,7 @@ class SetController extends Controller
         }else{
             try {
                 $min_folder = $this->folder_model->minFolderID($user->id);
-                $data = $this->set_model->noFolderSets($request->current_page, $this->sets_per_page, $user->id, $min_folder);
+                $data = $this->set_model->noFolderSets($request->current_page, $this->sets_per_page, $user->id, $min_folder, $request->folder_id);
                 if(count($data['sets']) == 0){
                     $returnData = [
                         'status' => 1,
