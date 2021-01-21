@@ -53,21 +53,21 @@ class FolderContent extends Component {
                     <Row className="bg-white folder-content px-md-4 py-5">
                         <Col md={8}>
                             <Row>
-                                <span className="set-count">{data && data.total_sets} học phần</span>
+                                <span className="set-count">{data && data?.folders?.total_sets} học phần</span>
                                 <span className="vertical-divider">|</span>
                                 <span className="made-by">
-                                    tạo bởi <span className="mader typical-text">{data && data.author}</span>
+                                    tạo bởi <span className="mader typical-text">{data && data?.folders?.author}</span>
                                 </span>
                             </Row>
                             <Row className="align-items-center">
                                 <i class="fal fa-folder folder-icon"></i>
                                 <span className="title">
-                                    {data && data.name}
+                                    {data && data?.folders?.name}
                                 </span>
                             </Row>
                             <Row>
                                 <span className="discription">
-                                    {data && data.description}
+                                    {data && data?.folders?.description}
                                 </span>
                             </Row>
                         </Col>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import "@styles/Header.css"
 import { Col, Row, Button } from 'react-bootstrap'
 import { Modal, Form, Input, Checkbox, Avatar, Badge } from 'antd'
+import { Button as AntButton } from 'antd'
 import {
     UserOutlined,
     LockOutlined,
@@ -11,8 +12,7 @@ import {
     SearchOutlined,
     FolderAddOutlined,
     CloseCircleOutlined,
-    ShoppingCartOutlined,
-    BellOutlined,
+    CreditCardOutlined,
 } from '@ant-design/icons'
 import { Link, withRouter } from "react-router-dom"
 import "animate.css"
@@ -396,11 +396,53 @@ class Header extends Component {
                     onCancel={() => this.handleShow("cartModal", false)}
                     width={700}
                     footer={null}
+                    bodyStyle={{ background: "#f6f7fb" }}
                 >
-                    <Row className="justify-content-center">
-
+                    <Row className="justify-content-center cart">
+                        <Col className="">
+                            {[1, 2, 3, 4].map(e =>
+                                <Row className="align-items-center cart-item mb-2">
+                                    <Col xs={10}>
+                                        <Row>
+                                            <span className="item">IT nihongo 1</span>
+                                        </Row>
+                                        <Row>
+                                            <span className="price">$200</span>
+                                        </Row>
+                                    </Col>
+                                    <Col xs={1} className="text-right">
+                                        <i class="fad fa-heart icon-like cursor"></i>
+                                    </Col>
+                                    <Col xs={1} className="text-right">
+                                        <i class="fad fa-times-circle icon-del cursor"></i>
+                                    </Col>
+                                </Row>
+                            )}
+                        </Col>
                     </Row>
 
+                    <Row className="m-2 pt-3">
+                        <Col>
+                            <Divider />
+                        </Col>
+                    </Row>
+
+                    <Row className="payment">
+                        <Col className="d-flex justify-content-between">
+                            <span className="title">Tổng cộng:</span>
+                            <span className="total">$800</span>
+                        </Col>
+                    </Row>
+
+                    <Row className="justify-content-center align-items-center">
+                            <AntButton
+                                type="primary"
+                                shape="round"
+                                size="large"
+                            >
+                                <span>Thanh toán</span>
+                            </AntButton>
+                    </Row>
                 </Modal>
             </>
         )

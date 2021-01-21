@@ -1,110 +1,157 @@
 div.header-wrapper {
-	height: 80px;
-	background-color: rgb(66, 87, 178);
-	/* position: fixed; */
+    height: 80px;
+    background-color: rgb(66, 87, 178);
+    /* position: fixed; */
 }
 
 .logo a {
-	font-size: 25px;
-	font-weight: bolder;
-	font-family: Signika;
-	color: #fff !important;
+    font-size: 25px;
+    font-weight: bolder;
+    font-family: Signika;
+    color: #fff !important;
 }
 
 .login-link {
-	color: #fff;
-	text-decoration: none;
-	margin-right: 20px;
+    color: #fff;
+    text-decoration: none;
+    margin-right: 20px;
 }
 
 .login-link:hover {
-	color: #b3b3b3;
-	text-decoration: none;
+    color: #b3b3b3;
+    text-decoration: none;
 }
 
 .register-btn {
-	width: 100px;
-	height: 41px;
-	background-color: #3CCFCF !important;
+    width: 100px;
+    height: 41px;
+    background-color: #3CCFCF !important;
 }
 
 .register-btn:hover {
-	background-color: #3ccfcfc2 !important;
+    background-color: #3ccfcfc2 !important;
 }
 
 .login-form {
-	width: 100%;
+    width: 100%;
 }
 
 .login-input {
-	border: none;
+    border: none;
 }
 
 .or-option {
-	font-size: 16px;
-	color: rgba(51, 51, 51, 0.808);
+    font-size: 16px;
+    color: rgba(51, 51, 51, 0.808);
 }
 
 .login-option .ant-form-item-control .ant-form-item-control-input-content {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .form-splitter {
-	border-width: 2px;
+    border-width: 2px;
 }
 
 .util-bar a {
-	color: #fff;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-box {
-	background-color: rgb(66, 87, 178) !important;
-	border: none !important;
-	-webkit-box-shadow: none !important;
-	box-shadow: none !important;
+    background-color: rgb(66, 87, 178) !important;
+    border: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 .ant-input-lg :focus {
-	outline: 0 !important;
-	box-shadow: none !important;
+    outline: 0 !important;
+    box-shadow: none !important;
 }
 
 .search-box .ant-input-prefix {
-	color: #fff !important;
+    color: #fff !important;
 }
 
 .search-box .ant-input-lg {
-	background: rgb(66, 87, 178) !important;
-	color: #fff;
+    background: rgb(66, 87, 178) !important;
+    color: #fff;
 }
 
-.avatar-button:focus{
-	outline: none !important;
+.avatar-button:focus {
+    outline: none !important;
 }
 
-.user-utils-icon{
-	font-size: 20px;
-	color: #333;
+.user-utils-icon {
+    font-size: 20px;
+    color: #333;
 }
 
-.user-utils-text{
-	font-weight: 700!important;
-	color: #333;
+.user-utils-text {
+    font-weight: 700 !important;
+    color: #333;
 }
 
-.logout-text{
-	color: orange !important;
+.logout-text {
+    color: orange !important;
+}
+
+.cart .cart-item{
+	background: #fff;
+	border-radius: 5px;
+	padding: 15px
+}
+
+.cart .item {
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(51, 51, 51, 0.856);
+}
+
+.cart .price {
+    font-size: 15px;
+    font-weight: 600;
+    color: #a8a8b2;
+}
+
+.cart .icon-like {
+    font-size: 30px;
+    opacity: 0.4;
+}
+
+.cart .icon-like:hover {
+    color: red;
+}
+
+.cart .icon-del {
+    font-size: 30px;
+    opacity: 0.4;
+}
+
+.cart .icon-del:hover {
+    color: red;
+}
+
+.payment .title{
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.payment .total{
+	font-size: 18px;
+	font-weight: 700;
 }
 
 @media only screen and (max-width: 600px) {
-	.util-bar-col {
-	  display: none;
-	}
-	.register-btn{
-		height: 35px;
-	}
-  }
+    .util-bar-col {
+        display: none;
+    }
+
+    .register-btn {
+        height: 35px;
+    }
+}
