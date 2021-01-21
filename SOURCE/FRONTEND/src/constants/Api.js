@@ -36,6 +36,7 @@ function handleResult(api) {
   return api.then(res => {
     if (res.data.code == 403) {
       Cookie.remove("SESSION_ID");
+      Cookie.remove("CART")
       alert("Phiên đăng nhập hết hạn")
       window.location.replace("/")
     } else {
@@ -145,6 +146,16 @@ export const requestGame = (payload) => {
 
 export const requestSetNoFolder = (payload) => {
   return handleResult(getAxios.get(`set/no-folder?current_page=${payload.page}`))
+}
+
+export const requestSetInCart = (payload) => {
+  var param = ""
+  payload.forEach((e) => param += `cart[]=${e}&`)
+  return handleResult(getAxios.get(`cart/get?${param}`))
+}
+
+export const requestBuy = (payload) => {
+  return handleResult(getAxios.post(`cart/buy`, payload))
 }
 
 export const requestSearch = (payload) => {

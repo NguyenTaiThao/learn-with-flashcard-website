@@ -9,3 +9,8 @@ export const GET_USER_FAIL = 'flashcard/getUserFail';
 export const GET_FOLDER = 'flashcard/getFolder';
 export const GET_FOLDER_SUCCESS = 'flashcard/getFolderSucces';
 export const GET_FOLDER_FAIL = 'flashcard/getFolderFail';
+
+//cart
+export const ADD_CART = 'flashcard/AddCart';
+export const REMOVE_CART_ITEM = 'flashcard/RemoveCartItem';
+export const CLEAR_CART = 'flashcard/ClearCart';

@@ -100,10 +100,10 @@ div.header-wrapper {
     color: orange !important;
 }
 
-.cart .cart-item{
-	background: #fff;
-	border-radius: 5px;
-	padding: 15px
+.cart .cart-item {
+    background: #fff;
+    border-radius: 5px;
+    padding: 15px
 }
 
 .cart .item {
@@ -136,14 +136,18 @@ div.header-wrapper {
     color: red;
 }
 
-.payment .title{
-	font-size: 16px;
-	font-weight: 600;
+.cart .stt {
+    color: #a8a8b2;
 }
 
-.payment .total{
-	font-size: 18px;
-	font-weight: 700;
+.payment .title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.payment .total {
+    font-size: 18px;
+    font-weight: 700;
 }
 
 @media only screen and (max-width: 600px) {
