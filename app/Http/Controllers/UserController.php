@@ -213,7 +213,19 @@ class UserController extends Controller
             return $this->tokenNotExist();
         }else {
             try {
+                $total_price = 0;
                 $cart = $request->cart;
+                foreach ($cart as $key => $set_id) {
+                    $set = $this->set_model->find($set_id);
+                    $total_price += $set->price;
+                }
+                if($total_price > $user->wallet){
+                    $returnData = [
+                        'status' => 1,
+                        'msg' => "Tài khoản không đủ tiền"
+                    ];
+                    return response()->json($returnData, 200);
+                }
                 //create bill
                 $bill = new Bill;
                 $bill->user_id = $user->id;
