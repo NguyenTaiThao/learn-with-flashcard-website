@@ -251,7 +251,7 @@ class FolderContent extends Component {
                                                     <List.Item
                                                         actions={[
                                                             <Switch
-                                                                checked={item?.checked || false}
+                                                                checked={item?.was_in || false}
                                                                 loading={item?.loading || false}
                                                                 onChange={(isChecked) => this.handleSetToFolder(item.id, isChecked)}
                                                             />
@@ -295,10 +295,10 @@ class FolderContent extends Component {
 
             await requestSetToFolder({
                 set_id: set_id,
-                folder_id: (value ? this.props.location.state?.id : 0)
+                folder_id: (value ? this.props.location.state?.id : -1)
             })
 
-            newSets = this.state.folderList.sets.map((e) => e.id == set_id ? { ...e, loading: false, checked: value } : e)
+            newSets = this.state.folderList.sets.map((e) => e.id == set_id ? { ...e, loading: false, was_in: value } : e)
             this.setState({
                 folderList: {
                     ...this.state.folderList,
@@ -338,12 +338,14 @@ class FolderContent extends Component {
 
     fetchData = async () => {
         try {
-            const res = await requestSetNoFolder({ page: parseInt(this.state.currentPage) })
+            const res = await requestSetNoFolder({
+                page: parseInt(this.state.currentPage),
+                folder_id: this.props.location?.state?.id,
+            })
 
             var newSets = []
             newSets = newSets.concat(this.state.folderList?.sets)
             newSets = newSets.concat(res.data.sets)
-            reactotron.log("newSet", newSets)
             this.setState({
                 loading: false,
                 folderList: {
@@ -455,7 +457,10 @@ class FolderContent extends Component {
     getFolder = async () => {
         try {
             this.setState({ modalLoading: true })
-            const res = await requestSetNoFolder({ page: this.state.currentPage })
+            const res = await requestSetNoFolder({
+                page: this.state.currentPage,
+                folder_id: this.props.location?.state?.id,
+            })
             this.setState({
                 modalLoading: false,
                 folderList: { ...res.data },
