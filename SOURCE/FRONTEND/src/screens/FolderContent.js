@@ -43,7 +43,13 @@ class FolderContent extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.location.state?.id !== this.props.location.state?.id) {
-            this.getDetail()
+            this.setState({
+                // hasMore: true,
+                // data: null,
+                // folderList: {},
+                // currentPage: 1,
+            }, () => this.getDetail())
+
         }
     }
 

@@ -47,7 +47,7 @@ class Learn extends Component {
 
     static contextType = NotifyContext
     TIME_PER_QUES = 10
-    TIME_SHOW = 500
+    TIME_SHOW = 3000
 
     componentDidMount() {
         this.getDetail()

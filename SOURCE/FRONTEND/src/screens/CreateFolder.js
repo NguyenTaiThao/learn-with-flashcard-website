@@ -47,6 +47,7 @@ class CreateFolder extends Component {
                                     label="Tiêu đề"
                                     value={form.name}
                                     onChange={(e) => this.handleChange("name", e.target.value)}
+                                    onKeyPress
                                 />
                             </Row>
                             <Row>
