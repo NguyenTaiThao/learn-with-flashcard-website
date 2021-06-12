@@ -1,36 +1,33 @@
-import React, { Component } from 'react'
-import '@styles/NavBar.css'
-import { ROUTER } from "@constants/Constant"
-import Divider from '@material-ui/core/Divider';
-import { Menu, Skeleton } from 'antd';
+import React, { Component } from "react";
+import "@styles/NavBar.css";
+import { ROUTER } from "@constants/Constant";
+import Divider from "@material-ui/core/Divider";
+import { Menu, Skeleton } from "antd";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     AppstoreOutlined,
-    HomeOutlined,
     BarChartOutlined,
     FolderOutlined,
     RocketOutlined,
-} from '@ant-design/icons';
+} from "@ant-design/icons";
 import { getFolders } from "@src/redux/actions";
-import { connect } from "react-redux"
-import { withRouter } from "react-router-dom"
-import reactotron from 'reactotron-react-js';
-import { Row, Col } from "react-bootstrap"
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { Row } from "react-bootstrap";
 
 const { SubMenu } = Menu;
-const drawerWidth = 256;
 
 class NavBar extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             collapsed: false,
-        }
+        };
     }
 
     componentDidMount() {
-        this.props.getFolders({ page: 1 })
+        this.props.getFolders({ page: 1 });
     }
 
     toggleCollapsed = () => {
@@ -40,14 +37,14 @@ class NavBar extends Component {
     };
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-        let path = nextProps.location.pathname
+        let path = nextProps.location.pathname;
         if (path) {
             if (path == ROUTER.FOLDER_CONTENT) {
                 this.setState({
-                    path: path + nextProps.location.state?.id
-                })
+                    path: path + nextProps.location.state?.id,
+                });
             } else {
-                this.setState({ path: path })
+                this.setState({ path: path });
             }
         }
     }
@@ -62,13 +59,13 @@ class NavBar extends Component {
                     </div>
                 </div>
             </>
-        )
+        );
     }
 
     listMenu = () => (
         <Menu
             onClick={this.handleClick}
-            defaultOpenKeys={['sub1']}
+            defaultOpenKeys={["sub1"]}
             mode="inline"
             inlineCollapsed={this.state.collapsed}
             style={{ maxWidth: "256px" }}
@@ -78,21 +75,19 @@ class NavBar extends Component {
                 onClick={this.toggleCollapsed}
                 className={`collapse-toggle text-right pr-4 py-3`}
             >
-                {React.createElement(this.state.collapsed ?
-                    MenuUnfoldOutlined : MenuFoldOutlined
+                {React.createElement(
+                    this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined
                 )}
             </div>
 
             <Divider />
-
             <Menu.Item
                 key={ROUTER.USER_HOME}
-                icon={<HomeOutlined style={{ fontSize: "20px" }} />}
+                icon={<BarChartOutlined style={{ fontSize: "20px" }} />}
                 onClick={() => this.props.history.push(ROUTER.USER_HOME)}
             >
-                <b>Trang chủ</b>
+                <b>Thống kê</b>
             </Menu.Item>
-
             <Menu.Item
                 key={ROUTER.SET}
                 icon={<AppstoreOutlined style={{ fontSize: "20px" }} />}
@@ -109,15 +104,6 @@ class NavBar extends Component {
                 <b>Luyện tập</b>
             </Menu.Item>
 
-            <Menu.Item
-                key={ROUTER.PROGRESS}
-                icon={<BarChartOutlined style={{ fontSize: "20px" }} />}
-                onClick={() => this.props.history.push(ROUTER.PROGRESS)}
-            >
-                <b>Thống kê</b>
-            </Menu.Item>
-
-
             <Divider />
 
             <SubMenu
@@ -131,29 +117,54 @@ class NavBar extends Component {
                 >
                     Tất cả
                 </Menu.Item>
-                {this.props.folderState?.isLoading && <>
-                    <Row className="justify-content-center">
-                        <Skeleton.Input style={{ width: 200 }} active={true} size="default" className="pb-2" />
-                        <Skeleton.Input style={{ width: 200 }} active={true} size="default" className="pb-2" />
-                        <Skeleton.Input style={{ width: 200 }} active={true} size="default" className="pb-2" />
-                        <Skeleton.Input style={{ width: 200 }} active={true} size="default" className="pb-2" />
-                    </Row>
-                </>
-                }
-                {this.props.folderState?.data?.folders?.length > 0 && this.props.folderState?.data?.folders.map((e, index) => {
-                    return (
-                        <Menu.Item
-                            key={ROUTER.FOLDER_CONTENT + e.id}
-                            onClick={() => this.pushRef(ROUTER.FOLDER_CONTENT, e.id)}
-                        >
-                            <span>{e.name}</span>
-                        </Menu.Item>
-                    )
-                }
+                {this.props.folderState?.isLoading && (
+                    <>
+                        <Row className="justify-content-center">
+                            <Skeleton.Input
+                                style={{ width: 200 }}
+                                active={true}
+                                size="default"
+                                className="pb-2"
+                            />
+                            <Skeleton.Input
+                                style={{ width: 200 }}
+                                active={true}
+                                size="default"
+                                className="pb-2"
+                            />
+                            <Skeleton.Input
+                                style={{ width: 200 }}
+                                active={true}
+                                size="default"
+                                className="pb-2"
+                            />
+                            <Skeleton.Input
+                                style={{ width: 200 }}
+                                active={true}
+                                size="default"
+                                className="pb-2"
+                            />
+                        </Row>
+                    </>
                 )}
+                {this.props.folderState?.data?.folders?.length > 0 &&
+                    this.props.folderState?.data?.folders.map((e, index) => {
+                        return (
+                            <Menu.Item
+                                key={ROUTER.FOLDER_CONTENT + e.id}
+                                onClick={() =>
+                                    this.pushRef(ROUTER.FOLDER_CONTENT, e.id)
+                                }
+                            >
+                                <span>{e.name}</span>
+                            </Menu.Item>
+                        );
+                    })}
                 <Menu.Item
                     key={ROUTER.FOLDER_CREATE}
-                    onClick={() => this.props.history.push(ROUTER.FOLDER_CREATE)}
+                    onClick={() =>
+                        this.props.history.push(ROUTER.FOLDER_CREATE)
+                    }
                 >
                     <span className="text-info">Thêm thư mục</span>
                 </Menu.Item>
@@ -163,26 +174,26 @@ class NavBar extends Component {
         </Menu>
 
         // </div>
-    )
+    );
 
     activeMenu = () => {
         var pathName = "/" + window.location.pathname.split("/")[1];
-    }
+    };
 
     pushRef(link, id) {
         this.props.history.push({
             pathname: link,
-            state: { id: id }
-        })
+            state: { id: id },
+        });
     }
 }
 
 const mapStateToProps = (state) => ({
-    folderState: state.folderReducer
-})
+    folderState: state.folderReducer,
+});
 
 const mapDispatchToProps = {
-    getFolders
-}
+    getFolders,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));
