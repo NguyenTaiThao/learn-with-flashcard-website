@@ -10,6 +10,7 @@ import {
     BarChartOutlined,
     FolderOutlined,
     RocketOutlined,
+    AppstoreAddOutlined,
 } from "@ant-design/icons";
 import { getFolders } from "@src/redux/actions";
 import { connect } from "react-redux";
@@ -102,6 +103,14 @@ class NavBar extends Component {
                 onClick={() => this.props.history.push(ROUTER.LEARN)}
             >
                 <b>Luyện tập</b>
+            </Menu.Item>
+
+            <Menu.Item
+                key={ROUTER.CREATE_SET}
+                icon={<AppstoreAddOutlined style={{ fontSize: "20px" }} />}
+                onClick={() => this.props.history.push(ROUTER.CREATE_SET)}
+            >
+                <b>Thêm học phần</b>
             </Menu.Item>
 
             <Divider />

@@ -125,9 +125,7 @@ class Header extends Component {
                                 <Link to="">LET'S LEARN</Link>
                             </Col>
 
-                            {this.state.showSearchBox
-                                ? this.renderSearchBox()
-                                : this.renderUtilBar()}
+                            {this.renderUtilBar()}
                         </Row>
                     </Col>
                 </Row>
@@ -138,32 +136,21 @@ class Header extends Component {
     renderUtilBar() {
         return (
             <>
-                <Col md={3} xs={6} className="util-bar-col">
-                    <Row>
+                <Col md={4} xs={6} className="util-bar-col">
+                    <Row className="d-flex flex-row justify-content-center align-items-center">
                         <Col className="util-bar">
-                            <Link
-                                onClick={() =>
-                                    this.setState({ showSearchBox: true })
+                            <Input
+                                size="large"
+                                placeholder="Tìm kiếm"
+                                prefix={<SearchOutlined />}
+                                className="search-box"
+                                autoFocus={true}
+                                value={this.state.searchBox}
+                                onChange={(event) =>
+                                    this.onChangeSearch(event.target.value)
                                 }
-                            >
-                                <SearchOutlined className="mr-1" />
-                                <span className="font-weight-bold">
-                                    Tìm kiếm
-                                </span>
-                            </Link>
-                        </Col>
-                        <span className="text-black-50">|</span>
-                        <Col className="util-bar">
-                            <Link
-                                onClick={() =>
-                                    this.props.history.push(ROUTER.CREATE_SET)
-                                }
-                            >
-                                <FolderAddOutlined className="mr-1" />
-                                <span className="font-weight-bold">
-                                    Tạo mới
-                                </span>
-                            </Link>
+                                onKeyPress={(e) => this.handleSearchKeyPress(e)}
+                            />
                         </Col>
                     </Row>
                 </Col>
@@ -178,7 +165,7 @@ class Header extends Component {
             const info = this.props.userState.data;
 
             return (
-                <Col md={7} className="button">
+                <Col md={6} className="button">
                     <Row className="align-items-center justify-content-center justify-content-md-end">
                         <IconButton className="avatar-button">
                             <Avatar
@@ -226,66 +213,6 @@ class Header extends Component {
                                 </ListItem>
                             </List>
                         </Popover>
-
-                        <Popover
-                            open={this.state.notifyPopover}
-                            onClose={(e) =>
-                                this.handlePopover(
-                                    e,
-                                    "notifyPopover",
-                                    "notifyAnchorEl"
-                                )
-                            }
-                            anchorEl={this.state.notifyAnchorEl}
-                            anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "center",
-                            }}
-                            transformOrigin={{
-                                vertical: "top",
-                                horizontal: "center",
-                            }}
-                            className="mt-3"
-                        >
-                            <List className="py-0">
-                                <ListItem button className="py-3">
-                                    <Row className="w-100">
-                                        <Col xs={3} className="px-2">
-                                            <i className="far fa-cog user-utils-icon"></i>
-                                        </Col>
-                                        <Col xs={9} className="px-0">
-                                            <b className="user-utils-text">
-                                                Cài đặt
-                                            </b>
-                                        </Col>
-                                    </Row>
-                                </ListItem>
-                                <ListItem button className="py-3">
-                                    <Row className="w-100">
-                                        <Col xs={3} className="px-2">
-                                            <i className="far fa-comment-alt user-utils-icon"></i>
-                                        </Col>
-                                        <Col xs={9} className="px-0">
-                                            <b className="user-utils-text">
-                                                Trung tâm hỗ trợ
-                                            </b>
-                                        </Col>
-                                    </Row>
-                                </ListItem>
-                                <ListItem button className="py-3">
-                                    <Row className="w-100">
-                                        <Col xs={3} className="px-2">
-                                            <i className="fas fa-shield-alt user-utils-icon"></i>
-                                        </Col>
-                                        <Col xs={9} className="px-0">
-                                            <b className="user-utils-text">
-                                                Quyền riêng tư
-                                            </b>
-                                        </Col>
-                                    </Row>
-                                </ListItem>
-                            </List>
-                        </Popover>
                     </Row>
                 </Col>
             );
@@ -293,12 +220,12 @@ class Header extends Component {
             return (
                 <Col md={7} className="button">
                     <Row className="align-items-center justify-content-center justify-content-md-end">
-                        <a
+                        <span
                             className="login-link font-weight-bold"
                             onClick={() => this.handleShow("loginModal", true)}
                         >
                             Đăng nhập
-                        </a>
+                        </span>
                         <Button
                             variant="info register-btn font-weight-bold"
                             onClick={() =>
@@ -311,43 +238,6 @@ class Header extends Component {
                 </Col>
             );
         }
-    }
-
-    renderSearchBox() {
-        return (
-            <>
-                <Col
-                    md={10}
-                    className={`animate__animated animate__fadeInDown ${
-                        this.state.searchBoxGo ? "animate__fadeOutUp" : null
-                    }`}
-                >
-                    <Row>
-                        <Col md={11}>
-                            <Input
-                                size="large"
-                                placeholder="Tìm kiếm"
-                                prefix={<SearchOutlined />}
-                                className="search-box"
-                                autoFocus={true}
-                                value={this.state.searchBox}
-                                onChange={(event) =>
-                                    this.onChangeSearch(event.target.value)
-                                }
-                                onKeyPress={(e) => this.handleSearchKeyPress(e)}
-                            />
-                        </Col>
-                        <CloseCircleOutlined
-                            style={{
-                                fontSize: "35px",
-                                color: "#fff",
-                            }}
-                            onClick={() => this.hideSearchBox()}
-                        />
-                    </Row>
-                </Col>
-            </>
-        );
     }
 
     handleSearchKeyPress = (e) => {
@@ -369,30 +259,6 @@ class Header extends Component {
             [modal]: visible,
         });
     }
-
-    getCartData = async () => {
-        if (this.state.cartData.length > 0) {
-            try {
-                this.setState({
-                    cartLoading: true,
-                });
-                const res = await requestSetInCart(this.state.cartData);
-                this.setState({
-                    cartLoading: false,
-                    cartDataDetail: res.data,
-                });
-            } catch (err) {
-                this.setState({
-                    cartLoading: false,
-                });
-                this.context("error", "Thất bại", err.msg);
-            }
-        } else {
-            this.setState({
-                cartDataDetail: {},
-            });
-        }
-    };
 
     onChangeSearch = (value) => {
         this.setState({
@@ -488,34 +354,6 @@ class Header extends Component {
                     onOk={this.handleLogin}
                     onCancel={() => this.handleShow("loginModal", false)}
                 >
-                    <Button variant="outline-primary" className="w-100 mb-4">
-                        <Row className="align-items-center justify-content-center">
-                            <FacebookOutlined
-                                className="mr-1"
-                                style={{
-                                    fontSize: "25px",
-                                }}
-                            />
-                            <b>Đăng nhập với Facebook</b>
-                        </Row>
-                    </Button>
-
-                    <Button variant="outline-danger" className="w-100 mb-4">
-                        <Row className="align-items-center justify-content-center">
-                            <GoogleOutlined
-                                className="mr-1"
-                                style={{
-                                    fontSize: "25px",
-                                }}
-                            />
-                            <b>Đăng nhập với Google</b>
-                        </Row>
-                    </Button>
-
-                    <div className="text-center mb-4 or-option">
-                        <b>HOẶC EMAIL</b>
-                    </div>
-
                     <Form
                         name="normal_login"
                         className="login-form"
@@ -601,61 +439,12 @@ class Header extends Component {
                     onOk={this.handleRegister}
                     onCancel={() => this.handleShow("registerModal", false)}
                 >
-                    <Row className="mb-4">
-                        <Col md={6} className="px-0 mb-4 mb-md-0">
-                            <Button
-                                variant="outline-primary"
-                                className="w-100  mr-md-1"
-                            >
-                                <Row className="align-items-center justify-content-center">
-                                    <FacebookOutlined
-                                        className="mr-1"
-                                        style={{
-                                            fontSize: "25px",
-                                        }}
-                                    />
-                                    <b>Tiếp tục với Facebook</b>
-                                </Row>
-                            </Button>
-                        </Col>
-
-                        <Col md={6} className="px-0">
-                            <Button
-                                variant="outline-danger"
-                                className="w-100 ml-md-1"
-                            >
-                                <Row className="align-items-center justify-content-center">
-                                    <GoogleOutlined
-                                        className="mr-1"
-                                        style={{
-                                            fontSize: "25px",
-                                        }}
-                                    />
-                                    <b>Tiếp tục với Google</b>
-                                </Row>
-                            </Button>
-                        </Col>
-                    </Row>
-
-                    <Row className="mb-4">
-                        <Col className="px-0">
-                            <hr className="form-splitter"></hr>
-                        </Col>
-                        <Col className="text-center px-0 or-option">
-                            <b>HOẶC EMAIL</b>
-                        </Col>
-                        <Col className="px-0">
-                            <hr className="form-splitter"></hr>
-                        </Col>
-                    </Row>
-
                     <Form
                         name="normal_login"
                         className="login-form"
                         initialValues={{
                             remember: true,
                         }}
-                        // onFinish={onFinish}
                     >
                         <Form.Item
                             name="username"
