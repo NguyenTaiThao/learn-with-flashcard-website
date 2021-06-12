@@ -84,12 +84,6 @@ class MainNavigator extends Component {
                                 exact
                                 Component={FolderCreateScreen}
                             />
-                            <PrivateRoute
-                                path={ROUTER.RECENT_ACT}
-                                exact
-                                Component={FolderScreen}
-                                screen="recentActivities"
-                            />
                         </Switch>
                     }
                 />
