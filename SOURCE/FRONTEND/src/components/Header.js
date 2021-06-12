@@ -180,29 +180,6 @@ class Header extends Component {
             return (
                 <Col md={7} className="button">
                     <Row className="align-items-center justify-content-center justify-content-md-end">
-                        <IconButton className="mr-1">
-                            <Badge count={4}>
-                                <i
-                                    className="fas fa-bell text-white"
-                                    style={{ fontSize: "20px" }}
-                                ></i>
-                            </Badge>
-                        </IconButton>
-
-                        <IconButton
-                            className="mr-1"
-                            onClick={() => this.handleShow("cartModal", true)}
-                        >
-                            <Badge
-                                count={this.state?.cartData?.length || 0}
-                                style={{ backgroundColor: "#52c41a" }}
-                            >
-                                <i
-                                    className="fas fa-shopping-cart text-white"
-                                    style={{ fontSize: "20px" }}
-                                ></i>
-                            </Badge>
-                        </IconButton>
                         <IconButton className="avatar-button">
                             <Avatar
                                 style={{ background: "red" }}
@@ -233,90 +210,14 @@ class Header extends Component {
                             }}
                             className="mt-3"
                         >
-                            <Row
-                                className="py-4"
-                                style={{
-                                    width: "250px",
-                                }}
-                            >
-                                <Col xs={4}>
-                                    <Avatar
-                                        style={{ background: "red" }}
-                                        size={50}
-                                    >
-                                        <span className="text-uppercase">
-                                            {info && info?.name?.charAt(0)}
-                                        </span>
-                                    </Avatar>
-                                </Col>
-                                <Col xs={8} className="pl-2">
-                                    <Row>
-                                        <b>{info && info?.name}</b>
-                                    </Row>
-                                    <Row>
-                                        <Link
-                                            onClick={() =>
-                                                this.props.history.push(
-                                                    ROUTER.SET
-                                                )
-                                            }
-                                        >
-                                            Xem hồ sơ
-                                        </Link>
-                                    </Row>
-                                </Col>
-                            </Row>
-                            <Divider />
-                            <List className="py-0">
-                                <ListItem button className="py-3">
-                                    <Row className="w-100">
-                                        <Col xs={3} className="px-2">
-                                            <i className="far fa-cog user-utils-icon"></i>
-                                        </Col>
-                                        <Col xs={9} className="px-0">
-                                            <b className="user-utils-text">
-                                                Cài đặt
-                                            </b>
-                                        </Col>
-                                    </Row>
-                                </ListItem>
-                                <ListItem button className="py-3">
-                                    <Row className="w-100">
-                                        <Col xs={3} className="px-2">
-                                            <i className="far fa-comment-alt user-utils-icon"></i>
-                                        </Col>
-                                        <Col xs={9} className="px-0">
-                                            <b className="user-utils-text">
-                                                Trung tâm hỗ trợ
-                                            </b>
-                                        </Col>
-                                    </Row>
-                                </ListItem>
-                                <ListItem button className="py-3">
-                                    <Row className="w-100">
-                                        <Col xs={3} className="px-2">
-                                            <i className="fas fa-shield-alt user-utils-icon"></i>
-                                        </Col>
-                                        <Col xs={9} className="px-0">
-                                            <b className="user-utils-text">
-                                                Quyền riêng tư
-                                            </b>
-                                        </Col>
-                                    </Row>
-                                </ListItem>
-
-                                <Divider />
-
+                            <List className="py-0" style={{ width: "150px" }}>
                                 <ListItem
                                     button
-                                    className="py-4"
+                                    className="py-3"
                                     onClick={() => this.handleLogout()}
                                 >
                                     <Row className="w-100">
-                                        <Col xs={3} className="px-2">
-                                            <i className="fas fa-sign-out-alt user-utils-icon"></i>
-                                        </Col>
-                                        <Col xs={9} className="px-0">
+                                        <Col xs={12} className="px-0">
                                             <b className="logout-text user-utils-text">
                                                 Đăng xuất
                                             </b>
