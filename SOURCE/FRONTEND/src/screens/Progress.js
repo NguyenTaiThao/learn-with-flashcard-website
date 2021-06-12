@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Statistic, Button, Card } from "antd";
+import { Statistic, Card } from "antd";
 import { Row, Col } from "react-bootstrap";
 import { requestStatistic } from "@constants/Api";
 import moment from "moment";

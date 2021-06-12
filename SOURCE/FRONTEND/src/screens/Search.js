@@ -3,11 +3,10 @@ import "@styles/Search.css";
 import { withRouter } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { Radio, RadioGroup, FormControlLabel } from "@material-ui/core/";
-import { Avatar, Card, Select, Empty, Skeleton, Space } from "antd";
+import { Avatar, Card, Empty, Skeleton, Space } from "antd";
 import Flippy, { FrontSide, BackSide } from "react-flippy";
 import { requestSearch } from "@constants/Api";
 import Pagination from "@material-ui/lab/Pagination";
-import Cookie from "js-cookie";
 import NotifyContext from "@context/NotifyContext";
 
 const defaultState = {
