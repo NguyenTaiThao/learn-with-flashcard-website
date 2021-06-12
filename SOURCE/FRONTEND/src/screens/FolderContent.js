@@ -1,17 +1,7 @@
 import React, { Component } from "react";
 import "@styles/FolderContent.css";
 import { Row, Col } from "react-bootstrap";
-import {
-    Skeleton,
-    Popconfirm,
-    Card,
-    Tooltip,
-    Button,
-    Modal,
-    List,
-    Spin,
-    Switch,
-} from "antd";
+import { Skeleton, Popconfirm, Card, Tooltip, Button } from "antd";
 import { EditOutlined, DeleteOutlined, BookOutlined } from "@ant-design/icons";
 import { withRouter, Redirect } from "react-router-dom";
 import { ROUTER } from "@constants/Constant";
@@ -20,13 +10,11 @@ import {
     requestRemoveFolder,
     requestRemoveSet,
     requestSetNoFolder,
-    requestSetToFolder,
 } from "@constants/Api";
 import reactotron from "reactotron-react-js";
 import NotifyContext from "@context/NotifyContext";
 import { connect } from "react-redux";
 import { getFolders } from "@src/redux/actions";
-import InfiniteScroll from "react-infinite-scroller";
 import Pagination from "@material-ui/lab/Pagination";
 
 class FolderContent extends Component {
@@ -155,70 +143,53 @@ class FolderContent extends Component {
                     </Row>
 
                     <Row className="justify-content-between w-75 py-4 px-4">
-                        {data?.paginate?.total_items
-                            ? data?.folders?.sets?.map((ele, index) => (
-                                  <Card
-                                      style={{ width: 400, marginTop: 16 }}
-                                      actions={[
-                                          <Tooltip
-                                              placement="bottom"
-                                              title="Học"
-                                          >
-                                              <BookOutlined
-                                                  key="learn"
-                                                  onClick={() =>
-                                                      this.pushRef(
-                                                          ROUTER.LEARN,
-                                                          ele?.id
-                                                      )
-                                                  }
-                                              />
-                                          </Tooltip>,
-                                          <Tooltip
-                                              placement="bottom"
-                                              title="Chỉnh sửa"
-                                          >
-                                              <EditOutlined key="edit" />
-                                          </Tooltip>,
-                                          <Tooltip
-                                              placement="bottom"
-                                              title="Xóa"
-                                          >
-                                              <Popconfirm
-                                                  title="Bạn muốn xóa học phần này?"
-                                                  onConfirm={() =>
-                                                      this.removeSet(ele.id)
-                                                  }
-                                                  okText="Đồng ý"
-                                                  cancelText="Hủy"
-                                                  okButtonProps={{
-                                                      loading:
-                                                          this.state
-                                                              .removeLoading,
-                                                  }}
-                                              >
-                                                  <DeleteOutlined key="delete" />
-                                              </Popconfirm>
-                                          </Tooltip>,
-                                      ]}
-                                  >
-                                      <Skeleton loading={loading} avatar active>
-                                          <Card.Meta
-                                              title={ele && ele?.title}
-                                              description={`${
-                                                  ele && ele?.number_of_cards
-                                              } thuật ngữ`}
-                                          />
-                                      </Skeleton>
-                                  </Card>
-                              ))
-                            : [1, 2, 3, 4].map((ele, index) => (
-                                  <Skeleton
-                                      loading={loading}
-                                      avatar
-                                      active
-                                  ></Skeleton>
-                              ))}
+                        {data?.folders?.sets?.map((ele, index) => (
+                            <Card
+                                style={{ width: 400, marginTop: 16 }}
+                                actions={[
+                                    <Tooltip placement="bottom" title="Học">
+                                        <BookOutlined
+                                            key="learn"
+                                            onClick={() =>
+                                                this.pushRef(
+                                                    ROUTER.LEARN,
+                                                    ele?.id
+                                                )
+                                            }
+                                        />
+                                    </Tooltip>,
+                                    <Tooltip
+                                        placement="bottom"
+                                        title="Chỉnh sửa"
+                                    >
+                                        <EditOutlined key="edit" />
+                                    </Tooltip>,
+                                    <Tooltip placement="bottom" title="Xóa">
+                                        <Popconfirm
+                                            title="Bạn muốn xóa học phần này?"
+                                            onConfirm={() =>
+                                                this.removeSet(ele.id)
+                                            }
+                                            okText="Đồng ý"
+                                            cancelText="Hủy"
+                                            okButtonProps={{
+                                                loading:
+                                                    this.state.removeLoading,
+                                            }}
+                                        >
+                                            <DeleteOutlined key="delete" />
+                                        </Popconfirm>
+                                    </Tooltip>,
+                                ]}
+                            >
+                                <Card.Meta
+                                    title={ele && ele?.title}
+                                    description={`${
+                                        ele && ele?.number_of_cards
+                                    } thuật ngữ`}
+                                />
+                            </Card>
+                        ))}
                     </Row>
                     <Row className="justify-content-center w-75">
                         <Pagination
