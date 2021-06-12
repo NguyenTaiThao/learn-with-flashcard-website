@@ -6,7 +6,7 @@ import { Link, Redirect } from "react-router-dom";
 import { ROUTER } from "@constants/Constant";
 import { Carousel } from "antd";
 import Cookie from "js-cookie";
-//comment
+
 class HomeScreen extends Component {
     constructor(props) {
         super(props);
