@@ -12,7 +12,6 @@ import PrivateRoute from "./PrivateRoute";
 // Screen
 import HomeScreen from "@screens/Home";
 import ProgressScreen from "@screens/Progress";
-import UserHomeScreen from "@screens/UserHome";
 import CreateSetScreen from "@screens/CreateSet";
 import LearnScreen from "@screens/Learn";
 import FolderScreen from "@screens/Folder";
