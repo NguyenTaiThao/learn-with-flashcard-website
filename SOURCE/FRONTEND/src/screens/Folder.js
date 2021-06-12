@@ -172,6 +172,21 @@ class Folder extends Component {
                         {this.renderData(data)}
                     </Col>
                 </Row>
+                <Row className="mt-5">
+                    <Col md={8} className="d-flex justify-content-center">
+                        <Pagination
+                            count={Math.ceil(
+                                data?.paginate?.total_items /
+                                    data?.paginate?.items_per_page
+                            )}
+                            color="primary"
+                            size="small"
+                            page={this.state.page}
+                            disabled={this.state.loading}
+                            onChange={(e, page) => this.handlePagi(page)}
+                        />
+                    </Col>
+                </Row>
             </>
         );
     }
@@ -196,7 +211,6 @@ class Folder extends Component {
 
     renderData(data) {
         if (this.state.loading) {
-            return <>{this.renderSkeletor()}</>;
         } else {
             if (this.props.screen == "made" || this.props.screen == "learned") {
                 if (data?.paginate?.total_items > 0) {
@@ -204,26 +218,6 @@ class Folder extends Component {
                         <>{data?.sets?.map((ele) => this.renderContent(ele))}</>
                     );
                 } else {
-                    return (
-                        <>
-                            <Result
-                                title="Danh sách rỗng"
-                                extra={
-                                    <Button
-                                        type="primary"
-                                        key="console"
-                                        onClick={() =>
-                                            this.props.history.push(
-                                                ROUTER.CREATE_SET
-                                            )
-                                        }
-                                    >
-                                        <span>Tạo mới học phần</span>
-                                    </Button>
-                                }
-                            />
-                        </>
-                    );
                 }
             } else if (this.state.filter == "folder") {
                 if (data?.paginate?.total_items > 0) {
@@ -235,26 +229,6 @@ class Folder extends Component {
                         </>
                     );
                 } else {
-                    return (
-                        <>
-                            <Result
-                                title="Danh sách rỗng"
-                                extra={
-                                    <Button
-                                        type="primary"
-                                        key="console"
-                                        onClick={() =>
-                                            this.props.history.push(
-                                                ROUTER.FOLDER_CREATE
-                                            )
-                                        }
-                                    >
-                                        <span>Tạo mới thư mục</span>
-                                    </Button>
-                                }
-                            />
-                        </>
-                    );
                 }
             }
         }
@@ -265,12 +239,6 @@ class Folder extends Component {
             filter: event.target.value,
         });
     };
-
-    renderSkeletor() {
-        return [1, 2, 3, 4].map(() => (
-            <Skeleton paragraph={{ rows: 1 }} active className="mb-2" />
-        ));
-    }
 
     renderContent(ele) {
         let screen = this.props.screen;
