@@ -26,7 +26,6 @@ class HomeScreen extends Component {
             );
         }
     }
-    // Tra ve page 1
     renderPage1() {
         return (
             <Row className="w-100 page-1">
