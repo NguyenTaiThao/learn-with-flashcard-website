@@ -2,39 +2,12 @@ import React, { Component } from "react";
 import Flippy, { FrontSide, BackSide } from "react-flippy";
 import { Row, Col } from "react-bootstrap";
 import "@styles/learn.css";
-import {
-    Divider,
-    Fab,
-    Slide,
-    Tooltip,
-    IconButton,
-    TextField,
-} from "@material-ui/core";
-import ButtonMate from "@material-ui/core/Button";
-import {
-    Progress,
-    Button,
-    Select,
-    Result,
-    Spin,
-    Modal,
-    Alert,
-    Statistic,
-    Switch,
-} from "antd";
-import {
-    LoadingOutlined,
-    SmileOutlined,
-    FrownOutlined,
-} from "@ant-design/icons";
+import { Divider, Fab, Slide, Tooltip } from "@material-ui/core";
+import { Progress, Result, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { withRouter, Redirect } from "react-router-dom";
-import { ROUTER, GAME_TYPE } from "@constants/Constant";
-import {
-    requestSetDetail,
-    requestGame,
-    requestUpdateCard,
-} from "@constants/Api";
-import _ from "lodash";
+import { ROUTER } from "@constants/Constant";
+import { requestSetDetail, requestUpdateCard } from "@constants/Api";
 import NotifyContext from "@context/NotifyContext";
 
 const selectGameDefaultStatus = {
@@ -68,8 +41,6 @@ class Learn extends Component {
     }
 
     static contextType = NotifyContext;
-    TIME_PER_QUES = 10;
-    TIME_SHOW = 3000;
 
     componentDidMount() {
         this.getDetail();
@@ -148,11 +119,6 @@ class Learn extends Component {
 
                             <Divider />
 
-                            <Row className="justify-content-center align-items-baseline title py-5">
-                                <i className="fad fa-clipboard pr-2 title-icon"></i>
-                                <span className="title-text">Thẻ ghi nhớ</span>
-                            </Row>
-
                             <Row className="flex-column justify-content-center align-items-center py-5">
                                 <Tooltip
                                     placement="bottom"
@@ -174,52 +140,13 @@ class Learn extends Component {
                                 </Tooltip>
                                 <span>Tiến độ</span>
                             </Row>
-
-                            <Row className="px-2 pt-5">
-                                <Button
-                                    block
-                                    disabled={this.state.sets?.length <= 0}
-                                    className="my-2"
-                                    onClick={() => this.shuffleCard()}
-                                >
-                                    <span className="typical-text">
-                                        Xáo trộn thẻ
-                                    </span>
-                                </Button>
-                            </Row>
                         </Col>
 
                         <Col
                             xs={8}
                             className="d-flex flex-column justify-content-center hide"
                         >
-                            <Row className="justify-content-end mb-2">
-                                <Select
-                                    defaultValue="all"
-                                    style={{ background: "white" }}
-                                    bordered={false}
-                                    onChange={(value) =>
-                                        this.handleFilterChange(value)
-                                    }
-                                    disabled={this.state.sets?.length <= 0}
-                                >
-                                    <Select.Option value="all">
-                                        <b className="select-type">
-                                            Tất cả thẻ
-                                        </b>
-                                    </Select.Option>
-                                    <Select.Option value="learned">
-                                        <b className="select-type">
-                                            Thẻ đã thuộc
-                                        </b>
-                                    </Select.Option>
-                                    <Select.Option value="learning">
-                                        <b className="select-type">
-                                            Thẻ chưa thuộc
-                                        </b>
-                                    </Select.Option>
-                                </Select>
-                            </Row>
+                            <Row className="justify-content-end mb-2"></Row>
 
                             <Row className="">
                                 {this.filterCard().length > 0 ? (
@@ -293,10 +220,7 @@ class Learn extends Component {
                                                                 ele?.remember
                                                                     ? "text-success"
                                                                     : "text-secondary"
-                                                            } cursor`}
-                                                                    onClick={() =>
-                                                                        this.updateCard()
-                                                                    }
+                                                            }`}
                                                                 ></i>
                                                             </Tooltip>
                                                         </Col>
@@ -354,7 +278,7 @@ class Learn extends Component {
                                                                 ele?.remember
                                                                     ? "text-success"
                                                                     : "text-secondary"
-                                                            } cursor`}
+                                                            }`}
                                                                 ></i>
                                                             </Tooltip>
                                                         </Col>
@@ -522,25 +446,6 @@ class Learn extends Component {
             return this.state.sets;
         }
     }
-
-    shuffleCard = () => {
-        const backup = [...this.state.sets];
-        this.setState({
-            loading: true,
-            sets: [],
-        });
-        setTimeout(() => {
-            this.setState({
-                sets: _.shuffle(backup),
-                loading: false,
-            });
-            this.context(
-                "success",
-                "Thành công",
-                "Tráo danh sách thẻ thành công"
-            );
-        }, 1000);
-    };
 
     renderEmpty() {
         let filter = this.state.filter;
